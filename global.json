@@ -1,0 +1,7 @@
+{
+  "serverURL":"https://localhost:5001/api/",
+
+  "routeLogin": "login",
+  "routeRegister": "register",
+  "routeTitlePage": "home"
+}

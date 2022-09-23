@@ -1,0 +1,83 @@
+
+<div class="body-content">
+
+  <div class="container">
+      <div class="logo">
+          <img src="../../../assets/img/account-image.png" alt="Company Logo" srcset="">
+      </div>
+      <h2>Register User</h2>
+
+      <div *ngIf="getAtrr('Username')?.invalid && getAtrr('Username')?.touched">
+        <small class="text-danger" *ngIf="getAtrr('Username')?.errors?.['required']">Email is required</small>
+        <small class="text-danger" *ngIf="getAtrr('Username')?.errors?.['email']">Invalid email</small>
+      </div>
+
+      <div class="login-form">
+          <form [formGroup]="RegisterForm" (ngSubmit)="registerUser()">
+              <div class="form-item">
+
+                <i class="fa fa-envelope" aria-hidden="true"
+                  [class.red-icon]="getAtrr('Username')?.invalid && getAtrr('Username')?.touched"
+                  [class.green-icon]="getAtrr('Username')?.valid"></i>
+
+                  <!-- <label for="userName">Username:</label> -->
+                  <input type="email" formControlName="Username" placeholder="Email">
+              </div>
+
+              <div *ngIf="getAtrr('Password')?.invalid && getAtrr('Password')?.touched">
+                <small class="text-danger" *ngIf="getAtrr('Password')?.errors?.['required']">Password is required</small>
+                <div *ngIf="getAtrr('Password')?.errors?.['minlength'];
+                      then longError;
+                      else patternError"></div>
+                <ng-template #longError>
+                  <small class="text-danger">Password must have at least 8 characters long</small>
+                </ng-template>
+                <ng-template #patternError>
+                <small class="text-danger" *ngIf="getAtrr('Password')?.errors?.['pattern']">
+                  Include number, capital letter and a symbol</small>
+                </ng-template>
+              </div>
+
+              <div class="form-item">
+                <i class="fas fa-key" aria-hidden="true"
+                  [class.red-icon]="getAtrr('Password')?.invalid && getAtrr('Password')?.touched"
+                  [class.green-icon]="getAtrr('Password')?.valid"></i>
+                  <!-- <label for="passWord">Password:</label> -->
+                  <input type="password" formControlName="Password" placeholder="Password" maxlength="15">
+              </div>
+
+              <div *ngIf="(RegisterForm.errors?.['mismatch'] === true ||
+                              getAtrr('ConfirmPassword')?.invalid) &&
+                              getAtrr('ConfirmPassword')?.touched">
+                <small class="text-danger" *ngIf="RegisterForm.errors?.['mismatch'] === true">Passwords do not match</small>
+                <small class="text-danger" *ngIf="getAtrr('ConfirmPassword')?.errors?.['required']">Please repeat password</small>
+              </div>
+
+              <div class="form-item">
+                <i class="fas fa-key" aria-hidden="true"
+                  [class.green-icon]="!RegisterForm.errors?.['mismatch'] && getAtrr('ConfirmPassword')?.valid"
+                  [class.red-icon]="(RegisterForm.errors?.['mismatch'] === true ||
+                                      getAtrr('ConfirmPassword')?.invalid) &&
+                                      getAtrr('ConfirmPassword')?.touched"
+
+                  ></i>
+                  <!-- <label for="passWord">Password:</label> -->
+                  <input type="password" formControlName="ConfirmPassword" placeholder="Confirm Password" maxlength="15">
+              </div>
+
+              <div class="form-btns">
+
+                  <button type="submit" [disabled]="RegisterForm.invalid"
+                          class="btn btn-success btn-lg btn-block">Register</button>
+
+                  <div class="options">
+                      Already have an account?<a (click)="goLogin()">Login here</a>
+                  </div>
+
+              </div>
+
+          </form>
+          <p>Copyright &copy; OLS Register User</p>
+      </div>
+  </div>
+</div>
