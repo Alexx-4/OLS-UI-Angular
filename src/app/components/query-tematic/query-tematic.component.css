@@ -1,0 +1,7 @@
+.mainscreen
+{
+width: 10cm;
+display: flex;
+flex-direction: column;
+color:#963E7B;
+}

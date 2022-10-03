@@ -3,5 +3,6 @@
 
   "routeLogin": "login",
   "routeRegister": "register",
-  "routeTitlePage": "home"
+  "routeTitlePage": "home",
+  "routeQueryTematic": "queryTematic"
 }

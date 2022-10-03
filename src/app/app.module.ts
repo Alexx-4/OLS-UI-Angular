@@ -10,6 +10,9 @@ import { RegisterUserComponent } from './components/register-user/register-user.
 import { ReactiveFormsModule } from '@angular/forms';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { TitlePageComponent } from './components/title-page/title-page.component';
+import { QueryTematicComponent } from './components/query-tematic/query-tematic.component';
+import { ListQueriesComponent } from './components/query-tematic/create/list-queries/list-queries.component';
+import { CreateTematicComponent } from './components/query-tematic/create/create-tematic/create-tematic.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,10 @@ import { TitlePageComponent } from './components/title-page/title-page.component
     LoginUserComponent,
     RegisterUserComponent,
     PageNotFoundComponent,
-    TitlePageComponent
+    TitlePageComponent,
+    QueryTematicComponent,
+    ListQueriesComponent,
+    CreateTematicComponent
   ],
   imports: [
     BrowserModule,
