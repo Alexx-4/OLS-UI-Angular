@@ -1,4 +1,9 @@
-<<<<<<< HEAD
+# OLS-UI-Angular
+Interfaz visual para configuracion de OpenLatinoServer implementada en Angular
+
+
+
+
 # UIOLSAngular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.2.
@@ -26,7 +31,3 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-=======
-# OLS-UI-Angular
-Interfaz visual para configuracion de OpenLatinoServer implementada en Angular
->>>>>>> 0936a8cdddec887b4e7dcf0481b3b4a4f20cc83c
