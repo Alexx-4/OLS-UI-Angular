@@ -1,12 +1,10 @@
 export class TematicModel{
   tematicName:string;
-  layerName: string;
 
   queries: query []
 
   constructor() {
     this.tematicName = '';
-    this.layerName = '';
 
     this.queries = [];
 
@@ -22,5 +20,6 @@ export interface condition {
 
 export interface query{
   styleName: string;
-  conditions: condition []
+  layerName: string;
+  conditions: condition [];
 }

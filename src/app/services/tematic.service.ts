@@ -22,7 +22,11 @@ export class TematicService {
     return this.http.get(this.url + 'layersColumns');
    }
 
-   getOperator(layer : string, column:string){
-    return this.http.post(this.url + 'operator', [layer, column]);
+   getOperator(column:string, layer:string){
+    return this.http.post(this.url + 'operator', {Item1:column,Item2:layer});
+   }
+
+   getStyles(){
+    return this.http.get(this.url + 'styles');
    }
 }

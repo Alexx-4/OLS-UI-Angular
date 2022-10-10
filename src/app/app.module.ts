@@ -14,6 +14,9 @@ import { QueryTematicComponent } from './components/query-tematic/query-tematic.
 import { ListQueriesComponent } from './components/query-tematic/create/list-queries/list-queries.component';
 import { CreateTematicComponent } from './components/query-tematic/create/create-tematic/create-tematic.component';
 
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +32,9 @@ import { CreateTematicComponent } from './components/query-tematic/create/create
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

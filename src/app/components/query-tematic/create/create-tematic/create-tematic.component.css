@@ -14,7 +14,7 @@ color:#963E7B;
 }
 
 .card {
-  width: 15cm;
+  width: 17cm;
   margin: auto;
   background: white;
   position:center;
@@ -45,7 +45,7 @@ width: 20em;
 
 .rightside {
   background-color: #ffffff;
-width: 35rem;
+width: 17cm;
 border-bottom-right-radius: 1.5rem;
   border-top-right-radius: 1.5rem;
   padding: 1rem 2rem 3rem 3rem;
@@ -109,6 +109,14 @@ transform: scale(1.05) translateY(-3px);
   box-shadow: 3px 3px 6px #38373785;
 }
 
+.i{
+  cursor: pointer;
+}
+.i:hover{
+  transform: green;
+}
+
+
 @media only screen and (max-width: 1000px) {
   .card{
       flex-direction: column;
@@ -156,4 +164,21 @@ transform: scale(1.05) translateY(-3px);
 
 .marginButton{
   margin-left: 20px;
+}
+
+.trash{
+  background: none;
+  border: none;
+  color: none;
+  font-size: 0.7cm;
+  margin-top:0.6cm;
+  outline:none;
+  cursor: pointer;
+}
+
+.trash:hover
+{
+transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+  color:red;
 }
