@@ -18,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
+import { CreateComponent } from './components/query-tematic/create/create.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { HeaderComponent } from './components/header/header.component';
     ListQueriesComponent,
     CreateTematicComponent,
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    CreateComponent
   ],
   imports: [
     BrowserModule,
