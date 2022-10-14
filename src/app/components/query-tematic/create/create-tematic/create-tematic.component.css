@@ -10,7 +10,6 @@ box-sizing: border-box;
 width: 10cm;
 display: flex;
 flex-direction: column;
-color:#963E7B;
 }
 
 .card {
@@ -174,6 +173,7 @@ transform: scale(1.05) translateY(-3px);
   margin-top:0.6cm;
   outline:none;
   cursor: pointer;
+  color:brown;
 }
 
 .trash:hover

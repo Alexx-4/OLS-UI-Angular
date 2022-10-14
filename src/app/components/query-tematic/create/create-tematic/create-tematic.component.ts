@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 import { query, TematicModel } from 'src/app/models/tematicModel';
 import { TematicService } from 'src/app/services/tematic.service';
 
@@ -11,11 +12,11 @@ declare var $:any;
   templateUrl: './create-tematic.component.html',
   styleUrls: ['./create-tematic.component.css']
 })
-export class CreateTematicComponent implements OnInit {
+export class CreateTematicComponent implements OnInit, OnDestroy {
+
+  subscription:Subscription = new Subscription();
 
   TematicForm : FormGroup;
-
-  tematicQuerys : query [] = [];
 
   layers:string[] = [];
   operators:any[] = [];
@@ -23,29 +24,60 @@ export class CreateTematicComponent implements OnInit {
 
   layersColumns: any;
 
+  qIndex:number = -1;
+
   constructor(private formBuilder: FormBuilder,
-              private tematicService: TematicService,
+              public tematicService: TematicService,
               private toastr: ToastrService){
 
     this.TematicForm = formBuilder.group({
 
-      tematicName: ['', [Validators.required]],
+      tematicName: [''],
 
       query: formBuilder.group({
 
         layerName: ['', [Validators.required]],
         conditions: formBuilder.array([]),
         styleName: ['', [Validators.required]]
-
-
     })
     })
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
     this.addCondition(null);
     this.getLayersColumns();
     this.getStyles();
+
+    this.subscription = this.tematicService.getQuery().subscribe(data => {
+
+      var q:query = this.tematicService.tematicQueries[data];
+
+        if(q){
+
+          var formConditions: FormArray = this.conditions;
+          while(formConditions.length > 1){
+            formConditions.removeAt(0);
+          }
+
+          for(let i= 1; i < q.conditions.length; i++){
+            this.addCondition('');
+          }
+
+          this.getAtrr('query')?.patchValue({
+            layerName: q.layerName,
+            styleName: q.styleName,
+            conditions: q.conditions,
+          });
+
+          for(let i= 0; i < q.conditions.length; i++){
+            this.setOperators(i);
+          }
+          this.qIndex = data
+      }
+    });
   }
 
   get conditions(){
@@ -81,7 +113,7 @@ export class CreateTematicComponent implements OnInit {
             _operator:['', [Validators.required]],
             value:['', [Validators.required]],
             logicOperator:[logicOp]
-        })
+        });
         this.conditions.push(condition);
         this.operators.push([]);
   }
@@ -110,8 +142,12 @@ export class CreateTematicComponent implements OnInit {
       styleName: this.getAtrr('query')?.get('styleName')?.value,
       conditions: this.getAtrr('query')?.get('conditions')?.value
     }
-
-    this.tematicQuerys.push(query);
+    if(this.qIndex === -1){
+      this.tematicService.addQuery(query);
+    }
+    else{
+      this.tematicService.editQuery(this.qIndex, query);
+    }
 
     var formConditions: FormArray = this.conditions;
     while(formConditions.length > 1){
@@ -120,6 +156,8 @@ export class CreateTematicComponent implements OnInit {
 
     this.getAtrr('query')?.reset();
     this.getAtrr('query')?.get('layerName')?.enable();
+
+    this.qIndex = -1;
   }
 
   getAtrr(attr:string){
@@ -130,7 +168,7 @@ export class CreateTematicComponent implements OnInit {
     const _tematic: TematicModel = {
       tematicName: this.getAtrr('tematicName')?.value,
 
-      queries: this.tematicQuerys
+      queries: this.tematicService.tematicQueries
     }
 
     this.tematicService.createTematic(_tematic).subscribe({
@@ -168,9 +206,7 @@ export class CreateTematicComponent implements OnInit {
       }
 
     })
-
-
-
-
   }
+
+
 }

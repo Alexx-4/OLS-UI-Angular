@@ -16,6 +16,8 @@ import { CreateTematicComponent } from './components/query-tematic/create/create
 
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     TitlePageComponent,
     QueryTematicComponent,
     ListQueriesComponent,
-    CreateTematicComponent
+    CreateTematicComponent,
+    FooterComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

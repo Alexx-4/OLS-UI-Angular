@@ -1,12 +1,9 @@
-{{TematicForm.value | json}}
+<!--{{TematicForm.value | json}}-->
 
 <div class="mainscreen">
        <div class="card">
           <div class="rightside">
             <form [formGroup]="TematicForm">
-              <h2>Create</h2>
-              <br>
-
               <p>Tematic Name</p>
               <input type="text" class="inputbox" formControlName="tematicName" #tematic/>
 
@@ -17,7 +14,7 @@
 
               </select>
 
-              <br>
+              <br><br>
               <h3>Query</h3> <hr>
 
               <div class="expcvv">
@@ -67,13 +64,11 @@
               </table>
             </div>
 
+            <br><hr><br>
               <p>Apply Style to this query</p>
-              <div class="expcvv">
               <select class="inputbox" formControlName="styleName">
                 <option *ngFor="let style of styles" [value]="style.name">{{style.name}}</option>
               </select>
-              <i class='fa-solid fa-eye'></i>
-            </div>
           </div>
 
               <p></p>
@@ -82,7 +77,7 @@
             <br>
             <div class="expcvv">
 
-            <button class="button1 btn btn-success btn-lg btn-block" (click)="saveTematic()" [disabled]="tematicQuerys.length<1">Create Tematic</button>
+            <button class="button1 btn btn-success btn-lg btn-block" (click)="saveTematic()" [disabled]="this.tematicService.tematicQueries.length<1">Create Tematic</button>
             <button class="button1 btn btn-success btn-lg btn-block marginButton">Cancel</button>
           </div>
         </div>
