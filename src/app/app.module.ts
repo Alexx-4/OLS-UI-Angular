@@ -19,6 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { CreateComponent } from './components/query-tematic/create/create.component';
+import { CategoryTematicComponent } from './components/category-tematic/category-tematic.component';
+import { CreateCategoryTematicComponent } from './components/category-tematic/create-category-tematic/create-category-tematic.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { CreateComponent } from './components/query-tematic/create/create.compon
     CreateTematicComponent,
     FooterComponent,
     HeaderComponent,
-    CreateComponent
+    CreateComponent,
+    CategoryTematicComponent,
+    CreateCategoryTematicComponent
   ],
   imports: [
     BrowserModule,

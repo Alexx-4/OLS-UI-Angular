@@ -42,12 +42,20 @@ export class TematicService {
     return this.http.post<TematicModel>(this.url + 'QueryTematic', tematic);
    }
 
+   createCategoryTematic(tematic: TematicModel){
+    return this.http.post<TematicModel>(this.url + 'CategoryTematic', tematic);
+   }
+
    getLayersColumns(){
     return this.http.get(this.url + 'layersColumns');
    }
 
    getOperator(column:string, layer:string){
     return this.http.post(this.url + 'operator', {Item1:column,Item2:layer});
+   }
+
+   getCategories(column:string, layer:string){
+    return this.http.post(this.url + 'categories', {Item1:column,Item2:layer});
    }
 
    getStyles(){

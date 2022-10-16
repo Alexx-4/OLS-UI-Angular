@@ -4,5 +4,6 @@
   "routeLogin": "login",
   "routeRegister": "register",
   "routeTitlePage": "home",
-  "routeQueryTematic": "queryTematic"
+  "routeQueryTematic": "queryTematic",
+  "routeCategoryTematic": "categoryTematic"
 }

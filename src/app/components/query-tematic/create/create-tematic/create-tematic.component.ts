@@ -42,6 +42,7 @@ export class CreateTematicComponent implements OnInit, OnDestroy {
     })
     })
   }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
@@ -75,7 +76,7 @@ export class CreateTematicComponent implements OnInit, OnDestroy {
           for(let i= 0; i < q.conditions.length; i++){
             this.setOperators(i);
           }
-          this.qIndex = data
+          this.qIndex = data;
       }
     });
   }
@@ -126,6 +127,7 @@ export class CreateTematicComponent implements OnInit, OnDestroy {
     var _conditions = this.conditions;
     if(_conditions.length > 1){
       _conditions.removeAt(i);
+      this.operators.splice(i,1);
       if(_conditions.length == 1){
         this.getAtrr('query')?.get('layerName')?.enable();
       }
@@ -155,6 +157,7 @@ export class CreateTematicComponent implements OnInit, OnDestroy {
     }
 
     this.getAtrr('query')?.reset();
+    this.operators = [];
     this.getAtrr('query')?.get('layerName')?.enable();
 
     this.qIndex = -1;
