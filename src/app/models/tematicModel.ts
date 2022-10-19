@@ -15,7 +15,7 @@ export interface condition {
   columnName: string,
   _operator: string,
   value: string,
-  logicOperator: string
+  logicOperator: string | null
 }
 
 export interface query{

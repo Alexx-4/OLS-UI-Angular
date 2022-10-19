@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import global from '../../global.json'
+import { CategoryTematicComponent } from './components/category-tematic/category-tematic.component';
 import { CreateCategoryTematicComponent } from './components/category-tematic/create-category-tematic/create-category-tematic.component';
 import { LoginUserComponent } from './components/login-user/login-user.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -13,8 +14,9 @@ const routes: Routes = [
   {path: global['routeTitlePage'], component: TitlePageComponent},
   {path: global['routeLogin'], component: LoginUserComponent},
   {path: global['routeRegister'], component: RegisterUserComponent},
-  {path: global['routeQueryTematic'], component: CreateComponent},
-  {path: global['routeCategoryTematic'], component: CreateCategoryTematicComponent},
+  {path: global['routeCreateQueryTematic'], component: CreateComponent},
+  {path: global['routeCreateCategoryTematic'], component: CreateCategoryTematicComponent},
+  {path: global['routeCategoryTematic'], component: CategoryTematicComponent},
   {path: "**", component: PageNotFoundComponent}
 ];
 

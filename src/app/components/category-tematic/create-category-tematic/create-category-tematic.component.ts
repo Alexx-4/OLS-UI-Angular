@@ -1,8 +1,10 @@
+import { style } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { query, TematicModel } from 'src/app/models/tematicModel';
 import { TematicService } from 'src/app/services/tematic.service';
+import { __values } from 'tslib';
 
 @Component({
   selector: 'app-create-category-tematic',
@@ -40,8 +42,8 @@ export class CreateCategoryTematicComponent implements OnInit {
   ngOnInit(): void {
     this.addCondition(null);
 
-    this.getLayersColumns();
-    this.getStyles();
+    this.defaultQueries();
+
   }
 
   get conditions(){
@@ -56,10 +58,50 @@ export class CreateCategoryTematicComponent implements OnInit {
     return []
   }
 
+  async defaultQueries(){
+    await this.getStyles();
+    await this.getLayersColumns();
+
+    var _layer:string = this.layers[0];
+    var _column:string = this.layersColumns[_layer][0];
+    var _value:any;
+
+    await new Promise<void>((resolve)=>{
+      this.tematicService.getCategories(_column, _layer).subscribe({
+        next: (data) =>{
+          _value = data;
+          resolve();
+        }
+      })
+    })
+
+
+    for(let i = 0; i < this.styles.length &&
+                   i < _value.length      &&
+                   i < 10;                i++){
+          let query:query = {
+
+            styleName: this.styles[i].name,
+            layerName: _layer,
+
+            conditions: [{
+
+              columnName: _column,
+              _operator: 'Equal',
+              value: _value[i],
+              logicOperator:null
+
+            }]
+          }
+          this.tematicService.addQuery(query);
+
+
+    }
+  }
+
   getStyles(){
     this.tematicService.getStyles().subscribe({
       next: (data)=> {
-        console.log(data);
         this.styles = data;
       }
   })
@@ -90,15 +132,19 @@ else{
   }
 
   getLayersColumns(){
-    this.tematicService.getLayersColumns().subscribe({
-      next: (data)=>{
-        this.layersColumns = data;
+    return new Promise<void>(resolve => {
+          this.tematicService.getLayersColumns().subscribe({
+            next: (data)=>{
+              this.layersColumns = data;
 
-        for(let item in this.layersColumns){
-          this.layers.push(item)
-        }
-      }
+              for(let item in this.layersColumns){
+                this.layers.push(item)
+              }
+              resolve();
+            }
+          })
     })
+
   }
 
   removeCondition(i:number){
