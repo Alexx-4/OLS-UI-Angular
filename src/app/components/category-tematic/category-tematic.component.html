@@ -14,7 +14,7 @@
               <th scope="col">Layer</th>
               <th scope="col">Query</th>
               <th scope="col">Style</th>
-              <th scope="col" class="col-md-1"><a class="create">New</a></th>
+              <th scope="col" class="col-md-1"><a class="create" (click)="goCreateCategory()">New</a></th>
             </tr>
           </thead>
           <tbody *ngFor="let tematic of tematics">
@@ -22,15 +22,23 @@
               <td>
                 {{tematic.tematicName}}
               </td>
-              <td><a class="create" (click)="label($event)">{{tematic.layerName}}</a></td>
+              <td><a class="create">{{tematic.layerName}}</a></td>
               <td>
-                {{tematic.tematicTypeName}}
+                <div *ngFor="let query of tematic.tematicTypeName.split(';'); let i = index">
+                  <div *ngIf="i == 1">
+                    {{query.split(',')[0] + ' '}} {{query.split(',')[1] | uppercase}} {{' ' + query.split(',')[2]}}<br>
+                  </div>
+                  <div *ngIf="i > 1">
+                    <b>{{query.split(',')[0] + ' ' | uppercase}}</b>
+                    {{query.split(',')[1] + ' '}} {{query.split(',')[2] | uppercase}} {{' ' + query.split(',')[3]}}<br>
+                  </div>
+                </div>
               </td>
               <td>{{tematic.styleName}}</td>
               <td class="col-md-1">
-                <i class="far fa-edit fa-lg edit2" ></i>
+                <i class="far fa-edit fa-lg edit2" (click)="editCategoryTematic($event, tematic.tematicId)" ></i>
 
-                <i class="far fa-trash-alt fa-lg trash2"></i>
+                <i class="far fa-trash-alt fa-lg trash2" (click)="deleteCategoryTematic($event, tematic.tematicId)"></i>
               </td>
             </tr>
             <tr class="spacer"><td colspan="100"></td></tr>

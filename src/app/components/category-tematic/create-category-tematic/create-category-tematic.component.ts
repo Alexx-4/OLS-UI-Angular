@@ -1,19 +1,24 @@
-import { style } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 import { query, TematicModel } from 'src/app/models/tematicModel';
 import { TematicService } from 'src/app/services/tematic.service';
 import { __values } from 'tslib';
+
+import global from '../../../../../global.json';
 
 @Component({
   selector: 'app-create-category-tematic',
   templateUrl: './create-category-tematic.component.html',
   styleUrls: ['./create-category-tematic.component.css']
 })
-export class CreateCategoryTematicComponent implements OnInit {
+export class CreateCategoryTematicComponent implements OnInit, OnDestroy {
 
   CategoryTematicForm: FormGroup;
+
+  subscription: Subscription = new Subscription();
 
   layers:string[] = [];
   categories:any[] = [];
@@ -21,11 +26,14 @@ export class CreateCategoryTematicComponent implements OnInit {
   layersColumns: any;
 
   styles:any;
+
   qIndex:number = -1;
+  tematicIndex:number = 0;
 
   constructor(private formBuilder: FormBuilder,
               public tematicService: TematicService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private router:Router) {
 
     this.CategoryTematicForm = formBuilder.group({
       tematicName: [''],
@@ -39,10 +47,32 @@ export class CreateCategoryTematicComponent implements OnInit {
     })
    }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   ngOnInit(): void {
+
     this.addCondition(null);
 
-    this.defaultQueries();
+    this.subscription = this.tematicService.getTematicModel().subscribe({
+      next: (data)=>{
+        if(data.tematicId){
+          this.getStyles();
+          this.getLayersColumns();
+
+          this.CategoryTematicForm.patchValue({
+            tematicName: data.tematicName
+          });
+          console.log(data.queries);
+          this.tematicService.tematicQueries = data.queries;
+          this.tematicIndex = data.tematicId;
+      }
+      else{
+        this.defaultQueries();
+      }
+    }
+    })
 
   }
 
@@ -59,6 +89,7 @@ export class CreateCategoryTematicComponent implements OnInit {
   }
 
   async defaultQueries(){
+
     await this.getStyles();
     await this.getLayersColumns();
 
@@ -75,7 +106,7 @@ export class CreateCategoryTematicComponent implements OnInit {
       })
     })
 
-
+    this.tematicService.tematicQueries = []
     for(let i = 0; i < this.styles.length &&
                    i < _value.length      &&
                    i < 10;                i++){
@@ -237,18 +268,31 @@ else{
   }
 
   saveTematic(){
+    var create:boolean = this.tematicIndex === 0;
+
     const _tematic: TematicModel = {
+      tematicId:(create) ? undefined: this.tematicIndex,
       tematicName: this.getAtrr('tematicName')?.value,
 
       queries: this.tematicService.tematicQueries
     }
-
+    if(create){
     this.tematicService.createCategoryTematic(_tematic).subscribe({
       next: (data) => {
-        console.log(data);
-        console.log('Enviado exitosamente');
+        this.router.navigate([global['routeCategoryTematic']]);
+        this.toastr.success('Category tematic created','Sucess');
       }
     })
+  }
+    else{
+      this.tematicService.editCategoryTematic(_tematic).subscribe({
+        next: ()=>{
+          this.tematicIndex = 0;
+          this.router.navigate([global['routeCategoryTematic']]);
+          this.toastr.success('Category tematic edited','Succes');
+        }
+      })
+    }
   }
 
 }

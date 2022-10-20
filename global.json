@@ -3,8 +3,11 @@
 
   "routeLogin": "login",
   "routeRegister": "register",
+
   "routeTitlePage": "home",
+
   "routeCreateQueryTematic": "queryTematic/create",
+
   "routeCreateCategoryTematic": "categoryTematic/create",
   "routeCategoryTematic": "categoryTematic"
 }

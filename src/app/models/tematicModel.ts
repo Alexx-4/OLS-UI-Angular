@@ -1,4 +1,5 @@
 export class TematicModel{
+  tematicId?:number;
   tematicName:string;
 
   queries: query []

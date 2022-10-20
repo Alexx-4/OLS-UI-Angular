@@ -182,3 +182,61 @@ transform: scale(1.05) translateY(-3px);
   box-shadow: 3px 3px 6px #38373785;
   color:red;
 }
+
+
+
+.mainscreen2
+{
+width: 10cm;
+display: flex;
+flex-direction: column;
+color:#963E7B;
+}
+
+.card2 {
+  width: 17cm;
+  margin: auto;
+  background: white;
+  position:center;
+  align-self: center;
+  border-radius: 1.5rem;
+  box-shadow: 4px 3px 20px #3535358c;
+  display:flex;
+  flex-direction: row;
+
+}
+
+.leftside2 {
+background: #030303;
+width: 25rem;
+display: inline-flex;
+  align-items: center;
+  justify-content: center;
+border-top-left-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+}
+
+.edit2{
+  cursor: pointer;
+  margin-right: 0.4cm;
+  color:#11c4d1;
+}
+
+.edit2:hover
+{
+transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+  color:rgb(25, 50, 194);
+}
+
+.trash2{
+cursor: pointer;
+color:brown;
+}
+
+.trash2:hover
+{
+transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+  color:red;
+}

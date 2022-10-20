@@ -13,7 +13,7 @@ export class TematicService {
   url:string = global['serverURL'] + 'Tematic/';
 
   tematicQueries: query [] = [];
-  private _query = new BehaviorSubject<number>({} as any);
+  private _tematicModel = new BehaviorSubject<TematicModel>({} as any);
 
   constructor(private http:HttpClient) {
    }
@@ -22,16 +22,16 @@ export class TematicService {
     this.tematicQueries.push(query);
    }
 
-   updateQuery(i:number){
-    this._query.next(i);
+   updateTematicModel(_tematic:TematicModel){
+    this._tematicModel.next(_tematic);
+   }
+
+   getTematicModel(){
+    return this._tematicModel.asObservable();
    }
 
    editQuery(i:number, q:query){
     this.tematicQueries.splice(i,1,q);
-   }
-
-   getQuery(){
-    return this._query.asObservable();
    }
 
    removeQuery(i:number){
@@ -44,6 +44,10 @@ export class TematicService {
 
    createCategoryTematic(tematic: TematicModel){
     return this.http.post<TematicModel>(this.url + 'CategoryTematic', tematic);
+   }
+
+   editCategoryTematic(tematic: TematicModel){
+    return this.http.put<TematicModel>(this.url + 'editCategory', tematic);
    }
 
    getLayersColumns(){
@@ -63,6 +67,10 @@ export class TematicService {
    }
 
    getCategoryTematics(){
-    return this.http.get(this.url + 'categoryTematic');
+    return this.http.get(this.url + 'getCategoryTematics');
+   }
+
+   deleteTematic(id:number){
+    return this.http.delete(this.url + id);
    }
 }

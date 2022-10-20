@@ -5,7 +5,7 @@ import { CategoryTematicComponent } from './components/category-tematic/category
 import { CreateCategoryTematicComponent } from './components/category-tematic/create-category-tematic/create-category-tematic.component';
 import { LoginUserComponent } from './components/login-user/login-user.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { CreateComponent } from './components/query-tematic/create/create.component';
+import { CreateQueryTematicComponent } from './components/query-tematic/create-query-tematic/create-query-tematic/create-query-tematic.component';
 import { RegisterUserComponent } from './components/register-user/register-user.component';
 import { TitlePageComponent } from './components/title-page/title-page.component';
 
@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: global['routeTitlePage'], component: TitlePageComponent},
   {path: global['routeLogin'], component: LoginUserComponent},
   {path: global['routeRegister'], component: RegisterUserComponent},
-  {path: global['routeCreateQueryTematic'], component: CreateComponent},
+  {path: global['routeCreateQueryTematic'], component: CreateQueryTematicComponent},
   {path: global['routeCreateCategoryTematic'], component: CreateCategoryTematicComponent},
   {path: global['routeCategoryTematic'], component: CategoryTematicComponent},
   {path: "**", component: PageNotFoundComponent}

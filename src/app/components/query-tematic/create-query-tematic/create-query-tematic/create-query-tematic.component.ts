@@ -5,16 +5,12 @@ import { Subscription } from 'rxjs';
 import { query, TematicModel } from 'src/app/models/tematicModel';
 import { TematicService } from 'src/app/services/tematic.service';
 
-declare var $:any;
-
 @Component({
-  selector: 'app-create-tematic',
-  templateUrl: './create-tematic.component.html',
-  styleUrls: ['./create-tematic.component.css']
+  selector: 'app-create-query-tematic',
+  templateUrl: './create-query-tematic.component.html',
+  styleUrls: ['./create-query-tematic.component.css']
 })
-export class CreateTematicComponent implements OnInit, OnDestroy {
-
-  subscription:Subscription = new Subscription();
+export class CreateQueryTematicComponent implements OnInit {
 
   TematicForm : FormGroup;
 
@@ -43,42 +39,10 @@ export class CreateTematicComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
   ngOnInit(): void {
     this.addCondition(null);
     this.getLayersColumns();
     this.getStyles();
-
-    this.subscription = this.tematicService.getQuery().subscribe(data => {
-
-      var q:query = this.tematicService.tematicQueries[data];
-
-        if(q){
-
-          var formConditions: FormArray = this.conditions;
-          while(formConditions.length > 1){
-            formConditions.removeAt(0);
-          }
-
-          for(let i= 1; i < q.conditions.length; i++){
-            this.addCondition('');
-          }
-
-          this.getAtrr('query')?.patchValue({
-            layerName: q.layerName,
-            styleName: q.styleName,
-            conditions: q.conditions,
-          });
-
-          for(let i= 0; i < q.conditions.length; i++){
-            this.setOperators(i);
-          }
-          this.qIndex = data;
-      }
-    });
   }
 
   get conditions(){
@@ -209,6 +173,35 @@ export class CreateTematicComponent implements OnInit, OnDestroy {
       }
 
     })
+  }
+
+  deleteQuery(i:number){
+    this.tematicService.removeQuery(i);
+  }
+
+  editQuery(i:number){
+    var q:query = this.tematicService.tematicQueries[i];
+
+    var formConditions: FormArray = this.conditions;
+    while(formConditions.length > 1){
+      formConditions.removeAt(0);
+    }
+
+    for(let i= 1; i < q.conditions.length; i++){
+      this.addCondition('');
+    }
+
+    this.getAtrr('query')?.patchValue({
+      layerName: q.layerName,
+      styleName: q.styleName,
+      conditions: q.conditions,
+    });
+
+    for(let i= 0; i < q.conditions.length; i++){
+      this.setOperators(i);
+    }
+    this.qIndex = i;
+
   }
 
 
