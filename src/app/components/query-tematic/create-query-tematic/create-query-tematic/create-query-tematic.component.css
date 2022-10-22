@@ -240,3 +240,42 @@ transform: scale(1.05) translateY(-3px);
   box-shadow: 3px 3px 6px #38373785;
   color:red;
 }
+
+.button3{
+  background: linear-gradient(
+135deg
+, #753370 0%, #298096 100%);
+  padding: 15px;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-weight: 400;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  width:15cm;
+  letter-spacing: .11rem;
+  outline:none;
+  margin-left: 40px;
+}
+
+.button3:hover
+{
+transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+}
+
+.inputbox2
+{
+  color:#030303;
+width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: 1.5px solid #ccc;
+  margin-bottom: 1rem;
+  border-radius: 0.3rem;
+  font-family: 'Roboto', sans-serif;
+  color: #615a5a;
+  font-size: 1.1rem;
+  font-weight: 500;
+outline:none;
+}

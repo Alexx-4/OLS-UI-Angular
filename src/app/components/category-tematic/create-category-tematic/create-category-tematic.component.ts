@@ -5,7 +5,6 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { query, TematicModel } from 'src/app/models/tematicModel';
 import { TematicService } from 'src/app/services/tematic.service';
-import { __values } from 'tslib';
 
 import global from '../../../../../global.json';
 
@@ -52,7 +51,6 @@ export class CreateCategoryTematicComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     this.addCondition(null);
 
     this.subscription = this.tematicService.getTematicModel().subscribe({
@@ -106,7 +104,7 @@ export class CreateCategoryTematicComponent implements OnInit, OnDestroy {
       })
     })
 
-    this.tematicService.tematicQueries = []
+    this.tematicService.tematicQueries = [];
     for(let i = 0; i < this.styles.length &&
                    i < _value.length      &&
                    i < 10;                i++){
@@ -144,7 +142,8 @@ export class CreateCategoryTematicComponent implements OnInit, OnDestroy {
   }
 
   addCondition(logicOp:string | null){
-    if(this.getAtrr('query')?.get('layerName')?.value != '' || logicOp == null){
+    var layerName = this.getAtrr('query')?.get('layerName')?.value;
+    if((layerName != '' && layerName != null)|| logicOp == null){
       if (logicOp !== null){
         this.getAtrr('query')?.get('layerName')?.disable();
       }
@@ -156,10 +155,10 @@ export class CreateCategoryTematicComponent implements OnInit, OnDestroy {
       });
       this.conditions.push(condition);
       this.categories.push([]);
-}
-else{
-  this.toastr.error('Please select Layer');
-}
+    }
+    else{
+      this.toastr.error('Please select Layer');
+    }
   }
 
   getLayersColumns(){
@@ -223,17 +222,23 @@ else{
     var _group = this.conditions.controls[i];
     var column:string = _group?.get('columnName')?.value;
     this.categories[i] = [];
+    this.conditions.at(i).patchValue({value:''});
 
-    this.tematicService.getCategories(column, this.getAtrr('query')?.get('layerName')?.value).subscribe({
-      next: (data)=>{
-        this.categories[i] = data;
-      },
-      error: (err) => {
-        console.log('Ocurrio un error')
-        console.log(err);
-      }
+    if(column !== 'default'){
+      this.tematicService.getCategories(column, this.getAtrr('query')?.get('layerName')?.value).subscribe({
+        next: (data)=>{
+          this.categories[i] = data;
+        },
+        error: (err) => {
+          console.log('Ocurrio un error')
+          console.log(err);
+        }
 
-    })
+      });
+  }
+  else{
+    this.toastr.warning('Please select column');
+  }
   }
 
   editQuery(i:number){
@@ -246,13 +251,16 @@ else{
             formConditions.removeAt(0);
           }
 
+          this.getAtrr('query')?.patchValue({
+            layerName: q.layerName,
+            styleName: q.styleName
+          });
+
           for(let i= 1; i < q.conditions.length; i++){
             this.addCondition('');
           }
 
           this.getAtrr('query')?.patchValue({
-            layerName: q.layerName,
-            styleName: q.styleName,
             conditions: q.conditions,
           });
 
@@ -276,10 +284,11 @@ else{
 
       queries: this.tematicService.tematicQueries
     }
+
     if(create){
     this.tematicService.createCategoryTematic(_tematic).subscribe({
-      next: (data) => {
-        this.router.navigate([global['routeCategoryTematic']]);
+      next: () => {
+        this.goCategoryTematicsView();
         this.toastr.success('Category tematic created','Sucess');
       }
     })
@@ -288,11 +297,15 @@ else{
       this.tematicService.editCategoryTematic(_tematic).subscribe({
         next: ()=>{
           this.tematicIndex = 0;
-          this.router.navigate([global['routeCategoryTematic']]);
+          this.goCategoryTematicsView();
           this.toastr.success('Category tematic edited','Succes');
         }
       })
     }
+  }
+
+  goCategoryTematicsView(){
+    this.router.navigate([global['routeCategoryTematic']]);
   }
 
 }

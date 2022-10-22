@@ -5,18 +5,18 @@
   <hr>
   <div class="row">
     <div class="col-md-6">
-      <!--{{TematicForm.value | json}}-->
+      <!-- {{QueryTematicForm.value | json}} -->
 
         <div class="mainscreen">
           <div class="card">
             <div class="rightside">
-              <form [formGroup]="TematicForm">
+              <form [formGroup]="QueryTematicForm">
                 <p>Tematic Name</p>
                 <input type="text" class="inputbox" formControlName="tematicName" #tematic/>
 
             <div formGroupName="query">
                 <p>Layer Name</p>
-                <select class="inputbox" formControlName="layerName">
+                <select class="inputbox2" formControlName="layerName" (change)="conditions.removeAt(0); addCondition(null);">
                     <option *ngFor="let item of layers" [value]="item">{{item}}</option>
 
                 </select>
@@ -51,18 +51,25 @@
                     </div>
                     <tr>
                     <td class="col-md-3">
-                      <select class="inputbox" formControlName="columnName" (change)="setOperators(i)">
+                      <select class="inputbox2" formControlName="columnName" (change)="setOperators(i)">
+                        <option value="default"></option>
                         <option *ngFor="let col of columns" [value]="col">{{col}}</option>
-                      </select>
+                        </select>
                     </td>
                     <td class="col-md-3">
-                      <select class="inputbox" formControlName="_operator">
+                      <select class="inputbox2" formControlName="_operator">
                         <option *ngFor="let op of operators[i]" [value]="op">{{op}}</option>
                       </select>
                     </td>
                     <td>
-                      <input class="inputbox"  formControlName="value" />
-                    </td>
+                      <div *ngIf="isNumber(i); then withNumber; else withText"></div>
+                      <ng-template #withNumber>
+                        <input class="inputbox"  formControlName="value" onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+                      </ng-template>
+                      <ng-template #withText>
+                        <input class="inputbox"  formControlName="value">
+                      </ng-template>
+                      </td>
                     <td>
                       <i class="far fa-trash-alt fa-lg trash" (click)="removeCondition(i)"></i>
                     </td>
@@ -71,7 +78,7 @@
                 </table>
               </div>
 
-              <br><hr><br>
+              <hr>
                 <p>Apply Style to this query</p>
                 <select class="inputbox" formControlName="styleName">
                   <option *ngFor="let style of styles" [value]="style.name">{{style.name}}</option>
@@ -79,14 +86,12 @@
             </div>
 
                 <p></p>
-                <button type="submit" (click)="addQuery()" [disabled]="TematicForm.invalid" class="button1 btn btn-success btn-lg btn-block">AddQuery</button>
+                <button type="submit" (click)="addQuery()" [disabled]="QueryTematicForm.invalid" class="button1 btn btn-success btn-lg btn-block">
+                  <div *ngIf="qIndex === -1">Add Query</div>
+                  <div *ngIf="qIndex !== -1">Edit Query</div>
+                </button>
               </form>
-              <br>
-              <div class="expcvv">
 
-              <button class="button1 btn btn-success btn-lg btn-block" (click)="saveTematic()" [disabled]="this.tematicService.tematicQueries.length<1">Create Tematic</button>
-              <button class="button1 btn btn-success btn-lg btn-block marginButton">Cancel</button>
-            </div>
           </div>
           </div>
         </div>
@@ -139,6 +144,14 @@
         </tbody>
         </table>
 
+      </div>
+      <br>
+      <div style="margin-top:30px ;">
+        <button class="button3 btn btn-success btn-lg btn-block" (click)="saveTematic()" [disabled]="this.tematicService.tematicQueries.length<1 || getAtrr('tematicName')?.value === '' ">
+          <div *ngIf="tematicIndex === 0">Create Tematic</div>
+          <div *ngIf="tematicIndex !== 0">Edit Tematic</div>
+        </button>
+        <button class="button3 btn btn-success btn-lg btn-block" (click)="goQueryTematicsView()">Cancel</button>
       </div>
     </div>
   </div>
