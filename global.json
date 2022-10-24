@@ -10,5 +10,8 @@
   "routeQueryTematic": "queryTematic",
 
   "routeCreateCategoryTematic": "categoryTematic/create",
-  "routeCategoryTematic": "categoryTematic"
+  "routeCategoryTematic": "categoryTematic",
+
+  "routeCreateProvider":"provider/create",
+  "routeProvider": "provider"
 }
