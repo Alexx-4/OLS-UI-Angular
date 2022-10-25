@@ -20,6 +20,7 @@ import { CategoryTematicComponent } from './components/category-tematic/category
 import { CreateCategoryTematicComponent } from './components/category-tematic/create-category-tematic/create-category-tematic.component';
 import { CreateQueryTematicComponent } from './components/query-tematic/create-query-tematic/create-query-tematic/create-query-tematic.component';
 import { ProviderComponent } from './components/provider/provider.component';
+import { CreateProviderComponent } from './components/provider/create-provider/create-provider.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ProviderComponent } from './components/provider/provider.component';
     CategoryTematicComponent,
     CreateCategoryTematicComponent,
     CreateQueryTematicComponent,
-    ProviderComponent
+    ProviderComponent,
+    CreateProviderComponent
   ],
   imports: [
     BrowserModule,

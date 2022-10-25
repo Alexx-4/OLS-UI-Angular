@@ -26,13 +26,13 @@
                 {{provider.description}}
               </td>
               <td>
-                {{provider.connString}}
+                {{provider.connectionString}}
               </td>
               <td>
                 {{provider.table}}
               </td>
               <td class="col-md-1">
-                <i class="far fa-edit fa-lg edit2" (click)="editProvider($event, provider.id)" ></i>
+                <i class="far fa-edit fa-lg edit2" (click)="editProvider($event, provider)" ></i>
 
                 <i class="far fa-trash-alt fa-lg trash2" (click)="deleteProvider($event, provider.id)"></i>
               </td>

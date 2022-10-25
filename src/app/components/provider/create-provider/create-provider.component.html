@@ -1,0 +1,82 @@
+<div class="jumbtron">
+  <div>
+  <h2><b>Create new Provider</b></h2>
+  </div>
+  <hr>
+      <div class="login-box">
+        <form [formGroup]="ProviderForm">
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('name')?.invalid &&
+            getAtrr('name')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="name">
+            <p>Provider Name</p>
+            <small *ngIf="getAtrr('name')?.invalid &&
+                          getAtrr('name')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('description')?.invalid &&
+            getAtrr('description')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="description">
+            <p>Description</p>
+            <small *ngIf="getAtrr('description')?.invalid &&
+                          getAtrr('description')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('connString')?.invalid &&
+            getAtrr('connString')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="connString">
+            <p>Connection String</p>
+            <small *ngIf="getAtrr('connString')?.invalid &&
+                          getAtrr('connString')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('table')?.invalid &&
+            getAtrr('table')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="table">
+            <p>Table</p>
+            <small *ngIf="getAtrr('table')?.invalid &&
+                          getAtrr('table')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('geoField')?.invalid &&
+            getAtrr('geoField')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="geoField">
+            <p>Geo Field</p>
+            <small *ngIf="getAtrr('geoField')?.invalid &&
+                          getAtrr('geoField')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('pkField')?.invalid &&
+            getAtrr('pkField')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="pkField">
+            <p>PK Field</p>
+            <small *ngIf="getAtrr('pkField')?.invalid &&
+                          getAtrr('pkField')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('boundingBoxField')?.invalid &&
+            getAtrr('boundingBoxField')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="boundingBoxField">
+            <p>Bounding Box Field</p>
+            <small *ngIf="getAtrr('boundingBoxField')?.invalid &&
+                          getAtrr('boundingBoxField')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+        <div class="expcvv">
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="saveProvider()" [disabled]="ProviderForm.invalid">
+            <div *ngIf="providerId === 0">Create Provider</div>
+            <div *ngIf="providerId !== 0">Edit Provider</div>
+          </button>
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="goProvidersList()">Cancel</button>
+        </div>
+
+        </form>
+  </div>
+
+</div>
