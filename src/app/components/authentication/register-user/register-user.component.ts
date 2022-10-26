@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { RegisterViewModel } from 'src/app/models/RegisterViewModel';
 import { UserService } from 'src/app/services/user.service';
 import { PasswordValidator } from 'src/app/validators/password.validator';
-import global from '../../../../global.json'
+import global from '../../../../../global.json'
 
 @Component({
   selector: 'app-register-user',

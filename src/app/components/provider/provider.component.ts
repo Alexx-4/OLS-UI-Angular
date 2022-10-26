@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
 import { ProviderModel } from 'src/app/models/ProviderModel';
 import { ProviderService } from 'src/app/services/provider.service';
 

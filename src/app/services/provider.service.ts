@@ -38,4 +38,8 @@ export class ProviderService {
   editProvider(provider: ProviderModel){
     return this.http.put(this.url + 'edit', {Item1: provider.name, Item2:provider.description, Item3: provider});
   }
+
+  getProvider(id:number){
+    return this.http.get(this.url + id);
+  }
 }

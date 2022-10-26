@@ -67,7 +67,7 @@ export class TematicService {
    }
 
    getStyles(){
-    return this.http.get(this.url + 'styles');
+    return this.http.get(global['serverURL'] + 'Style');
    }
 
    getCategoryTematics(){

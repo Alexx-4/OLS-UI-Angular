@@ -1,56 +1,52 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TematicModel, query } from 'src/app/models/tematicModel';
 import { TematicService } from 'src/app/services/tematic.service';
 
-import global from '../../../../global.json'
+import global from '../../../../../global.json'
 
 @Component({
-  selector: 'app-category-tematic',
-  templateUrl: './category-tematic.component.html',
-  styleUrls: ['./category-tematic.component.css']
+  selector: 'app-query-tematic',
+  templateUrl: './query-tematic.component.html',
+  styleUrls: ['./query-tematic.component.css']
 })
-export class CategoryTematicComponent implements OnInit {
-
-  tematics:any;
+export class QueryTematicComponent implements OnInit {
+  tematics: any;
 
   constructor(private tematicService:TematicService,
-              private router:Router) { }
+              private router: Router) { }
 
   ngOnInit(): void {
-    this.getCategoryTematics();
+    this.getQueryTematics();
   }
 
-  hover(){
-    console.log('Click on hover');
-  }
+  hover() {
+    throw new Error('Method not implemented.');
+    }
 
-  getCategoryTematics(){
-    this.tematicService.getCategoryTematics().subscribe({
+  getQueryTematics(){
+    this.tematicService.getQueryTematics().subscribe({
       next:(data)=>{
         this.tematics = data;
-      },
-      error: (err) =>{
-        console.log('Error');
       }
     })
   }
 
-  deleteCategoryTematic(event:Event, id:number){
+  deleteQueryTematic(event:Event, id:number) {
     event.stopPropagation();
     this.tematicService.deleteTematic(id).subscribe({
       next: ()=> {
-        this.getCategoryTematics();
+        this.getQueryTematics();
       }
     });
-  }
+    }
 
-  editCategoryTematic(event:Event, tematicId:number){
+  editQueryTematic(event: Event, id:number) {
     event.stopPropagation();
 
-    var tematicList = this.tematics.filter((t:any)=>t.tematicId === tematicId);
+    var tematicList = this.tematics.filter((t:any)=>t.tematicId === id);
     var tematic:TematicModel={
-      tematicId: tematicId,
+      tematicId: id,
       tematicName: tematicList[0].tematicName,
       queries: []
     }
@@ -85,13 +81,12 @@ export class CategoryTematicComponent implements OnInit {
     }
 
     this.tematicService.updateTematicModel(tematic);
-    this.router.navigate([global['routeCreateCategoryTematic']]);
+    this.router.navigate([global['routeCreateQueryTematic']]);
 
   }
 
-  goCreateCategory(){
+  goCreateQuery() {
     this.tematicService.updateTematicModel({} as TematicModel);
-    this.router.navigate([global['routeCreateCategoryTematic']]);
+    this.router.navigate([global['routeCreateQueryTematic']]);
   }
-
 }

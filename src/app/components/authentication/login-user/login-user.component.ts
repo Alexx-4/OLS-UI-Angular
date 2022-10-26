@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginViewModel } from 'src/app/models/LoginViewModel';
 import { UserService } from 'src/app/services/user.service';
-import global from '../../../../global.json'
+import global from '../../../../../global.json'
 
 @Component({
   selector: 'app-login-user',

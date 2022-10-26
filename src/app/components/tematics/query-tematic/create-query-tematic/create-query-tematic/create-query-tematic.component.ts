@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { query, TematicModel } from 'src/app/models/tematicModel';
 import { TematicService } from 'src/app/services/tematic.service';
 
-import global from '../../../../../../global.json';
+import global from '../../../../../../../global.json';
 
 @Component({
   selector: 'app-create-query-tematic',

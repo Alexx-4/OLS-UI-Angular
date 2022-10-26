@@ -13,5 +13,8 @@
   "routeCategoryTematic": "categoryTematic",
 
   "routeCreateProvider":"provider/create",
-  "routeProvider": "provider"
+  "routeProvider": "provider",
+
+  "routeCreateLayer": "layer/create",
+  "routeLayer": "layer"
 }

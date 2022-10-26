@@ -3,16 +3,18 @@ import { RouterModule, Routes } from '@angular/router';
 
 import global from '../../global.json'
 
-import { CategoryTematicComponent } from './components/category-tematic/category-tematic.component';
-import { CreateCategoryTematicComponent } from './components/category-tematic/create-category-tematic/create-category-tematic.component';
-import { LoginUserComponent } from './components/login-user/login-user.component';
-import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { CategoryTematicComponent } from './components/tematics/category-tematic/category-tematic.component';
+import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
+import { LoginUserComponent } from './components/authentication/login-user/login-user.component';
+import { PageNotFoundComponent } from './components/others/page-not-found/page-not-found.component';
 import { CreateProviderComponent } from './components/provider/create-provider/create-provider.component';
 import { ProviderComponent } from './components/provider/provider.component';
-import { CreateQueryTematicComponent } from './components/query-tematic/create-query-tematic/create-query-tematic/create-query-tematic.component';
-import { QueryTematicComponent } from './components/query-tematic/query-tematic.component';
-import { RegisterUserComponent } from './components/register-user/register-user.component';
-import { TitlePageComponent } from './components/title-page/title-page.component';
+import { CreateQueryTematicComponent } from './components/tematics/query-tematic/create-query-tematic/create-query-tematic/create-query-tematic.component';
+import { QueryTematicComponent } from './components/tematics/query-tematic/query-tematic.component';
+import { RegisterUserComponent } from './components/authentication/register-user/register-user.component';
+import { TitlePageComponent } from './components/others/title-page/title-page.component';
+import { LayerComponent } from './components/layer/layer.component';
+import { CreateLayerComponent } from './components/layer/create-layer/create-layer.component';
 
 const routes: Routes = [
   {path:'', redirectTo:global['routeTitlePage'], pathMatch: 'full'},
@@ -25,6 +27,8 @@ const routes: Routes = [
   {path: global['routeQueryTematic'], component: QueryTematicComponent},
   {path: global['routeProvider'], component: ProviderComponent},
   {path: global['routeCreateProvider'], component: CreateProviderComponent},
+  {path: global['routeLayer'], component: LayerComponent},
+  {path: global['routeCreateLayer'], component: CreateLayerComponent},
   {path: "**", component: PageNotFoundComponent}
 ];
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import global from '../../../../global.json'
+import global from '../../../../../global.json'
 
 @Component({
   selector: 'app-title-page',
