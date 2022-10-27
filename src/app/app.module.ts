@@ -24,6 +24,10 @@ import { CreateProviderComponent } from './components/provider/create-provider/c
 import { LayerComponent } from './components/layer/layer.component';
 import { CreateLayerComponent } from './components/layer/create-layer/create-layer.component';
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSidenavModule} from '@angular/material/sidenav';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +52,10 @@ import { CreateLayerComponent } from './components/layer/create-layer/create-lay
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatFormFieldModule,
+    MatSelectModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]

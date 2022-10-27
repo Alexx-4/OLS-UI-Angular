@@ -21,9 +21,9 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
 
   providerId: number | undefined = 0;
 
-  constructor(private providerService: ProviderService,
+  constructor(formBuilder: FormBuilder,
+              private providerService: ProviderService,
               private router: Router,
-              private formBuilder: FormBuilder,
               private toastr:ToastrService) {
 
     this.ProviderForm = formBuilder.group({

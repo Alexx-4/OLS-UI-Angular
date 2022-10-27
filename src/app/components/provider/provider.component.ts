@@ -19,6 +19,7 @@ export class ProviderComponent implements OnInit {
               private toastr:ToastrService) { }
 
   ngOnInit(): void {
+    this.providerService.updateProviderModel({} as ProviderModel);
     this.getProviders();
   }
 

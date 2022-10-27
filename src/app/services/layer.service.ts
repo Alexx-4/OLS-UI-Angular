@@ -29,7 +29,8 @@ export class LayerService {
   }
 
   createLayer(layer:LayerModel){
-    return this.http.post(this.url + 'create', {Item1: layer.name, Item2:layer.description, Item3: layer});
+    return this.http.post(this.url + 'create', {Item1: layer.name, Item2:layer.description,
+                                                Item3: layer.styles, Item4: layer});
   }
 
   deleteLayer(id:number){
@@ -37,6 +38,7 @@ export class LayerService {
    }
 
   editLayer(layer: LayerModel){
-    return this.http.put(this.url + 'edit', {Item1: layer.name, Item2:layer.description, Item3: layer});
+    return this.http.put(this.url + 'edit', {Item1: layer.name, Item2:layer.description,
+                                             Item3: layer.styles, Item4: layer});
   }
 }

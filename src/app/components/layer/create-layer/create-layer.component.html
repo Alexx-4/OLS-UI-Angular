@@ -1,0 +1,78 @@
+<div class="jumbtron">
+  <div>
+  <h2><b>Create new Layer</b></h2>
+  </div>
+  {{LayerForm.value | json}}
+  <hr>
+      <div class="login-box">
+        <form [formGroup]="LayerForm">
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('name')?.invalid &&
+            getAtrr('name')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="name">
+            <p>Layer Name</p>
+            <small *ngIf="getAtrr('name')?.invalid &&
+                          getAtrr('name')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('description')?.invalid &&
+            getAtrr('description')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="description">
+            <p>Description</p>
+            <small *ngIf="getAtrr('description')?.invalid &&
+                          getAtrr('description')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('order')?.invalid &&
+            getAtrr('order')?.touched) ? 'textBoxError' : 'textBox'" type="number" min="0" name="" required="" formControlName="order" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            <p>Order</p>
+            <small *ngIf="getAtrr('order')?.invalid &&
+                          getAtrr('order')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <p *ngIf="!getAtrr('provider')?.value">Choose provider</p>
+            <mat-form-field appearance="fill" class="select-box">
+              <mat-label *ngIf="getAtrr('provider')?.value" style="color: #3461c2;">Provider</mat-label>
+              <mat-select formControlName="provider">
+                <mat-option *ngFor="let provider of this.providers" [value]="provider.providerTranslation[0].name">
+                  {{provider.providerTranslation[0].name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <small *ngIf="getAtrr('provider')?.invalid &&
+                          getAtrr('provider')?.touched"
+                          class="error-select">This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <p *ngIf="!getAtrr('styles')?.value.length">Choose one or multiple styles</p>
+            <mat-form-field appearance="fill" class="select-box">
+              <mat-label *ngIf="getAtrr('styles')?.value.length" style="color: #3461c2;">Styles</mat-label>
+              <mat-select multiple formControlName="styles">
+                <mat-option *ngFor="let style of this.styles" [value]="style.name">
+                  {{style.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <small *ngIf="getAtrr('styles')?.invalid &&
+                          getAtrr('styles')?.touched"
+                          class="error-select" >This field is required</small>
+          </div>
+
+
+        <div class="expcvv">
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="saveLayer()" [disabled]="LayerForm.invalid">
+            <div *ngIf="layerId === 0">Create Layer</div>
+            <div *ngIf="layerId !== 0">Edit Layer</div>
+          </button>
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="goLayersList()">Cancel</button>
+        </div>
+
+        </form>
+  </div>
+
+</div>

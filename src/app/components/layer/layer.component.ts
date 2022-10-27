@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LayerModel } from 'src/app/models/LayerModel';
 import { ProviderModel } from 'src/app/models/ProviderModel';
+import { StyleModel } from 'src/app/models/StyleModel';
 import { LayerService } from 'src/app/services/layer.service';
 import { ProviderService } from 'src/app/services/provider.service';
 import global from '../../../../global.json';
@@ -21,6 +22,7 @@ export class LayerComponent implements OnInit {
               private toastr:ToastrService) { }
 
   ngOnInit(): void {
+    this.layerService.updateLayerModel({} as LayerModel);
     this.getLayers();
   }
 
@@ -41,7 +43,7 @@ export class LayerComponent implements OnInit {
 
             providerName: item.providerTranslations[0],
 
-            styles: item.styles
+            styles: (item.styles as Array<StyleModel>).map(({name})=>name)
 
           };
 

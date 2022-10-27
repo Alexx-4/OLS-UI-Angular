@@ -30,8 +30,8 @@
                 {{layer.providerName}}
               </td>
               <td>
-                <select class="inputbox" (click)="$event.stopPropagation(); styleSelect.value = layer.styles[0].name + ' (default)'" #styleSelect>
-                  <option *ngFor="let style of layer.styles; let i = index">{{style.name}} <div *ngIf="i===0">(default)</div></option>
+                <select class="inputbox" (click)="$event.stopPropagation(); styleSelect.value = layer.styles[0] + ' (default)'" #styleSelect>
+                  <option *ngFor="let style of layer.styles; let i = index">{{style}} <div *ngIf="i===0">(default)</div></option>
                 </select>
               </td>
               <td>

@@ -1,3 +1,4 @@
+
 export class LayerModel{
   id?:number;
 
@@ -9,5 +10,5 @@ export class LayerModel{
 
   providerName:string = '';
 
-  styles: any
+  styles: string[] = [];
 }
