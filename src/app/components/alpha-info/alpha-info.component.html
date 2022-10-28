@@ -1,0 +1,55 @@
+
+
+  <div class="content">
+
+    <div class="container">
+      <h2 class="mb-5"><b>AlphaInfos</b></h2>
+
+
+      <div class="table-responsive custom-table-responsive">
+
+        <table class="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">AlphaInfo Name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Layer</th>
+              <th scope="col">Table</th>
+              <th scope="col">Columns</th>
+              <th scope="col" class="col-md-1"><a class="create" (click)="goCreateAlphaInfo()">New</a></th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let alphaInfo of alphaInfos; let i = index;">
+            <tr scope="row" (click)="infoAlphaInfo(i)">
+              <td>
+                {{alphaInfo.name}}
+              </td>
+              <td>
+                {{alphaInfo.description}}
+              </td>
+              <td>
+                {{alphaInfo.layerName}}
+              </td>
+              <td>
+                {{alphaInfo.table}}
+              </td>
+              <td>
+                {{alphaInfo.columns}}
+              </td>
+              <td class="col-md-1">
+                <i class="far fa-edit fa-lg edit2" (click)="editAlphaInfo($event, alphaInfo)" ></i>
+
+                <i class="far fa-trash-alt fa-lg trash2" (click)="deleteAlphaInfo($event, alphaInfo.id)"></i>
+              </td>
+            </tr>
+            <tr class="spacer"><td colspan="100"></td></tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+
+  </div>
+

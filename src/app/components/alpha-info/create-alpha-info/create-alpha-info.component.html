@@ -1,0 +1,100 @@
+<div class="jumbtron">
+  <div>
+  <h2><b>Create new AlphaInfo</b></h2>
+  </div>
+  <hr>
+      <div class="login-box">
+        <form [formGroup]="AlphaInfoForm">
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('name')?.invalid &&
+            getAtrr('name')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="name">
+            <p>AlphaInfo Name</p>
+            <small *ngIf="getAtrr('name')?.invalid &&
+                          getAtrr('name')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('description')?.invalid &&
+            getAtrr('description')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="description">
+            <p>Description</p>
+            <small *ngIf="getAtrr('description')?.invalid &&
+                          getAtrr('description')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('connString')?.invalid &&
+            getAtrr('connString')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="connString">
+            <p>Connection String</p>
+            <small *ngIf="getAtrr('connString')?.invalid &&
+                          getAtrr('connString')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('pkField')?.invalid &&
+            getAtrr('pkField')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="pkField">
+            <p>PK Field</p>
+            <small *ngIf="getAtrr('pkField')?.invalid &&
+                          getAtrr('pkField')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+        <div class="user-box">
+          <p *ngIf="!getAtrr('layerName')?.value">Choose layer</p>
+          <mat-form-field appearance="fill" class="select-box">
+            <mat-label *ngIf="getAtrr('layerName')?.value" style="color: #3461c2;">Layer</mat-label>
+            <mat-select formControlName="layerName" (selectionChange)="getTables()">
+              <mat-option *ngFor="let layer of this.layers" [value]="layer.name">
+                {{layer.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <small *ngIf="getAtrr('layerName')?.invalid &&
+                        getAtrr('layerName')?.touched"
+                        class="error-select">This field is required</small>
+        </div>
+
+        <div class="user-box">
+          <p *ngIf="!getAtrr('table')?.value">Choose Table</p>
+          <mat-form-field appearance="fill" class="select-box">
+            <mat-label *ngIf="getAtrr('table')?.value" style="color: #3461c2;">Table</mat-label>
+            <mat-select formControlName="table" (selectionChange)="getColumns()">
+              <mat-option *ngFor="let table of this.tables" [value]="table">
+                {{table}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <small *ngIf="getAtrr('table')?.invalid &&
+                        getAtrr('table')?.touched"
+                        class="error-select">This field is required</small>
+        </div>
+
+        <div class="user-box">
+          <p *ngIf="!getAtrr('columns')?.value.length">Choose one or multiple columns</p>
+          <mat-form-field appearance="fill" class="select-box">
+            <mat-label *ngIf="getAtrr('columns')?.value.length" style="color: #3461c2;">Columns</mat-label>
+            <mat-select multiple formControlName="columns">
+              <mat-option *ngFor="let column of this.columns" [value]="column">
+                {{column}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <small *ngIf="getAtrr('columns')?.invalid &&
+                        getAtrr('columns')?.touched"
+                        class="error-select" >This field is required</small>
+        </div>
+
+        <div class="expcvv">
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="saveAlphaInfo()" [disabled]="AlphaInfoForm.invalid">
+            <div *ngIf="alphaInfoId === 0">Create AlphaInfo</div>
+            <div *ngIf="alphaInfoId !== 0">Edit AlphaInfo</div>
+          </button>
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="goAlphaInfosList()">Cancel</button>
+        </div>
+
+        </form>
+  </div>
+
+</div>

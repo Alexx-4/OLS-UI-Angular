@@ -15,6 +15,8 @@ import { RegisterUserComponent } from './components/authentication/register-user
 import { TitlePageComponent } from './components/others/title-page/title-page.component';
 import { LayerComponent } from './components/layer/layer.component';
 import { CreateLayerComponent } from './components/layer/create-layer/create-layer.component';
+import { AlphaInfoComponent } from './components/alpha-info/alpha-info.component';
+import { CreateAlphaInfoComponent } from './components/alpha-info/create-alpha-info/create-alpha-info.component';
 
 const routes: Routes = [
   {path:'', redirectTo:global['routeTitlePage'], pathMatch: 'full'},
@@ -29,6 +31,8 @@ const routes: Routes = [
   {path: global['routeCreateProvider'], component: CreateProviderComponent},
   {path: global['routeLayer'], component: LayerComponent},
   {path: global['routeCreateLayer'], component: CreateLayerComponent},
+  {path: global['routeAlphaInfo'], component: AlphaInfoComponent},
+  {path: global['routeCreateAlphaInfo'], component: CreateAlphaInfoComponent},
   {path: "**", component: PageNotFoundComponent}
 ];
 

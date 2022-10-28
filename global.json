@@ -16,5 +16,8 @@
   "routeProvider": "provider",
 
   "routeCreateLayer": "layer/create",
-  "routeLayer": "layer"
+  "routeLayer": "layer",
+
+  "routeAlphaInfo": "alphaInfo",
+  "routeCreateAlphaInfo": "alphaInfo/create"
 }

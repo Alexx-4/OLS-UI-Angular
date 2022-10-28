@@ -27,6 +27,8 @@ import { CreateLayerComponent } from './components/layer/create-layer/create-lay
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { AlphaInfoComponent } from './components/alpha-info/alpha-info.component';
+import { CreateAlphaInfoComponent } from './components/alpha-info/create-alpha-info/create-alpha-info.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     ProviderComponent,
     CreateProviderComponent,
     LayerComponent,
-    CreateLayerComponent
+    CreateLayerComponent,
+    AlphaInfoComponent,
+    CreateAlphaInfoComponent
   ],
   imports: [
     BrowserModule,
