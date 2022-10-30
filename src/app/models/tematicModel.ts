@@ -22,5 +22,6 @@ export interface condition {
 export interface query{
   styleName: string;
   layerName: string;
+  tableName: string;
   conditions: condition [];
 }

@@ -105,6 +105,8 @@
   background: #79c3e6;
   cursor: pointer;
   transform: scale(1.02) translateY(-3px);
+  border:none;
+  border-color: #79c3e6;
 }
 
 .create{

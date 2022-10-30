@@ -54,12 +54,12 @@ export class TematicService {
     return this.http.put<TematicModel>(this.url + 'editQuery', tematic);
    }
 
-   getLayersColumns(){
-    return this.http.get(this.url + 'layersColumns');
+   getTablesColumns(layerId: number){
+    return this.http.post(this.url + 'tablesColumns', {id: layerId});
    }
 
-   getOperator(column:string, layer:string){
-    return this.http.post(this.url + 'operator', {Item1:column,Item2:layer});
+   getOperator(column:string, table:string){
+    return this.http.post(this.url + 'operator', {Item1:column,Item2:table});
    }
 
    getCategories(column:string, layer:string){

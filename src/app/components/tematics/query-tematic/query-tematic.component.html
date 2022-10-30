@@ -2,7 +2,7 @@
   <div class="content">
 
     <div class="container">
-      <h2 class="mb-5"><b>Category Tematic</b></h2>
+      <h2 class="mb-5"><b>Query Tematic</b></h2>
 
 
       <div class="table-responsive custom-table-responsive">
@@ -17,8 +17,8 @@
               <th scope="col" class="col-md-1"><a class="create" (click)="goCreateQuery()">New</a></th>
             </tr>
           </thead>
-          <tbody *ngFor="let tematic of tematics">
-            <tr scope="row" (click)="hover()">
+          <tbody *ngFor="let tematic of tematics; let i = index">
+            <tr scope="row" (click)="infoTematic(i)">
               <td>
                 {{tematic.tematicName}}
               </td>
@@ -36,7 +36,7 @@
               </td>
               <td>{{tematic.styleName}}</td>
               <td class="col-md-1">
-                <i class="far fa-edit fa-lg edit2" (click)="editQueryTematic($event, tematic.tematicId)" ></i>
+                <i class="far fa-edit fa-lg edit2" (click)="editQueryTematic($event, tematic)"></i>
 
                 <i class="far fa-trash-alt fa-lg trash2" (click)="deleteQueryTematic($event, tematic.tematicId)"></i>
               </td>
@@ -51,4 +51,5 @@
     </div>
 
   </div>
+
 

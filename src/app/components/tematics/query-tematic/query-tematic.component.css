@@ -50,11 +50,11 @@
   border-bottom: none !important;
   color: rgb(7, 7, 12);
   font-size: large;
-  background-color: #dfdde6;
+  background-color:  #bbcce2;
 }
 
 .custom-table tbody th, .custom-table tbody td {
-  color: hsl(0, 1%, 30%);
+  color: hsl(240, 2%, 16%);
   font-weight: 500;
   padding-bottom: 20px;
   padding-top: 20px;
@@ -76,7 +76,7 @@
 }
 
 .custom-table tbody tr th, .custom-table tbody tr td {
-  background: #f7f5f5;
+  background: #dfdde6;
   border: none;
   -webkit-transition: .3s all ease;
   -o-transition: .3s all ease;
@@ -102,9 +102,9 @@
 
 .custom-table tbody tr.active th, .custom-table tbody tr.active td, .custom-table tbody tr:hover th, .custom-table tbody tr:hover td {
   color: rgb(10, 9, 9);
-  background: #ceced8;
+  background: #79c3e6;
   cursor: pointer;
-
+  transform: scale(1.02) translateY(-3px);
 }
 
 .create{
@@ -115,7 +115,7 @@
 .edit2{
   cursor: pointer;
   margin-right: 0.4cm;
-  color:#11c4d1;
+  color:#294643;
 }
 
 .edit2:hover
@@ -132,7 +132,7 @@ color:brown;
 
 .trash2:hover
 {
-transform: scale(1.05) translateY(-3px);
+  transform: scale(1.05) translateY(-3px);
   box-shadow: 3px 3px 6px #38373785;
   color:red;
 }
