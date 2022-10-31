@@ -61,6 +61,21 @@ export class CreateQueryTematicComponent implements OnInit {
   ngOnInit(): void {
     this.getLayers();
     this.getStyles();
+
+    this.tematicService.getTematicModel().subscribe(
+      data=>{
+        if(data.tematicName){
+
+          this.QueryTematicForm.patchValue({
+            tematicName: data.tematicName
+          });
+
+          this.tematicService.tematicQueries = data.queries;
+          this.tematicIndex = data.tematicId as number;
+        }
+        else { this.tematicService.tematicQueries = []; }
+      }
+    );
   }
 
   getAtrr(control:string){
@@ -282,7 +297,7 @@ export class CreateQueryTematicComponent implements OnInit {
           this.goQueryTematicsView();
           this.toastr.info('Query tematic successfully created');
         }
-      })
+      });
     }
       else{
         this.tematicService.editQueryTematic(_tematic).subscribe({
