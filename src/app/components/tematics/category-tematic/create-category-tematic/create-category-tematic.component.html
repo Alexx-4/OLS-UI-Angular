@@ -1,1 +1,212 @@
-<p>create-category-tematic works!</p>
+
+<div class="jumbtron">
+  <div>
+  <h2><b>Create Query Tematic</b></h2>
+  <!-- {{CategoryTematicForm.value | json}} <br>
+  {{this.tematicService.tematicQueries | json}} -->
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="login-box">
+
+        <form [formGroup]="CategoryTematicForm">
+
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('tematicName')?.invalid &&
+            getAtrr('tematicName')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="tematicName">
+            <p>Tematic Name</p>
+            <small *ngIf="getAtrr('tematicName')?.invalid &&
+                          getAtrr('tematicName')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div formGroupName="query">
+
+            <div class="expcvv">
+            <div class="user-box">
+              <p *ngIf="!getAtrr('query')?.get('layerName')?.value">Choose layer</p>
+              <mat-form-field appearance="fill" style="width: 7.5cm;">
+                <mat-label *ngIf="getAtrr('query')?.get('layerName')?.value" style="color: #3461c2;">Layer</mat-label>
+                <mat-select formControlName="layerName" (selectionChange)="getTables()" [disabled]="this.conditions.length > 1">
+                  <mat-option *ngFor="let item of layers" [value]="item.name">
+                    {{item.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <small *ngIf="getAtrr('query')?.get('layerName')?.invalid &&
+                            getAtrr('query')?.get('layerName')?.touched"
+                            class="error-select2">This field is required</small>
+            </div>
+
+
+            <div class="user-box">
+              <p *ngIf="!getAtrr('query')?.get('tableName')?.value">Choose table</p>
+              <mat-form-field appearance="fill" style="width: 7.5cm;">
+                <mat-label *ngIf="getAtrr('query')?.get('tableName')?.value" style="color: #3461c2;">Table</mat-label>
+                <mat-select formControlName="tableName" (selectionChange)="clearCondition()" [disabled]="this.conditions.length > 1">
+                  <mat-option disabled *ngIf="!tables" style="color:black" value="default">--no data--</mat-option>
+                  <mat-option *ngFor="let item of tables" [value]="item">
+                    {{item}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <small *ngIf="getAtrr('query')?.get('tableName')?.invalid &&
+                            getAtrr('query')?.get('tableName')?.touched"
+                            class="error-select2">This field is required</small>
+            </div>
+            </div>
+
+            <div class="user-box" style="margin-top: 0.3cm;">
+              <p *ngIf="!getAtrr('query')?.get('styleName')?.value">Choose style for this query</p>
+              <mat-form-field appearance="fill" class="select-box">
+                <mat-label *ngIf="getAtrr('query')?.get('styleName')?.value" style="color: #3461c2;">Query Style</mat-label>
+                <mat-select formControlName="styleName">
+                  <mat-option *ngFor="let style of styles" [value]="style.name">
+                    {{style.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <small *ngIf="getAtrr('query')?.get('styleName')?.hasError('required') &&
+                                  getAtrr('query')?.get('styleName')?.touched"
+                                  class="error-select">This field is required</small>
+            </div>
+
+
+              <h3>--Query--</h3>
+
+              <div class="expcvv">
+                <a class="button2 text-center" (click)="addCondition('And')">AND</a>
+
+                <a class="button2 text-center" (click)="addCondition('Or')">OR</a>
+              </div>
+
+
+              <div formArrayName="conditions">
+                <table class="table table-striped table-bordered table-head">
+                  <thead>
+                    <th>
+                      <p class="text-center">Column</p>
+                    </th>
+                    <th>
+                      <p class="text-center"></p>
+                    </th>
+                    <th>
+                      <p class="text-center">Category</p>
+                    </th>
+                  </thead>
+
+                  <tbody [formGroupName]="i" *ngFor="let item of conditions.controls; let i = index">
+
+                    <div *ngIf="item.get('logicOperator')?.value">
+                      {{item.get('logicOperator')?.value | uppercase}}
+                    </div>
+
+                    <tr>
+
+                    <td class="col-md-3">
+
+                      <select class="inputbox2" formControlName="columnName" (change)="setCategories(i)">
+                        <option disabled *ngIf="!columns || columns.length < 1" style="color:black" value="default">--no data--</option>
+                        <option *ngIf="columns && columns.length > 0" value="default"></option>
+                        <option  *ngFor="let col of columns" [value]="col">{{col}}</option>
+                      </select>
+
+                    </td>
+
+                    <td class="col-md-1 text-center">
+                      <b>==</b>
+                    </td>
+
+                    <td class="col-md-10">
+
+                      <select class="inputbox2" formControlName="value">
+                        <option  *ngFor="let cat of categories[i]" [value]="cat">{{cat}}</option>
+                      </select>
+
+                    </td>
+
+                    <td>
+
+                      <i class="far fa-trash-alt fa-lg trash" (click)="removeCondition(i)"></i>
+
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+          </div>
+
+          <p></p>
+          <a type="submit" [class.not-active]="CategoryTematicForm.get('query')?.invalid" class="button4 btn btn-success btn-lg btn-block" (click)="addQuery()">
+            <div *ngIf="qIndex === -1">Add Query</div>
+            <div *ngIf="qIndex !== -1">Edit Query</div>
+          </a>
+        </form>
+
+      </div>
+    </div>
+
+
+
+
+
+    <!----------------------------------List Queries------------------------------------------------------->
+    <div class="col-md-6">
+      <div class="content">
+        <div class="container">
+          <div class="table-responsive custom-table-responsive">
+
+            <table class="table custom-table table-class">
+              <thead>
+                <tr>
+                  <th scope="col" class="th-class">Layer</th>
+                  <th scope="col" class="th-class">Table</th>
+                  <th scope="col" class="th-class">Query</th>
+                  <th scope="col" class="th-class">Style</th>
+                  <th></th>
+                  </tr>
+              </thead>
+              <tbody *ngFor="let q of tematicService.tematicQueries; let i = index;">
+                <tr scope="row">
+                  <td class="td-class">
+                    {{q.layerName}}
+                  </td>
+                  <td class="td-class">
+                    {{q.tableName}}
+                  </td>
+                  <td class="td-class">
+                    <div *ngFor="let condition of q.conditions">
+                      <b *ngIf="condition.logicOperator">{{condition.logicOperator + ' ' | uppercase}}</b>
+                      {{condition.columnName + ' '}} {{condition._operator | uppercase}} {{' ' + condition.value}}<br>
+                    </div>
+                  </td>
+                  <td class="td-class">
+                    {{q.styleName}}
+                  </td>
+                  <td class="td-class text-center">
+                    <i class="far fa-edit fa-lg edit4" (click)="editQuery(i)"></i>
+
+                    <i class="far fa-trash-alt fa-lg trash4" (click)="deleteQuery(i)"></i>
+                  </td>
+                </tr>
+                <tr class="spacer"><td colspan="100"></td></tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <div style="margin-top:30px ;">
+        <button class="button3 btn btn-success btn-lg btn-block" (click)="saveTematic()" [disabled]="this.tematicService.tematicQueries.length < 1 || getAtrr('tematicName')?.invalid">
+          <div *ngIf="tematicIndex === 0">Create Tematic</div>
+          <div *ngIf="tematicIndex !== 0">Edit Tematic</div>
+        </button>
+        <button class="button3 btn btn-success btn-lg btn-block" (click)="goCategoryTematicsView()">Cancel</button>
+      </div>
+    </div>
+</div>
+

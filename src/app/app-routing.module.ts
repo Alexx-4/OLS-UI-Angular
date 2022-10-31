@@ -15,6 +15,8 @@ import { AlphaInfoComponent } from './components/alpha-info/alpha-info.component
 import { CreateAlphaInfoComponent } from './components/alpha-info/create-alpha-info/create-alpha-info.component';
 import { QueryTematicComponent } from './components/tematics/query-tematic/query-tematic.component';
 import { CreateQueryTematicComponent } from './components/tematics/query-tematic/create-query-tematic/create-query-tematic.component';
+import { CategoryTematicComponent } from './components/tematics/category-tematic/category-tematic.component';
+import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
 
 const routes: Routes = [
   {path:'', redirectTo:global['routeTitlePage'], pathMatch: 'full'},
@@ -29,6 +31,8 @@ const routes: Routes = [
   {path: global['routeCreateAlphaInfo'], component: CreateAlphaInfoComponent},
   {path: global['routeQueryTematic'], component: QueryTematicComponent},
   {path: global['routeCreateQueryTematic'], component: CreateQueryTematicComponent},
+  {path: global['routeCategoryTematic'], component: CategoryTematicComponent},
+  {path: global['routeCreateCategoryTematic'], component: CreateCategoryTematicComponent},
   {path: "**", component: PageNotFoundComponent}
 ];
 

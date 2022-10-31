@@ -28,7 +28,7 @@
               <p *ngIf="!getAtrr('query')?.get('layerName')?.value">Choose layer</p>
               <mat-form-field appearance="fill" style="width: 7.5cm;">
                 <mat-label *ngIf="getAtrr('query')?.get('layerName')?.value" style="color: #3461c2;">Layer</mat-label>
-                <mat-select formControlName="layerName" (selectionChange)="getTables()">
+                <mat-select formControlName="layerName" (selectionChange)="getTables()" [disabled]="this.conditions.length > 1">
                   <mat-option *ngFor="let item of layers" [value]="item.name">
                     {{item.name}}
                   </mat-option>
@@ -44,7 +44,7 @@
               <p *ngIf="!getAtrr('query')?.get('tableName')?.value">Choose table</p>
               <mat-form-field appearance="fill" style="width: 7.5cm;">
                 <mat-label *ngIf="getAtrr('query')?.get('tableName')?.value" style="color: #3461c2;">Table</mat-label>
-                <mat-select formControlName="tableName" (selectionChange)="clearCondition()">
+                <mat-select formControlName="tableName" (selectionChange)="clearCondition()" [disabled]="this.conditions.length > 1">
                   <mat-option disabled *ngIf="!tables" style="color:black" value="default">--no data--</mat-option>
                   <mat-option *ngFor="let item of tables" [value]="item">
                     {{item}}

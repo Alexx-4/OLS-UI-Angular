@@ -41,8 +41,8 @@ export class CreateQueryTematicComponent implements OnInit {
 
         query: formBuilder.group({
 
-          layerName: ['', Validators.required],
-          tableName:['', Validators.required],
+          layerName: ['', [Validators.required]],
+          tableName: ['', [Validators.required]],
           styleName: ['', Validators.required],
 
           conditions: this.formBuilder.array([
@@ -167,9 +167,12 @@ export class CreateQueryTematicComponent implements OnInit {
     }
 
     var _table = this.getAttrQuery('tableName')?.value;
+    var _layerName = this.getAttrQuery('layerName')?.value;
+
+    var _layer = this.layers.find(l=>l.name === _layerName);
     this.operators[i]=[];
 
-    this.tematicService.getOperator(_column, _table).subscribe({
+    this.tematicService.getOperator(_column, _table, _layer.id).subscribe({
       next: (data)=>{
         this.operators[i] = data;
       },
@@ -195,9 +198,6 @@ export class CreateQueryTematicComponent implements OnInit {
 
     this.conditions.push(_newCondition);
     this.operators.push([]);
-
-    _layerControl?.disable();
-    _tableControl?.disable();
   }
 
   typeNumber(index:number){
@@ -210,12 +210,6 @@ export class CreateQueryTematicComponent implements OnInit {
 
       this.conditions.removeAt(i);
       this.operators.splice(i,1);
-
-      if(this.conditions.length === 1){
-
-        this.getAttrQuery('layerName')?.enable();
-        this.getAttrQuery('tableName')?.enable();
-    }
 
     this.conditions.at(0).get('logicOperator')?.reset();
   }

@@ -58,12 +58,12 @@ export class TematicService {
     return this.http.post(this.url + 'tablesColumns', {id: layerId});
    }
 
-   getOperator(column:string, table:string){
-    return this.http.post(this.url + 'operator', {Item1:column,Item2:table});
+   getOperator(column:string, table:string, layerId:number){
+    return this.http.post(this.url + 'operator', {Item1:column,Item2:table,Item3:layerId});
    }
 
-   getCategories(column:string, layer:string){
-    return this.http.post(this.url + 'categories', {Item1:column,Item2:layer});
+   getCategories(column:string, table:string, layerId:number){
+    return this.http.post(this.url + 'categories', {Item1:column,Item2:table,Item3:layerId});
    }
 
    getStyles(){
