@@ -1,0 +1,58 @@
+
+  <div class="content">
+
+    <div class="container">
+      <h2 class="mb-5"><b>Styles</b></h2>
+
+
+      <div class="table-responsive custom-table-responsive">
+
+        <table class="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">Style Name</th>
+              <th scope="col">Polygon Fill</th>
+              <th scope="col">Polygon Outline</th>
+              <th scope="col">Line Fill</th>
+              <th scope="col">Point Fill</th>
+              <th scopr="col">Img</th>
+              <th scope="col" class="col-md-1"><a class="create" (click)="goCreateStyle()">New</a></th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let style of styles; let i = index;">
+            <tr scope="row" (click)="infoStyle(i)">
+              <td>
+                {{style.name}}
+              </td>
+              <td>
+                <input disabled type="color" [value]="styleService.rgbToHex(style.fill)">
+              </td>
+              <td>
+                <input disabled type="color" [value]="styleService.rgbToHex(style.outlinePen)">
+              </td>
+              <td>
+                <input disabled type="color" [value]="styleService.rgbToHex(style.line)">
+              </td>
+              <td>
+                <input disabled type="color" [value]="styleService.rgbToHex(style.pointFill)">
+              </td>
+              <td>
+                <img [src]="styleService.getImgUrl(style.imageContent)" width="80" height="30">
+              </td>
+              <td class="col-md-1">
+                <i class="far fa-edit fa-lg edit2" (click)="editStyle($event, style)" ></i>
+
+                <i class="far fa-trash-alt fa-lg trash2" (click)="deleteStyle($event, style.id)"></i>
+              </td>
+            </tr>
+            <tr class="spacer"><td colspan="100"></td></tr>
+
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+
+  </div>
+

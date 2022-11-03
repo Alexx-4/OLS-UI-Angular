@@ -1,0 +1,70 @@
+<!-- <img [src]="image" width="200" height="60"/> -->
+
+<div class="jumbtron">
+  <div>
+  <h2><b>Create new Style</b></h2>
+  <!-- {{StyleForm.value | json}} -->
+  </div>
+  <hr>
+      <div class="login-box">
+        <form [formGroup]="StyleForm">
+          <div class="user-box">
+            <input [ngClass]="(getAtrr('name')?.invalid &&
+            getAtrr('name')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="name">
+            <p>Style Name</p>
+            <small *ngIf="getAtrr('name')?.invalid &&
+                          getAtrr('name')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+          <div class="expcvv">
+            <div>
+              <h3>--Polygon--</h3>
+              <div class="expcvv2">
+                <div class="space">
+                    <p class="property">Fill</p>
+                    <input type="color" formControlName="fill" (change)="getImage()">
+                </div>
+                <div class="space">
+                  <p class="property">Outline</p>
+                  <input type="color"  formControlName="outlinePen" (change)="getImage()">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3>--Line--</h3>
+              <div class="expcvv2">
+                <div class="space">
+                    <p class="property">Fill</p>
+                    <input type="color" formControlName="line" (change)="getImage()">
+                </div>
+              </div>
+          </div>
+            <div>
+              <h3>--Point--</h3>
+              <div class="expcvv2">
+                <div class="space">
+                    <p class="property">Fill</p>
+                    <input type="color" formControlName="pointFill" (change)="getImage()">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br><br> <div class="text-center"><img [src]="image" width="200" height="60"/></div><br>
+
+
+        <div class="expcvv">
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="saveStyle()" [disabled]="StyleForm.invalid">
+            <div *ngIf="styleId === 0">Create Style</div>
+            <div *ngIf="styleId !== 0">Edit Style</div>
+          </button>
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="goStylesList()">Cancel</button>
+        </div>
+
+      </form>
+  </div>
+
+</div>
+

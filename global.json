@@ -19,5 +19,8 @@
   "routeLayer": "layer",
 
   "routeAlphaInfo": "alphaInfo",
-  "routeCreateAlphaInfo": "alphaInfo/create"
+  "routeCreateAlphaInfo": "alphaInfo/create",
+
+  "routeStyle": "style",
+  "routeCreateStyle": "style/create"
 }

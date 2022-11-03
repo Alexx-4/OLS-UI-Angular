@@ -29,7 +29,8 @@ import { QueryTematicComponent } from './components/tematics/query-tematic/query
 import { CreateQueryTematicComponent } from './components/tematics/query-tematic/create-query-tematic/create-query-tematic.component';
 import { CategoryTematicComponent } from './components/tematics/category-tematic/category-tematic.component';
 import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
-
+import { StyleComponent } from './components/style/style.component';
+import { CreateStyleComponent } from './components/style/create-style/create-style.component';
 
 @NgModule({
   declarations: [
@@ -49,8 +50,11 @@ import { CreateCategoryTematicComponent } from './components/tematics/category-t
     QueryTematicComponent,
     CreateQueryTematicComponent,
     CategoryTematicComponent,
-    CreateCategoryTematicComponent
+    CreateCategoryTematicComponent,
+    StyleComponent,
+    CreateStyleComponent
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,

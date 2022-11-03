@@ -17,6 +17,8 @@ import { QueryTematicComponent } from './components/tematics/query-tematic/query
 import { CreateQueryTematicComponent } from './components/tematics/query-tematic/create-query-tematic/create-query-tematic.component';
 import { CategoryTematicComponent } from './components/tematics/category-tematic/category-tematic.component';
 import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
+import { StyleComponent } from './components/style/style.component';
+import { CreateStyleComponent } from './components/style/create-style/create-style.component';
 
 const routes: Routes = [
   {path:'', redirectTo:global['routeTitlePage'], pathMatch: 'full'},
@@ -32,6 +34,8 @@ const routes: Routes = [
   {path: global['routeQueryTematic'], component: QueryTematicComponent},
   {path: global['routeCreateQueryTematic'], component: CreateQueryTematicComponent},
   {path: global['routeCategoryTematic'], component: CategoryTematicComponent},
+  {path: global['routeStyle'], component: StyleComponent},
+  {path: global['routeCreateStyle'], component: CreateStyleComponent},
   {path: global['routeCreateCategoryTematic'], component: CreateCategoryTematicComponent},
   {path: "**", component: PageNotFoundComponent}
 ];
