@@ -25,7 +25,7 @@ export class CreateCategoryTematicComponent implements OnInit {
   tablesColumns: any;
 
   ok:boolean = false;
-  tematicIndex = 0;
+  tematicIndex: number | undefined = 0;
 
   constructor(formBuilder: FormBuilder,
               private layerService: LayerService,
@@ -51,9 +51,9 @@ export class CreateCategoryTematicComponent implements OnInit {
 
     this.tematicService.getTematicModel().subscribe(
       data=>{
-        if(data.tematicId){
+        if(data.tematicName){
           this.ok=true;
-          this.tematicIndex = data.tematicId;
+          this.tematicIndex = data.tematicId ? data.tematicId : 0;
 
           this.CategoryTematicForm.patchValue({
             tematicName: data.tematicName
@@ -165,13 +165,12 @@ export class CreateCategoryTematicComponent implements OnInit {
     this.tematicService.getCategories(_column, _table, _layer.id).subscribe(
       data=>{
         var _categories = data as Array<string>;
-        for(let i = 0;  i < this.styles.length &&
-                        i < _categories.length &&
-                        i < 10;                   i++){
+        for(let i = 0;  i < _categories.length &&
+                        i < 3;                   i++){
 
               let _query: query = {
 
-              styleName: this.styles[i].name,
+              styleName: (i < this.styles.length) ? this.styles[i].name : '',
               layerName: _layer.name,
               tableName: _table,
 
@@ -206,9 +205,39 @@ export class CreateCategoryTematicComponent implements OnInit {
 
   }
 
-  modifyStyle(newStyle:string, i:number){
+  modifyStyle(newStyle:string, i:number, selectElement: HTMLSelectElement){
+    if(newStyle === "createNew"){
+      this.tematicService.updateTematicModel({
+        tematicId:(this.tematicIndex === 0) ? undefined: this.tematicIndex,
+        tematicName: this.getAtrr('tematicName')?.value,
+
+        queryToEdit: i,
+
+        queries: this.tematicService.tematicQueries
+      });
+      this.router.navigate([global['routeCreateStyle']]);
+
+    }
+    else{
+
+    if(this.tematicService.tematicQueries.some(q=>q.styleName === newStyle)){
+      this.toastr.info('Please select another style or create a new one','This style is already taken');
+      selectElement.value = this.tematicService.tematicQueries[i].styleName !== '' ?
+                            this.tematicService.tematicQueries[i].styleName : 'createNew';
+      return
+    }
+
     var q:query = this.tematicService.tematicQueries[i];
     q.styleName = newStyle;
     this.tematicService.tematicQueries.splice(i,1,q);
+    }
+  }
+
+  disableCreate(){
+    for(let item of this.tematicService.tematicQueries){
+      if(item.styleName === '')
+        return true;
+    }
+    return false;
   }
 }

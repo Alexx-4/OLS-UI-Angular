@@ -15,6 +15,7 @@
               <th scope="col">Table</th>
               <th scope="col">Query</th>
               <th scope="col">Style</th>
+              <th scope="col"></th>
               <th scope="col" class="col-md-1"><a class="create" (click)="goCreateQuery()">New</a></th>
             </tr>
           </thead>
@@ -36,7 +37,8 @@
                   </div>
                 </div>
               </td>
-              <td>{{tematic.styleName}} <img [src]="printImage(tematic)" width="80" height="30"></td>
+              <td>{{tematic.styleName}}</td>
+              <td><img [src]="printImage(tematic)" width="80" height="30"></td>
               <td class="col-md-1">
                 <i class="far fa-edit fa-lg edit2" (click)="editQueryTematic($event, tematic.tematicId)"></i>
 

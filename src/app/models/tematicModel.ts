@@ -1,6 +1,7 @@
 export class TematicModel{
   tematicId?:number;
   tematicName:string;
+  queryToEdit?:number;
 
   queries: query []
 

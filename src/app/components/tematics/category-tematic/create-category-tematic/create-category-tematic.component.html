@@ -106,13 +106,14 @@
               </div>
             </td>
             <td>
-              <select #styleSelected (change)="modifyStyle(styleSelected.value, i)" class="inputbox2">
+              <select #styleSelected (change)="modifyStyle(styleSelected.value, i, styleSelected)" class="inputbox2">
                 <option *ngFor="let style of styles" [value]="style.name" [selected]="style.name === query.styleName">
                   {{style.name}}
                 </option>
+                <option value="createNew" (click)="modifyStyle('createNew', i, styleSelected)">---create new style---</option>
               </select>
             </td>
-            <td><img *ngIf="this.styles" [src]="getStyleImg(query.styleName)" width="80" height="30"></td>
+            <td><img *ngIf="this.styles && query.styleName !== ''" [src]="getStyleImg(query.styleName)" width="80" height="30"></td>
 
           </tr>
           <tr class="spacer"><td colspan="100"></td></tr>
@@ -122,7 +123,8 @@
     </div>
 
     <div class="expcvv">
-      <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="saveCategory()">
+      <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="saveCategory()"
+        [disabled]="disableCreate()">
         <div *ngIf="tematicIndex === 0">Create Tematic</div>
         <div *ngIf="tematicIndex !== 0">Edit Tematic</div>
       </button>

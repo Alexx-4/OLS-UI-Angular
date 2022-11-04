@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { StyleModel } from 'src/app/models/StyleModel';
+import { TematicService } from 'src/app/services/tematic.service';
+import { TematicModel } from 'src/app/models/tematicModel';
 
 @Component({
   selector: 'app-create-style',
@@ -21,12 +23,14 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
   suscription: Subscription = new Subscription();
 
   styleId: number | undefined = 0;
+  tematic: TematicModel = new TematicModel();
   image:any;
 
   constructor(formBuilder: FormBuilder,
               private styleService: StyleService,
               private router: Router,
-              private toastr:ToastrService) {
+              private toastr:ToastrService,
+              private tematicService: TematicService) {
 
     this.StyleForm = formBuilder.group({
         name: ['', Validators.required],
@@ -43,7 +47,6 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.suscription = this.styleService.getStyleModel().subscribe({
       next:(data)=>{
-        console.log(data);
         if(data.name){
           this.StyleForm.patchValue({
             name: data.name,
@@ -56,9 +59,17 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
           });
           this.styleId = data.id;
           this.getImage()
+
+          this.styleService.updateStyleModel({} as StyleModel);
         }
       }
     });
+
+    this.tematicService.getTematicModel().subscribe(
+      data =>{
+        this.tematic = data;
+      }
+    )
   }
 
   ngOnDestroy(): void {
@@ -66,7 +77,10 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
   }
 
   goStylesList(){
-    this.router.navigate([global['routeStyle']]);
+    if(this.tematic.queryToEdit !== undefined){
+      this.router.navigate([global['routeCreateCategoryTematic']]);
+    }
+    else { this.router.navigate([global['routeStyle']]); }
   }
 
   getAtrr(atrr:string){
@@ -89,15 +103,23 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
       imageScale: 0,
       imageRotation: 0
     }
+
     if(create){
       this.styleService.createStyle(_style).subscribe({
         next:()=>{
-          this.goStylesList();
+          if(this.tematic.queryToEdit){
+            this.tematic.queries[this.tematic.queryToEdit].styleName = _style.name;
+            this.tematicService.updateTematicModel(this.tematic);
+            this.router.navigate([global['routeCreateCategoryTematic']]);
+          }
+          else { this.goStylesList(); }
+
           this.toastr.info('Style created successfully');
         },
         error:(err) => console.log(err)
       });
     }
+
     else{
       this.styleService.editStyle(_style).subscribe({
         next: ()=>{
