@@ -28,9 +28,9 @@ import { CreateAlphaInfoComponent } from './components/alpha-info/create-alpha-i
 import { QueryTematicComponent } from './components/tematics/query-tematic/query-tematic.component';
 import { CreateQueryTematicComponent } from './components/tematics/query-tematic/create-query-tematic/create-query-tematic.component';
 import { CategoryTematicComponent } from './components/tematics/category-tematic/category-tematic.component';
-import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
 import { StyleComponent } from './components/style/style.component';
 import { CreateStyleComponent } from './components/style/create-style/create-style.component';
+import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
 
 @NgModule({
   declarations: [
@@ -50,9 +50,9 @@ import { CreateStyleComponent } from './components/style/create-style/create-sty
     QueryTematicComponent,
     CreateQueryTematicComponent,
     CategoryTematicComponent,
-    CreateCategoryTematicComponent,
     StyleComponent,
-    CreateStyleComponent
+    CreateStyleComponent,
+    CreateCategoryTematicComponent
   ],
 
   imports: [

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { query, TematicModel } from 'src/app/models/tematicModel';
+import { StyleService } from 'src/app/services/style.service';
 import { TematicService } from 'src/app/services/tematic.service';
 
 import global from '../../../../../global.json'
@@ -14,13 +15,21 @@ import global from '../../../../../global.json'
 export class QueryTematicComponent implements OnInit {
 
   tematics: any;
+  styles:any;
 
   constructor(private tematicService:TematicService,
               private router: Router,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              private styleService: StyleService) { }
 
   ngOnInit(): void {
-    this.getQueryTematics();
+    this.styleService.getStyles().subscribe(
+      data=>{
+        this.styles = data;
+        this.getQueryTematics();
+      }
+    )
+
   }
 
   infoTematic(i:number) {
@@ -95,6 +104,11 @@ export class QueryTematicComponent implements OnInit {
 
     this.tematicService.updateTematicModel(tematic);
     this.router.navigate([global['routeCreateQueryTematic']]);
+  }
+
+  printImage(tematic:any){
+    var style = this.styles.find((s: { id: any; })=> s.id === tematic.styleId);
+    return this.styleService.getImgUrl(style.imageContent);
   }
 
 }

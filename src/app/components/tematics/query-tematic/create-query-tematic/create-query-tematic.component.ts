@@ -34,7 +34,7 @@ export class CreateQueryTematicComponent implements OnInit {
               private toastr: ToastrService,
               private router:Router,
               private layerService: LayerService,
-              private styleService: StyleService) {
+              public styleService: StyleService) {
 
     this.QueryTematicForm = formBuilder.group({
         tematicName: ['', Validators.required],

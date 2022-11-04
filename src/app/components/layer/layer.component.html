@@ -14,6 +14,7 @@
               <th scope="col">Description</th>
               <th scope="col">Provider</th>
               <th scope="col">Styles</th>
+              <th scope="col"></th>
               <th scope="col">Order</th>
               <th scope="col" class="col-md-1"><a class="create" (click)="goCreateLayer()">New</a></th>
             </tr>
@@ -30,10 +31,13 @@
                 {{layer.providerName}}
               </td>
               <td>
-                <select class="inputbox" (click)="$event.stopPropagation(); styleSelect.value = layer.styles[0] + ' (default)'" #styleSelect>
-                  <option *ngFor="let style of layer.styles; let i = index">{{style}} <div *ngIf="i===0">(default)</div></option>
+                <select class="inputbox" (click)="$event.stopPropagation()" #styleSelect>
+                  <option *ngFor="let style of layer.styles; let j = index" [value]="layer.stylesId[j]">{{style}}
+                    <div *ngIf="j===0">(default)</div>
+                    </option>
                 </select>
               </td>
+              <td *ngIf="styles"><img [src]="printImage(+styleSelect.value)" width="80" height="30"></td>
               <td>
                 {{layer.order}}
               </td>

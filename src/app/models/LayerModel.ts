@@ -11,4 +11,5 @@ export class LayerModel{
   providerName:string = '';
 
   styles: string[] = [];
+  stylesId?:any;
 }

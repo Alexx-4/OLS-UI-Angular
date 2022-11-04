@@ -63,7 +63,10 @@
                 <mat-label *ngIf="getAtrr('query')?.get('styleName')?.value" style="color: #3461c2;">Query Style</mat-label>
                 <mat-select formControlName="styleName">
                   <mat-option *ngFor="let style of styles" [value]="style.name">
-                    {{style.name}}
+                    <div class="expcvv">
+                      <div>{{style.name}}</div>
+                      <div><img [src]="styleService.getImgUrl(style.imageContent)" width="80" height="30"></div>
+                  </div>
                   </mat-option>
                 </mat-select>
               </mat-form-field>

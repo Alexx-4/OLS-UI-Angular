@@ -6,6 +6,7 @@ import { ProviderModel } from 'src/app/models/ProviderModel';
 import { StyleModel } from 'src/app/models/StyleModel';
 import { LayerService } from 'src/app/services/layer.service';
 import { ProviderService } from 'src/app/services/provider.service';
+import { StyleService } from 'src/app/services/style.service';
 import global from '../../../../global.json';
 
 @Component({
@@ -16,14 +17,22 @@ import global from '../../../../global.json';
 export class LayerComponent implements OnInit {
 
   layers: LayerModel[] = [];
+  styles:any;
 
   constructor(private layerService:LayerService,
               private router: Router,
-              private toastr:ToastrService) { }
+              private toastr:ToastrService,
+              private styleService:StyleService) { }
 
   ngOnInit(): void {
     this.layerService.updateLayerModel({} as LayerModel);
-    this.getLayers();
+    this.styleService.getStyles().subscribe(
+      data=>{
+        this.styles = data;
+        this.getLayers();
+      }
+    );
+
   }
 
 
@@ -31,6 +40,7 @@ export class LayerComponent implements OnInit {
   getLayers(){
     this.layerService.getLayers().subscribe({
       next: (data) => {
+
         this.layers = [];
         for(let item of data as Array<any>){
           var layer:LayerModel = {
@@ -43,12 +53,13 @@ export class LayerComponent implements OnInit {
 
             providerName: item.providerTranslations[0],
 
-            styles: (item.styles as Array<StyleModel>).map(({name})=>name)
-
+            styles: (item.styles as Array<StyleModel>).map(({name})=>name),
+            stylesId: (item.styles as Array<StyleModel>).map(({id})=>id)
           };
 
           this.layers.push(layer);
         }
+
       },
       error: (err) => console.log(err)
     });
@@ -80,6 +91,13 @@ export class LayerComponent implements OnInit {
 
   goCreateLayer() {
     this.router.navigate([global['routeCreateLayer']]);
+  }
+
+  printImage(styleId:number){
+    var style = this.styles.find((s: { id: any; })=> s.id === styleId);
+    if(style)
+      return this.styleService.getImgUrl(style.imageContent);
+    return
   }
 
 }

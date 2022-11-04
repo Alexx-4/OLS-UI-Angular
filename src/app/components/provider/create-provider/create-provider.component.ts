@@ -87,7 +87,7 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
       this.providerService.createProvider(_provider).subscribe({
         next:()=>{
           this.goProvidersList();
-          this.toastr.success('Provider created successfully');
+          this.toastr.info('Provider created successfully');
         },
         error:(err) => console.log(err)
       });
