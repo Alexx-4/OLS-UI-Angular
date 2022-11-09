@@ -2,11 +2,13 @@ import { getLocaleDayPeriods } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { timeStamp } from 'console';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { AlphaInfoModel } from 'src/app/models/AlphaInfoModel';
 import { AlphaInfoService } from 'src/app/services/alpha-info.service';
 import { LayerService } from 'src/app/services/layer.service';
+import { ProviderService } from 'src/app/services/provider.service';
 
 
 import global from '../../../../../global.json'
@@ -27,12 +29,16 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
   layers:any[] = [];
   tables:any[] = [];
   columns:any[] = [];
+  providers:any[] = [];
+
+  init : boolean = true;
 
   constructor(formBuilder: FormBuilder,
               private alphaInfoService: AlphaInfoService,
               private router: Router,
               private toastr:ToastrService,
-              private layerService: LayerService) {
+              private layerService: LayerService,
+              private providerService: ProviderService) {
 
     this.AlphaInfoForm = formBuilder.group({
         name: ['', Validators.required],
@@ -42,12 +48,14 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
         table: ['', Validators.required],
         pkField: ['', Validators.required],
         layerName:['', Validators.required],
-        columns:['', Validators.required]
+        columns:['', Validators.required],
+        providerInfo: true
 
     })
     }
 
   ngOnInit(): void {
+    this.getProviders();
 
     this.suscription = this.alphaInfoService.getAlphaInfoModel().subscribe({
       next:(data)=>{
@@ -73,6 +81,16 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
     this.suscription.unsubscribe();
   }
 
+  getProviders(){
+    this.providerService.getProviders().subscribe(
+      (data)=>{
+        for(let item of data as Array<{provider:any}>){
+          this.providers.push(item.provider);
+        }
+      }
+    );
+  }
+
   getLayers(){
     this.layerService.getLayers().subscribe(
       (data)=>{
@@ -80,45 +98,106 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
         for(let item of data as Array<any>){
           var layer = {
             id: item.id,
-            name: item.layerTranslations[0].name
+            name: item.layerTranslations[0].name,
+            providerInfoId: item.providerInfoId
           };
           this.layers.push(layer);
         }
 
         if(this.alphaInfoId as number > 0){
-            this.getTables();
-            this.getColumns();
+          var _layerName = this.getAtrr('layerName')?.value;
+          var _layer = this.layers.find(l=>l.name === _layerName);
+          var _provider = this.providers.find(p=>p.id === _layer.providerInfoId);
+
+          var connString = this.getAtrr('connString')?.value;
+          var _tableName = this.getAtrr('table')?.value;
+
+          var _providerInfo = _provider.connectionString === connString &&
+                              _provider.table === _tableName;
+
+          this.AlphaInfoForm.patchValue({ providerInfo: _providerInfo });
+
+
+          this.getTables();
+          this.getColumns();
+          this.init = false;
       }
       }
     )
   }
 
   getTables(){
-    var _layerName:string = this.getAtrr('layerName')?.value;
-
-    if(_layerName){
-      var _layer = this.layers.find(l=>l.name === _layerName);
-      this.alphaInfoService.getTablesColumns(_layer.id).subscribe(
-        (data)=>{
-          this.tables = data as Array<string>;
-        }
-      );
+    if(!this.init){
+      this.AlphaInfoForm.patchValue({table:'', columns:''});
     }
-    else {this.tables = [];}
+
+    var providerInfo = this.getAtrr('providerInfo')?.value;
+
+    if(providerInfo){
+      var _layerName:string = this.getAtrr('layerName')?.value;
+
+      if(_layerName){
+        var _layer = this.layers.find(l=>l.name === _layerName);
+        var _provider = this.providers.find(p=>p.id === _layer.providerInfoId);
+
+        this.tables = [_provider.table];
+        this.AlphaInfoForm.patchValue({table: _provider.table,
+                                       connString: _provider.connectionString,
+                                       pkField: _provider.pkField});
+        this.getColumns();
+      }
+      else {this.tables = [];}
+    }
+
+    else{
+      var connString = this.getAtrr('connString')?.value;
+
+      this.providerService.getProviderInfo(connString).subscribe({
+        next: (data)=>{
+          this.tables = data as Array<string>;
+        },
+        error: (err)=>{
+          this.tables = [];
+          this.toastr.info('Cannot connect with external database');
+        }
+      });
+    }
   }
 
   getColumns(){
-    var _layerName = this.getAtrr('layerName')?.value;
+    if(!this.init){
+      this.AlphaInfoForm.patchValue({columns:''});
+    }
+
+    var providerInfo = this.getAtrr('providerInfo')?.value;
     var _tableName = this.getAtrr('table')?.value;
 
-    if(_layerName && _tableName){
-      var _layer = this.layers.find(l=>l.name === _layerName);
-      this.alphaInfoService.getTablesColumns(_layer.id, _tableName).subscribe(
-        (data)=>{
-          this.columns = data as Array<string>;}
-      );
-    }
-    else{this.columns = [];}
+    if(providerInfo){
+        var _layerName = this.getAtrr('layerName')?.value;
+
+        if(_layerName && _tableName){
+          var _layer = this.layers.find(l=>l.name === _layerName);
+          this.providerService.getProviderInfo(null,_layer.id,_tableName).subscribe(
+            (data)=>{
+              this.columns = data as Array<string>;}
+          );
+        }
+        else{this.columns = [];}
+      }
+
+      else{
+        var connString = this.getAtrr('connString')?.value;
+
+        this.providerService.getProviderInfo(connString, undefined, _tableName).subscribe({
+          next: (data)=>{
+            this.columns = data as Array<string>;
+          },
+          error: ()=>{
+            this.columns = [];
+            this.toastr.info('There is no columns to database information provided');
+          }
+        })
+      }
   }
 
   goAlphaInfosList(){
@@ -132,6 +211,8 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
   saveAlphaInfo(){
     var create:boolean = this.alphaInfoId === 0;
 
+    var _layerName:string = this.getAtrr('layerName')?.value;
+
     var _alphaInfo:AlphaInfoModel = {
       id: (create) ? undefined : this.alphaInfoId,
       name: this.getAtrr('name')?.value,
@@ -141,8 +222,8 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
       pkField: this.getAtrr('pkField')?.value,
       table: this.getAtrr('table')?.value,
 
-      layerId: this.layers.find(l=>l.name === this.getAtrr('layerName')?.value).id,
-      layerName: this.getAtrr('layerName')?.value,
+      layerId: this.layers.find(l=>l.name === _layerName).id,
+      layerName: _layerName,
       columns: (this.getAtrr('columns')?.value as Array<string>).toString()
     }
 
@@ -150,7 +231,7 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
       this.alphaInfoService.createAlphaInfo(_alphaInfo).subscribe({
         next:()=>{
           this.goAlphaInfosList();
-          this.toastr.success('AlphaInfo created successfully');
+          this.toastr.info('AlphaInfo created successfully');
         },
         error:(err) => console.log(err)
       });

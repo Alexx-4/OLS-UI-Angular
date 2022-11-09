@@ -16,11 +16,14 @@
               <th scope="col">Layer</th>
               <th scope="col">Table</th>
               <th scope="col">Columns</th>
-              <th scope="col" class="col-md-1"><a class="create" (click)="goCreateAlphaInfo()">New</a></th>
+              <th scope="col" class="col-md-1">
+                <div class="fa-stack" (click)="goCreateAlphaInfo()">
+                  <i class="fa fa-plus-circle"></i>
+                </div></th>
             </tr>
           </thead>
           <tbody *ngFor="let alphaInfo of alphaInfos; let i = index;">
-            <tr scope="row" (click)="infoAlphaInfo(i)">
+            <tr scope="row">
               <td>
                 {{alphaInfo.name}}
               </td>
@@ -37,12 +40,19 @@
                 {{alphaInfo.columns}}
               </td>
               <td class="col-md-1">
+                <i class="fa fa-info-circle fa-lg info" data-toggle="modal" data-target="#details"
+                (click)="_alphaInfo = alphaInfo"></i>
+
                 <i class="far fa-edit fa-lg edit2" (click)="editAlphaInfo($event, alphaInfo)" ></i>
 
-                <i class="far fa-trash-alt fa-lg trash2" (click)="deleteAlphaInfo($event, alphaInfo.id)"></i>
+                <i class="far fa-trash-alt fa-lg trash2" data-toggle="modal" data-target="#confirmDelete"
+                (click)="_alphaInfo = alphaInfo"></i>
               </td>
             </tr>
             <tr class="spacer"><td colspan="100"></td></tr>
+
+
+
 
           </tbody>
         </table>
@@ -53,3 +63,49 @@
 
   </div>
 
+
+
+
+  <!-- Modal alpha info -->
+  <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Alpha Info Details</h5>
+        </div>
+        <div class="modal-body">
+          <b>Id</b>: {{_alphaInfo.id}} <br>
+          <b>Name</b>: {{_alphaInfo.name}} <br>
+          <b>Description</b>: {{_alphaInfo.description}} <br>
+          <b>Connection String</b>: {{_alphaInfo.connectionString}} <br>
+          <b>Table</b>: {{_alphaInfo.table}} <br>
+          <b>PKField</b>: {{_alphaInfo.pkField}} <br>
+          <b>Columns</b>: {{_alphaInfo.columns}} <br>
+          <b>Layer Name</b>: {{_alphaInfo.layerName}} <br>
+          <b>Layer Id</b>: {{_alphaInfo.layerId}} <br>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal delete confirmation -->
+  <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+        </div>
+        <div class="modal-body">
+          <b>This item will be permanently removed!</b>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteAlphaInfo($event, _alphaInfo.id)">OK</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

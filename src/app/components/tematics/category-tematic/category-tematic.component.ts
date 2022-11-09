@@ -17,6 +17,8 @@ export class CategoryTematicComponent implements OnInit {
   tematics: any;
   styles:any;
 
+  _category: any = {};
+
   constructor(private tematicService:TematicService,
               private router: Router,
               private toastr: ToastrService,
@@ -33,7 +35,7 @@ export class CategoryTematicComponent implements OnInit {
 
   infoTematic(i:number) {
       if(this.tematics)
-    console.log(this.tematics[i]);
+        this._category = this.tematics[i];
     }
 
   getCategoryTematics(){
@@ -44,9 +46,8 @@ export class CategoryTematicComponent implements OnInit {
     })
   }
 
-  deleteCategoryTematic(event:Event, id:number) {
-    event.stopPropagation();
-    this.tematicService.deleteTematic(id).subscribe({
+  deleteCategoryTematic(event:Event, id:number | undefined) {
+    this.tematicService.deleteTematic(id as number).subscribe({
       next: ()=> {
         this.getCategoryTematics();
         this.toastr.info('Tematic successfully deleted');
@@ -106,8 +107,12 @@ export class CategoryTematicComponent implements OnInit {
   }
 
   printImage(tematic:any){
-    var style = this.styles.find((s: { id: any; })=> s.id === tematic.styleId);
-    return this.styleService.getImgUrl(style.imageContent);
+    if(this.styles){
+      var style = this.styles.find((s: { id: any; })=> s.id === tematic.styleId);
+      if(style)
+        return this.styleService.getImgUrl(style.imageContent);
+  }
+    return
   }
 
 }

@@ -105,3 +105,18 @@ transform: scale(1.05) translateY(-3px);
   left: 19cm;
   color: #f51607;
 }
+
+.error-select{
+  position: absolute;
+  top: 60px;
+  left: 19cm;
+  color: #f51607;
+}
+
+.select-box{
+  width:22.5cm;
+}
+
+.mat-option:hover{
+  background-color: #5577c0;
+}

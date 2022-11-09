@@ -14,11 +14,14 @@
               <th scope="col">Description</th>
               <th scope="col">Connection String</th>
               <th scope="col">Table</th>
-              <th scope="col" class="col-md-1"><a class="create" (click)="goCreateProvider()">New</a></th>
+              <th scope="col" class="col-md-1">
+                <div class="fa-stack" (click)="goCreateProvider()">
+                  <i class="fa fa-plus-circle"></i>
+                </div></th>
             </tr>
           </thead>
           <tbody *ngFor="let provider of providers; let i = index;">
-            <tr scope="row" (click)="infoProvider(i)">
+            <tr scope="row">
               <td>
                 {{provider.name}}
               </td>
@@ -32,9 +35,13 @@
                 {{provider.table}}
               </td>
               <td class="col-md-1">
+                <i class="fa fa-info-circle fa-lg info" data-toggle="modal" data-target="#details"
+                (click)="_provider = provider"></i>
+
                 <i class="far fa-edit fa-lg edit2" (click)="editProvider($event, provider)" ></i>
 
-                <i class="far fa-trash-alt fa-lg trash2" (click)="deleteProvider($event, provider.id)"></i>
+                <i class="far fa-trash-alt fa-lg trash2" data-toggle="modal" data-target="#confirmDelete"
+                (click)="_provider = provider"></i>
               </td>
             </tr>
             <tr class="spacer"><td colspan="100"></td></tr>
@@ -47,4 +54,50 @@
     </div>
 
   </div>
+
+
+<!-- Modal provider -->
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Provider Details</h5>
+      </div>
+      <div class="modal-body">
+        <b>Id</b>: {{_provider.id}} <br>
+        <b>Name</b>: {{_provider.name}} <br>
+        <b>Description</b>: {{_provider.description}} <br>
+        <b>Connection String</b>: {{_provider.connectionString}} <br>
+        <b>Table</b>: {{_provider.table}} <br>
+        <b>PKField</b>: {{_provider.pkField}} <br>
+        <b>GeoField</b>: {{_provider.geoField}} <br>
+        <b>BoundingBox Field</b>: {{_provider.boundingBoxField}} <br>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal delete confirmation -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+      </div>
+      <div class="modal-body">
+        <b>This item, and all others entities relationated with it, will be permanently removed!</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteProvider($event, _provider.id)">OK</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 

@@ -16,11 +16,14 @@
               <th scope="col">Styles</th>
               <th scope="col"></th>
               <th scope="col">Order</th>
-              <th scope="col" class="col-md-1"><a class="create" (click)="goCreateLayer()">New</a></th>
+              <th scope="col" class="col-md-1">
+                <div class="fa-stack" (click)="goCreateLayer()">
+                  <i class="fa fa-plus-circle"></i>
+                </div></th>
             </tr>
           </thead>
           <tbody *ngFor="let layer of layers; let i = index;">
-            <tr scope="row" (click)="infoLayer(i)">
+            <tr scope="row">
               <td>
                 {{layer.name}}
               </td>
@@ -31,20 +34,26 @@
                 {{layer.providerName}}
               </td>
               <td>
-                <select class="inputbox" (click)="$event.stopPropagation()" #styleSelect>
+                <select class="inputbox" (click)="$event.stopPropagation();" #styleSelect>
                   <option *ngFor="let style of layer.styles; let j = index" [value]="layer.stylesId[j]">{{style}}
                     <div *ngIf="j===0">(default)</div>
                     </option>
                 </select>
               </td>
-              <td *ngIf="styles"><img [src]="printImage(+styleSelect.value)" width="80" height="30"></td>
+              <td *ngIf="styles"><img [src]="printImage(+styleSelect.value)" width="80" height="30" class="imgIcon"
+                (click)="_style = +styleSelect.value"
+                data-toggle="modal" data-target="#img"></td>
               <td>
                 {{layer.order}}
               </td>
               <td class="col-md-1">
+                <i class="fa fa-info-circle fa-lg info" data-toggle="modal" data-target="#details"
+                (click)="_layer = layer"></i>
+
                 <i class="far fa-edit fa-lg edit2" (click)="editLayer($event, layer)" ></i>
 
-                <i class="far fa-trash-alt fa-lg trash2" (click)="deleteLayer($event, layer.id)"></i>
+                <i class="far fa-trash-alt fa-lg trash2" data-toggle="modal" data-target="#confirmDelete"
+                (click)="_layer = layer"></i>
               </td>
             </tr>
             <tr class="spacer"><td colspan="100"></td></tr>
@@ -53,7 +62,68 @@
         </table>
       </div>
 
-
     </div>
 
+  </div>
+
+
+
+
+  <!-- Modal details -->
+  <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Layer Details</h5>
+        </div>
+        <div class="modal-body">
+          <b>Id</b>: {{_layer.id}} <br>
+          <b>Name</b>: {{_layer.name}} <br>
+          <b>Description</b>: {{_layer.description}} <br>
+          <b>Order</b>: {{_layer.order}} <br>
+          <b>Provider Name</b>: {{_layer.providerName}} <br>
+          <b>Provider Id</b>: {{_layer.providerInfoId}} <br>
+          <b>Styles</b>: {{_layer.styles}} <br>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal delete confirmation -->
+  <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+        </div>
+        <div class="modal-body">
+          <b>This item, and all others entities relationated with it, will be permanently removed!</b>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteLayer($event, _layer.id)">OK</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal bigger img -->
+  <div class="modal fade" id="img" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Style Icon</h5>
+        </div>
+        <div class="modal-body text-center">
+          <img [src]="printImage(_style)" width="300" height="100">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
   </div>

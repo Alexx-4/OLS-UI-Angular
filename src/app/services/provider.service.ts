@@ -42,4 +42,8 @@ export class ProviderService {
   getProvider(id:number){
     return this.http.get(this.url + id);
   }
+
+  getProviderInfo(connString: string | null = null, layerId:number = 0, table:string | null = null){
+    return this.http.post(this.url + 'SQLProviderInfo', {Item1: layerId, Item2: table, Item3: connString});
+  }
 }

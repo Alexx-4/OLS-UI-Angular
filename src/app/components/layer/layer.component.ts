@@ -18,6 +18,8 @@ export class LayerComponent implements OnInit {
 
   layers: LayerModel[] = [];
   styles:any;
+  _layer: LayerModel = new LayerModel();
+  _style: any;
 
   constructor(private layerService:LayerService,
               private router: Router,
@@ -66,11 +68,10 @@ export class LayerComponent implements OnInit {
   }
 
   deleteLayer(event: MouseEvent, layerId: number | undefined) {
-    event.stopPropagation();
     this.layerService.deleteLayer(layerId as number).subscribe({
       next:()=>{
         this.getLayers();
-        this.toastr.error('Layer deleted');
+        this.toastr.info('Layer deleted');
       },
       error:(err)=>{
         console.log(err);
@@ -94,10 +95,11 @@ export class LayerComponent implements OnInit {
   }
 
   printImage(styleId:number){
-    var style = this.styles.find((s: { id: any; })=> s.id === styleId);
-    if(style)
-      return this.styleService.getImgUrl(style.imageContent);
+    if(this.styles){
+      var style = this.styles.find((s: { id: any; })=> s.id === styleId);
+      if(style)
+        return this.styleService.getImgUrl(style.imageContent);
+    }
     return
   }
-
 }

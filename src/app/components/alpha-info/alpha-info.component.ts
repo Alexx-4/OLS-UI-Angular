@@ -16,6 +16,8 @@ import global from '../../../../global.json';
 })
 export class AlphaInfoComponent implements OnInit {
   alphaInfos: AlphaInfoModel[] = []
+  _alphaInfo: AlphaInfoModel = new AlphaInfoModel();
+
   layers: any[] = [];
 
   constructor(private alphaInfoService:AlphaInfoService,
@@ -72,11 +74,10 @@ export class AlphaInfoComponent implements OnInit {
   }
 
   deleteAlphaInfo(event: MouseEvent, alphaInfoId: number | undefined) {
-    event.stopPropagation();
     this.alphaInfoService.deleteAlphaInfo(alphaInfoId as number).subscribe({
       next:()=>{
         this.getAlphaInfos();
-        this.toastr.error('AlphaInfo deleted');
+        this.toastr.info('AlphaInfo deleted');
       }
     })
   }

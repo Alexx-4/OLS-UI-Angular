@@ -31,7 +31,7 @@ export class CreateLayerComponent implements OnInit {
               private layerService: LayerService,
               private router: Router,
               private toastr:ToastrService,
-              private styleService: StyleService,
+              public styleService: StyleService,
               private providerService:ProviderService) {
 
     this.LayerForm = formBuilder.group({
@@ -110,11 +110,11 @@ export class CreateLayerComponent implements OnInit {
       this.layerService.createLayer(_layer).subscribe({
         next:()=>{
           this.goLayersList();
-          this.toastr.success('Layer created successfully');
+          this.toastr.info('Layer created successfully');
         },
         error:(err) => {
           console.log(err);
-          this.toastr.error('Cannot create layer with order and provider selected')
+          this.toastr.info('Cannot create layer with order and provider selected')
         }
 
       });
@@ -128,7 +128,7 @@ export class CreateLayerComponent implements OnInit {
         },
         error: (err) => {
           console.log(err);
-          this.toastr.error('Cannot edit layer with order and provider selected')
+          this.toastr.info('Cannot edit layer with order and provider selected')
         }
       })
     }

@@ -16,7 +16,7 @@ import global from '../../../../global.json';
 export class StyleComponent implements OnInit {
 
   styles: any[] = []
-  color='Red';
+  _style: StyleModel = new StyleModel();
 
   constructor(public styleService:StyleService,
               private router: Router,
@@ -58,9 +58,8 @@ export class StyleComponent implements OnInit {
     });
   }
 
-  deleteStyle(event: MouseEvent, styleId: number) {
-    event.stopPropagation();
-    this.styleService.deleteStyle(styleId).subscribe({
+  deleteStyle(event: MouseEvent, styleId: number | undefined) {
+    this.styleService.deleteStyle(styleId as number).subscribe({
       next:()=>{
         this.getStyles();
         this.toastr.info('Style deleted');

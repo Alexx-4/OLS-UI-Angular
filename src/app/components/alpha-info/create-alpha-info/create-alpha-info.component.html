@@ -1,6 +1,7 @@
 <div class="jumbtron">
   <div>
   <h2><b>Create new AlphaInfo</b></h2>
+  <!-- {{AlphaInfoForm.value | json}} -->
   </div>
   <hr>
       <div class="login-box">
@@ -23,16 +24,23 @@
                           class="error" >This field is required</small>
           </div>
 
-          <div class="user-box">
+
+          <mat-checkbox color="primary" formControlName="providerInfo"
+          (change)="AlphaInfoForm.patchValue({table: '', columns:''}); getTables(); getColumns();">Use layer's provider database information</mat-checkbox>
+          <br> <br>
+
+
+          <div class="user-box" *ngIf="!(getAtrr('providerInfo')?.value)">
             <input [ngClass]="(getAtrr('connString')?.invalid &&
-            getAtrr('connString')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="connString">
+            getAtrr('connString')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="connString"
+            (change)="getTables()">
             <p>Connection String</p>
             <small *ngIf="getAtrr('connString')?.invalid &&
                           getAtrr('connString')?.touched"
                           class="error" >This field is required</small>
           </div>
 
-          <div class="user-box">
+          <div class="user-box" *ngIf="!(getAtrr('providerInfo')?.value)">
             <input [ngClass]="(getAtrr('pkField')?.invalid &&
             getAtrr('pkField')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="pkField">
             <p>PK Field</p>
@@ -41,11 +49,31 @@
                           class="error" >This field is required</small>
           </div>
 
+          <div class="user-box" *ngIf="!(getAtrr('providerInfo')?.value)">
+            <p *ngIf="!getAtrr('table')?.value">Choose Table</p>
+            <mat-form-field appearance="fill" class="select-box">
+              <mat-label *ngIf="getAtrr('table')?.value" style="color: #3461c2;">Table</mat-label>
+              <mat-select formControlName="table" (selectionChange)="getColumns()">
+                <mat-option *ngFor="let table of this.tables" [value]="table">
+                  {{table}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <small *ngIf="getAtrr('table')?.invalid &&
+                          getAtrr('table')?.touched"
+                          class="error-select">This field is required</small>
+          </div>
+
         <div class="user-box">
           <p *ngIf="!getAtrr('layerName')?.value">Choose layer</p>
           <mat-form-field appearance="fill" class="select-box">
             <mat-label *ngIf="getAtrr('layerName')?.value" style="color: #3461c2;">Layer</mat-label>
-            <mat-select formControlName="layerName" (selectionChange)="getTables()">
+            <mat-select formControlName="layerName" (selectionChange)="getTables()" *ngIf="getAtrr('providerInfo')?.value">
+              <mat-option *ngFor="let layer of this.layers" [value]="layer.name">
+                {{layer.name}}
+              </mat-option>
+            </mat-select>
+            <mat-select formControlName="layerName" *ngIf="!(getAtrr('providerInfo')?.value)">
               <mat-option *ngFor="let layer of this.layers" [value]="layer.name">
                 {{layer.name}}
               </mat-option>
@@ -53,21 +81,6 @@
           </mat-form-field>
           <small *ngIf="getAtrr('layerName')?.invalid &&
                         getAtrr('layerName')?.touched"
-                        class="error-select">This field is required</small>
-        </div>
-
-        <div class="user-box">
-          <p *ngIf="!getAtrr('table')?.value">Choose Table</p>
-          <mat-form-field appearance="fill" class="select-box">
-            <mat-label *ngIf="getAtrr('table')?.value" style="color: #3461c2;">Table</mat-label>
-            <mat-select formControlName="table" (selectionChange)="getColumns()">
-              <mat-option *ngFor="let table of this.tables" [value]="table">
-                {{table}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <small *ngIf="getAtrr('table')?.invalid &&
-                        getAtrr('table')?.touched"
                         class="error-select">This field is required</small>
         </div>
 

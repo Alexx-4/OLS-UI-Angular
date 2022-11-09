@@ -25,7 +25,8 @@
 
           <div class="user-box">
             <input [ngClass]="(getAtrr('connString')?.invalid &&
-            getAtrr('connString')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="connString">
+            getAtrr('connString')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="connString"
+            (change)="getTables()">
             <p>Connection String</p>
             <small *ngIf="getAtrr('connString')?.invalid &&
                           getAtrr('connString')?.touched"
@@ -33,12 +34,18 @@
           </div>
 
           <div class="user-box">
-            <input [ngClass]="(getAtrr('table')?.invalid &&
-            getAtrr('table')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="table">
-            <p>Table</p>
+            <p *ngIf="!getAtrr('table')?.value">Choose Table</p>
+            <mat-form-field appearance="fill" class="select-box">
+              <mat-label *ngIf="getAtrr('table')?.value" style="color: #3461c2;">Table</mat-label>
+              <mat-select formControlName="table">
+                <mat-option *ngFor="let table of this.tables" [value]="table">
+                  {{table}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
             <small *ngIf="getAtrr('table')?.invalid &&
                           getAtrr('table')?.touched"
-                          class="error" >This field is required</small>
+                          class="error-select">This field is required</small>
           </div>
 
           <div class="user-box">

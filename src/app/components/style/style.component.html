@@ -16,11 +16,14 @@
               <th scope="col">Line Fill</th>
               <th scope="col">Point Fill</th>
               <th scopr="col">Img</th>
-              <th scope="col" class="col-md-1"><a class="create" (click)="goCreateStyle()">New</a></th>
+              <th scope="col" class="col-md-1">
+                <div class="fa-stack" (click)="goCreateStyle()">
+                  <i class="fa fa-plus-circle"></i>
+                </div></th>
             </tr>
           </thead>
           <tbody *ngFor="let style of styles; let i = index;">
-            <tr scope="row" (click)="infoStyle(i)">
+            <tr scope="row">
               <td>
                 {{style.name}}
               </td>
@@ -40,9 +43,13 @@
                 <img [src]="styleService.getImgUrl(style.imageContent)" width="80" height="30">
               </td>
               <td class="col-md-1">
+                <i class="fa fa-info-circle fa-lg info" data-toggle="modal" data-target="#details"
+                (click)="_style = style"></i>
+
                 <i class="far fa-edit fa-lg edit2" (click)="editStyle($event, style)" ></i>
 
-                <i class="far fa-trash-alt fa-lg trash2" (click)="deleteStyle($event, style.id)"></i>
+                <i class="far fa-trash-alt fa-lg trash2" data-toggle="modal" data-target="#confirmDelete"
+                (click)="_style = style"></i>
               </td>
             </tr>
             <tr class="spacer"><td colspan="100"></td></tr>
@@ -56,3 +63,45 @@
 
   </div>
 
+
+  <!-- Modal details -->
+  <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Style Details</h5>
+        </div>
+        <div class="modal-body">
+          <b>Id</b>: {{_style.id}} <br>
+          <b>Name</b>: {{_style.name}} <br>
+          <b>Polygon Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.fill)"> <br>
+          <b>Polygon Outline</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.outlinePen)"> <br>
+          <b>Line Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.line)"> <br>
+          <b>Point Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.pointFill)"> <br>
+          <b>Img</b>: <img class="text-center" [src]="styleService.getImgUrl(_style.imageContent)" width="300" height="100"> <br>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal delete confirmation -->
+  <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+        </div>
+        <div class="modal-body">
+          <b>This item will be permanently removed!</b>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteStyle($event, _style.id)">OK</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

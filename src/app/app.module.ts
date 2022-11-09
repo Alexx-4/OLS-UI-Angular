@@ -19,6 +19,8 @@ import { ProviderComponent } from './components/provider/provider.component';
 import { CreateProviderComponent } from './components/provider/create-provider/create-provider.component';
 import { LayerComponent } from './components/layer/layer.component';
 import { CreateLayerComponent } from './components/layer/create-layer/create-layer.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
@@ -64,7 +66,8 @@ import { CreateCategoryTematicComponent } from './components/tematics/category-t
     ToastrModule.forRoot(),
     MatFormFieldModule,
     MatSelectModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

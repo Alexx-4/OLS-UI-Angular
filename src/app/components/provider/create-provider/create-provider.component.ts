@@ -20,6 +20,7 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
   suscription: Subscription = new Subscription();
 
   providerId: number | undefined = 0;
+  tables: any[] = [];
 
   constructor(formBuilder: FormBuilder,
               private providerService: ProviderService,
@@ -34,7 +35,7 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
         table: ['', Validators.required],
         geoField: ['', Validators.required],
         pkField: ['', Validators.required],
-        boundingBoxField: ['', Validators.required],
+        boundingBoxField: ['', Validators.required]
     })
     }
 
@@ -52,6 +53,7 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
             boundingBoxField: data.boundingBoxField
           });
           this.providerId = data.id;
+          this.getTables();
         }
       }
     });
@@ -101,5 +103,24 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
+
+  getTables(){
+    var connString:string = this.getAtrr('connString')?.value;
+
+    if(connString){
+      this.providerService.getProviderInfo(connString).subscribe({
+        next: (data)=>{
+          this.tables = data as Array<string>;
+      },
+        error: ()=>{
+        this.tables = [];
+        this.toastr.info('Cannot connect with external database');
+      }
+
+        }
+      );
+    }
+    else {this.tables = [];}
   }
 }

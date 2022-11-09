@@ -42,8 +42,4 @@ export class AlphaInfoService {
   getAlphaInfo(id:number){
     return this.http.get(this.url + id);
   }
-
-  getTablesColumns(layerId:number, table:string | null = null){
-    return this.http.post(this.url + 'SQLProviderInfo', {Item1: layerId, Item2: table});
-  }
 }

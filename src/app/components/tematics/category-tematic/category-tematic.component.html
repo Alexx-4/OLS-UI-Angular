@@ -16,7 +16,10 @@
               <th scope="col">Query</th>
               <th scope="col">Style</th>
               <th scope="col"></th>
-              <th scope="col" class="col-md-1"><a class="create" (click)="goCreateCategory()">New</a></th>
+              <th scope="col" class="col-md-1">
+                <div class="fa-stack" (click)="goCreateCategory()">
+                  <i class="fa fa-plus-circle"></i>
+                </div></th>
             </tr>
           </thead>
           <tbody *ngFor="let tematic of tematics; let i = index">
@@ -24,7 +27,7 @@
               <td>
                 {{tematic.tematicName}}
               </td>
-              <td><a class="create">{{tematic.layerName}}</a></td>
+              <td>{{tematic.layerName}}</td>
               <td>{{tematic.tableName}}</td>
               <td>
                 <div *ngFor="let query of tematic.tematicTypeName.split(';'); let i = index">
@@ -38,11 +41,18 @@
                 </div>
               </td>
               <td>{{tematic.styleName}}</td>
-              <td><img [src]="printImage(tematic)" width="80" height="30"></td>
+              <td><img [src]="printImage(tematic)" width="80" height="30" class="imgIcon"
+                      data-toggle="modal" data-target="#img"
+                      (click)="infoTematic(i)"></td>
+
               <td class="col-md-1">
+                <i class="fa fa-info-circle fa-lg info" data-toggle="modal" data-target="#details"
+                (click)="infoTematic(i)"></i>
+
                 <i class="far fa-edit fa-lg edit2" (click)="editCategoryTematic($event, tematic.tematicId)"></i>
 
-                <i class="far fa-trash-alt fa-lg trash2" (click)="deleteCategoryTematic($event, tematic.tematicId)"></i>
+                <i class="far fa-trash-alt fa-lg trash2" data-toggle="modal" data-target="#confirmDelete"
+                   (click)="infoTematic(i)"></i>
               </td>
             </tr>
             <tr class="spacer"><td colspan="100"></td></tr>
@@ -55,5 +65,70 @@
     </div>
 
   </div>
+
+
+
+<!-- Modal details -->
+<div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Category tematic Details</h5>
+      </div>
+      <div class="modal-body">
+        <b>Id</b>: {{_category.tematicId}} <br>
+        <b>Name</b>: {{_category.tematicName}}  <br>
+        <b>Type</b>: {{_category.tematicType}} <br>
+        <b>Filter Name</b>: {{_category.tematicTypeName}} <br>
+        <b>Filter Id</b>: {{_category.tematicTypeId}} <br>
+        <b>Layer Name</b>: {{_category.layerName}} <br>
+        <b>Layer Id</b>: {{_category.layerId}} <br>
+        <b>Table Name</b>: {{_category.tableName}} <br>
+        <b>Style Name</b>: {{_category.styleName}} <br>
+        <b>Style Id</b>: {{_category.styleId}} <br>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal delete confirmation -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+      </div>
+      <div class="modal-body">
+        <b>This tematic, and ALL its queries, will be permanently removed!</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteCategoryTematic($event, _category.tematicId)">OK</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal bigger img -->
+<div class="modal fade" id="img" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Style Icon</h5>
+      </div>
+      <div class="modal-body text-center">
+        <img [src]="printImage(_category)" width="300" height="100">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 

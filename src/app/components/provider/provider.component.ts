@@ -14,6 +14,8 @@ import global from '../../../../global.json';
 export class ProviderComponent implements OnInit {
   providers: any[] = []
 
+  _provider: ProviderModel = new ProviderModel();
+
   constructor(private providerService:ProviderService,
               private router: Router,
               private toastr:ToastrService) { }
@@ -50,12 +52,11 @@ export class ProviderComponent implements OnInit {
     });
   }
 
-  deleteProvider(event: MouseEvent, providerId: number) {
-    event.stopPropagation();
-    this.providerService.deleteProvider(providerId).subscribe({
+  deleteProvider(event: MouseEvent, providerId: number | undefined) {
+    this.providerService.deleteProvider(providerId as number).subscribe({
       next:()=>{
         this.getProviders();
-        this.toastr.error('Provider deleted');
+        this.toastr.info('Provider deleted');
       }
     })
   }

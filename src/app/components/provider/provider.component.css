@@ -117,7 +117,7 @@
 
 .edit2{
   cursor: pointer;
-  margin-right: 0.4cm;
+  margin-right: 0.1cm;
   color:#294643;
 }
 
@@ -138,4 +138,31 @@ color:brown;
   transform: scale(1.05) translateY(-3px);
   box-shadow: 3px 3px 6px #38373785;
   color:red;
+}
+
+.info{
+  cursor: pointer;
+  margin-right: 0.1cm;
+  color:#571464;
+}
+
+.info:hover
+{
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+  color:rgb(74, 14, 153);
+}
+
+.fa-stack:hover{
+  transition: 0.9s;
+  transform: rotateX(180deg);
+  color: blue;
+}
+
+.fa-stack{
+  text-align: center;
+  cursor: pointer;
+  color: rgb(37, 130, 146);
+  font-size: 0.6cm;
+
 }

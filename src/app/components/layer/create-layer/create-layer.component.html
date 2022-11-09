@@ -54,7 +54,10 @@
               <mat-label *ngIf="getAtrr('styles')?.value.length" style="color: #3461c2;">Styles</mat-label>
               <mat-select multiple formControlName="styles">
                 <mat-option *ngFor="let style of this.styles" [value]="style.name">
-                  {{style.name}}
+                  <div class="expcvv">
+                    <div>{{style.name}}</div>
+                    <div><img [src]="styleService.getImgUrl(style.imageContent)" width="80" height="30"></div>
+                </div>
                 </mat-option>
               </mat-select>
             </mat-form-field>
