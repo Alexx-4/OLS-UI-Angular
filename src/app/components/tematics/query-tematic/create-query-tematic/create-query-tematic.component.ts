@@ -25,6 +25,7 @@ export class CreateQueryTematicComponent implements OnInit {
   tablesColumns: any;
 
   styles: any;
+  _styleImg: any;
 
   qIndex:number = -1;
   tematicIndex = 0;

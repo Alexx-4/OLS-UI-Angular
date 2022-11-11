@@ -113,13 +113,16 @@
                 <option value="createNew" (click)="modifyStyle('createNew', i, styleSelected)">---create new style---</option>
               </select>
             </td>
-            <td><img *ngIf="this.styles && query.styleName !== ''" [src]="getStyleImg(query.styleName)" width="80" height="30"></td>
+            <td><img *ngIf="this.styles && query.styleName !== ''" [src]="getStyleImg(query.styleName)" width="80" height="30"
+                      class="imgIcon" data-toggle="modal" data-target="#img"
+                      (click)="_styleImg = query.styleName"></td>
 
           </tr>
           <tr class="spacer"><td colspan="100"></td></tr>
 
         </tbody>
       </table>
+
     </div>
 
     <div class="expcvv">
@@ -134,4 +137,22 @@
 
   </div>
 
+</div>
+
+
+<!-- Modal bigger img -->
+<div class="modal fade" id="img" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Style Icon</h5>
+      </div>
+      <div class="modal-body text-center">
+        <img [src]="getStyleImg(_styleImg)" width="300" height="100">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
 </div>

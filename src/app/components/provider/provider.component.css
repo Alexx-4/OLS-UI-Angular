@@ -103,16 +103,10 @@
 .custom-table tbody tr.active th, .custom-table tbody tr.active td, .custom-table tbody tr:hover th, .custom-table tbody tr:hover td {
   color: rgb(10, 9, 9);
   background: #79c3e6;
-  cursor: pointer;
   transform: scale(1.02) translateY(-3px);
   border:none;
   border-color: #79c3e6;
   border-spacing: 0;
-}
-
-.create{
-  cursor: pointer;
-
 }
 
 .edit2{

@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { query, TematicModel } from 'src/app/models/tematicModel';
 import { StyleService } from 'src/app/services/style.service';
 import { TematicService } from 'src/app/services/tematic.service';
@@ -19,10 +22,15 @@ export class CategoryTematicComponent implements OnInit {
 
   _category: any = {};
 
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  dataObs!: Observable<any>;
+
   constructor(private tematicService:TematicService,
               private router: Router,
               private toastr: ToastrService,
-              private styleService: StyleService) { }
+              private styleService: StyleService,
+              private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.styleService.getStyles().subscribe(
@@ -33,15 +41,23 @@ export class CategoryTematicComponent implements OnInit {
     )
   }
 
-  infoTematic(i:number) {
-      if(this.tematics)
-        this._category = this.tematics[i];
+  setPagination(tableData:any) {
+    this.dataSource = new MatTableDataSource<any>(tableData);
+    this._changeDetectorRef.detectChanges();
+    this.dataSource.paginator = this.paginator;
+    this.dataObs = this.dataSource.connect();
+  }
+
+  infoTematic(tematic:any) {
+      if(tematic)
+        this._category = tematic;
     }
 
   getCategoryTematics(){
     this.tematicService.getCategoryTematics().subscribe({
       next:(data)=>{
         this.tematics = data;
+        this.setPagination(this.tematics);
       }
     })
   }

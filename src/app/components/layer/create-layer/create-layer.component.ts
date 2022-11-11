@@ -26,6 +26,7 @@ export class CreateLayerComponent implements OnInit {
 
   providers: any;
   styles: StyleModel[] = [];
+  _styleImg:any;
 
   constructor(formBuilder: FormBuilder,
               private layerService: LayerService,

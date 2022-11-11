@@ -20,6 +20,7 @@ export class CreateCategoryTematicComponent implements OnInit {
 
   layers:any[] = [];
   styles:any;
+  _styleImg:any;
   tables:string[] = [];
 
   tablesColumns: any;
@@ -184,6 +185,7 @@ export class CreateCategoryTematicComponent implements OnInit {
             }
         this.tematicService.tematicQueries.push(_query);
       }
+
       this.toastr.info('Founded ' + this.styles.length + ' styles',
                                     this.tematicService.tematicQueries.length + ' queries created');
     });
@@ -200,9 +202,12 @@ export class CreateCategoryTematicComponent implements OnInit {
   }
 
   getStyleImg(styleName: string){
+    if(this.styles){
     var _style = this.styles.find((s: { name: string; })=>s.name === styleName);
-    return this.styleService.getImgUrl(_style.imageContent);
-
+    if(_style)
+      return this.styleService.getImgUrl(_style.imageContent);
+  }
+    return
   }
 
   modifyStyle(newStyle:string, i:number, selectElement: HTMLSelectElement){

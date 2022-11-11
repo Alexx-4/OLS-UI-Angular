@@ -228,13 +228,7 @@ transform: scale(1.05) translateY(-3px);
 .custom-table tbody tr.active th, .custom-table tbody tr.active td, .custom-table tbody tr:hover th, .custom-table tbody tr:hover td {
   color: rgb(10, 9, 9);
   background: #79c3e6;
-  cursor: pointer;
   transform: scale(1.00) translateY(-3px);
-}
-
-.create{
-  cursor: pointer;
-
 }
 
 .edit2{
@@ -273,6 +267,7 @@ color:brown;
   border-radius: 50px;
   align-content: center;
   background-color: #bbcce2;
+  cursor: pointer;
 
   width: 100%;
   padding: 0.5rem;
@@ -281,4 +276,14 @@ color:brown;
 
 .inputbox2:hover{
   background-color: #7390e0;
+}
+
+.imgIcon{
+  cursor: pointer;
+}
+
+.imgIcon:hover{
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+  outline-color: blue;
 }

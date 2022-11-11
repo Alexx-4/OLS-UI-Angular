@@ -107,7 +107,7 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
     if(create){
       this.styleService.createStyle(_style).subscribe({
         next:()=>{
-          if(this.tematic.queryToEdit){
+          if(this.tematic.queryToEdit !== undefined){
             this.tematic.queries[this.tematic.queryToEdit].styleName = _style.name;
             this.tematicService.updateTematicModel(this.tematic);
             this.router.navigate([global['routeCreateCategoryTematic']]);

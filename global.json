@@ -22,5 +22,7 @@
   "routeCreateAlphaInfo": "alphaInfo/create",
 
   "routeStyle": "style",
-  "routeCreateStyle": "style/create"
+  "routeCreateStyle": "style/create",
+
+  "routeUserRoles": "userRoles"
 }

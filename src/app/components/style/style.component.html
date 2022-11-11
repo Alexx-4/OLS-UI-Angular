@@ -22,7 +22,7 @@
                 </div></th>
             </tr>
           </thead>
-          <tbody *ngFor="let style of styles; let i = index;">
+          <tbody *ngFor="let style of dataObs| async;">
             <tr scope="row">
               <td>
                 {{style.name}}
@@ -56,6 +56,12 @@
 
           </tbody>
         </table>
+        <mat-paginator style="font-size: 0.4cm; color: black;" showFirstLastButtons [length]="100"
+              [pageSize]="3"
+              [pageSizeOptions]="[3, 5, 10, 15, 20]"
+              aria-label="Select page">
+        </mat-paginator>
+
       </div>
 
 
@@ -73,11 +79,11 @@
         </div>
         <div class="modal-body">
           <b>Id</b>: {{_style.id}} <br>
-          <b>Name</b>: {{_style.name}} <br>
-          <b>Polygon Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.fill)"> <br>
-          <b>Polygon Outline</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.outlinePen)"> <br>
-          <b>Line Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.line)"> <br>
-          <b>Point Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.pointFill)"> <br>
+          <b>Name</b>: {{_style.name}} <br><br>
+          <b>Polygon Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.fill)"> <br><br>
+          <b>Polygon Outline</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.outlinePen)"> <br><br>
+          <b>Line Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.line)"> <br><br>
+          <b>Point Fill</b>: <input disabled type="color" [value]="styleService.rgbToHex(_style.pointFill)"> <br><br>
           <b>Img</b>: <img class="text-center" [src]="styleService.getImgUrl(_style.imageContent)" width="300" height="100"> <br>
 
         </div>

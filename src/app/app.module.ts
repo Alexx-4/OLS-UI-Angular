@@ -5,8 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import { LoginUserComponent } from './components/authentication/login-user/login-user.component';
-import { RegisterUserComponent } from './components/authentication/register-user/register-user.component';
+import { LoginUserComponent } from './components/user-config/login-user/login-user.component';
+import { RegisterUserComponent } from './components/user-config/register-user/register-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PageNotFoundComponent } from './components/others/page-not-found/page-not-found.component';
 import { TitlePageComponent } from './components/others/title-page/title-page.component';
@@ -20,6 +20,8 @@ import { CreateProviderComponent } from './components/provider/create-provider/c
 import { LayerComponent } from './components/layer/layer.component';
 import { CreateLayerComponent } from './components/layer/create-layer/create-layer.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatIconModule} from '@angular/material/icon';
 
 
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,6 +35,7 @@ import { CategoryTematicComponent } from './components/tematics/category-tematic
 import { StyleComponent } from './components/style/style.component';
 import { CreateStyleComponent } from './components/style/create-style/create-style.component';
 import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
+import { RolesUserComponent } from './components/user-config/roles-user/roles-user.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,8 @@ import { CreateCategoryTematicComponent } from './components/tematics/category-t
     CategoryTematicComponent,
     StyleComponent,
     CreateStyleComponent,
-    CreateCategoryTematicComponent
+    CreateCategoryTematicComponent,
+    RolesUserComponent
   ],
 
   imports: [
@@ -67,7 +71,9 @@ import { CreateCategoryTematicComponent } from './components/tematics/category-t
     MatFormFieldModule,
     MatSelectModule,
     MatSidenavModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

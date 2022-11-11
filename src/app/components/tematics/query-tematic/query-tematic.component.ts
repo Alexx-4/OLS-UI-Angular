@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { query, TematicModel } from 'src/app/models/tematicModel';
 import { StyleService } from 'src/app/services/style.service';
 import { TematicService } from 'src/app/services/tematic.service';
@@ -17,10 +20,17 @@ export class QueryTematicComponent implements OnInit {
   tematics: any;
   styles:any;
 
+  _queryTematic: any = {};
+
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  dataObs!: Observable<any>;
+
   constructor(private tematicService:TematicService,
               private router: Router,
               private toastr: ToastrService,
-              private styleService: StyleService) { }
+              private styleService: StyleService,
+              private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.styleService.getStyles().subscribe(
@@ -32,21 +42,28 @@ export class QueryTematicComponent implements OnInit {
 
   }
 
-  infoTematic(i:number) {
-      if(this.tematics)
-    console.log(this.tematics[i]);
+  setPagination(tableData:any) {
+    this.dataSource = new MatTableDataSource<any>(tableData);
+    this._changeDetectorRef.detectChanges();
+    this.dataSource.paginator = this.paginator;
+    this.dataObs = this.dataSource.connect();
+  }
+
+  infoTematic(tematic:any) {
+    if(tematic)
+        this._queryTematic = tematic;
     }
 
   getQueryTematics(){
     this.tematicService.getQueryTematics().subscribe({
       next:(data)=>{
         this.tematics = data;
+        this.setPagination(this.tematics);
       }
     })
   }
 
   deleteQueryTematic(event:Event, id:number) {
-    event.stopPropagation();
     this.tematicService.deleteTematic(id).subscribe({
       next: ()=> {
         this.getQueryTematics();
@@ -107,8 +124,12 @@ export class QueryTematicComponent implements OnInit {
   }
 
   printImage(tematic:any){
-    var style = this.styles.find((s: { id: any; })=> s.id === tematic.styleId);
-    return this.styleService.getImgUrl(style.imageContent);
+    if(this.styles){
+      var style = this.styles.find((s: { id: any; })=> s.id === tematic.styleId);
+      if(style)
+        return this.styleService.getImgUrl(style.imageContent);
+  }
+    return
   }
 
 }

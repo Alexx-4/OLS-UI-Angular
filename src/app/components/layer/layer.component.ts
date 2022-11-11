@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { LayerModel } from 'src/app/models/LayerModel';
 import { ProviderModel } from 'src/app/models/ProviderModel';
 import { StyleModel } from 'src/app/models/StyleModel';
@@ -21,10 +24,15 @@ export class LayerComponent implements OnInit {
   _layer: LayerModel = new LayerModel();
   _style: any;
 
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  dataObs!: Observable<any>;
+
   constructor(private layerService:LayerService,
               private router: Router,
               private toastr:ToastrService,
-              private styleService:StyleService) { }
+              private styleService:StyleService,
+              private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.layerService.updateLayerModel({} as LayerModel);
@@ -37,7 +45,12 @@ export class LayerComponent implements OnInit {
 
   }
 
-
+  setPagination(tableData:any) {
+    this.dataSource = new MatTableDataSource<any>(tableData);
+    this._changeDetectorRef.detectChanges();
+    this.dataSource.paginator = this.paginator;
+    this.dataObs = this.dataSource.connect();
+  }
 
   getLayers(){
     this.layerService.getLayers().subscribe({
@@ -61,7 +74,7 @@ export class LayerComponent implements OnInit {
 
           this.layers.push(layer);
         }
-
+        this.setPagination(this.layers);
       },
       error: (err) => console.log(err)
     });

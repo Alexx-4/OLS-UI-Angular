@@ -1,6 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { ProviderModel } from 'src/app/models/ProviderModel';
 import { ProviderService } from 'src/app/services/provider.service';
 
@@ -16,13 +19,25 @@ export class ProviderComponent implements OnInit {
 
   _provider: ProviderModel = new ProviderModel();
 
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  dataObs!: Observable<any>;
+
   constructor(private providerService:ProviderService,
               private router: Router,
-              private toastr:ToastrService) { }
+              private toastr:ToastrService,
+              private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.providerService.updateProviderModel({} as ProviderModel);
     this.getProviders();
+  }
+
+  setPagination(tableData:any) {
+    this.dataSource = new MatTableDataSource<any>(tableData);
+    this._changeDetectorRef.detectChanges();
+    this.dataSource.paginator = this.paginator;
+    this.dataObs = this.dataSource.connect();
   }
 
   getProviders(){
@@ -47,6 +62,7 @@ export class ProviderComponent implements OnInit {
 
           this.providers.push(provider);
         }
+        this.setPagination(this.providers);
       },
       error: (err) => console.log(err)
     });

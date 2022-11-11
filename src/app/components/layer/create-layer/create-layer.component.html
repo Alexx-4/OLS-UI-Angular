@@ -56,7 +56,9 @@
                 <mat-option *ngFor="let style of this.styles" [value]="style.name">
                   <div class="expcvv">
                     <div>{{style.name}}</div>
-                    <div><img [src]="styleService.getImgUrl(style.imageContent)" width="80" height="30"></div>
+                    <div><img [src]="styleService.getImgUrl(style.imageContent)" width="80" height="30"
+                      class="imgIcon" data-toggle="modal" data-target="#img"
+                        (click)="_styleImg = style.imageContent"></div>
                 </div>
                 </mat-option>
               </mat-select>
@@ -78,4 +80,23 @@
         </form>
   </div>
 
+</div>
+
+
+
+<!-- Modal bigger img -->
+<div class="modal fade" id="img" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Style Icon</h5>
+      </div>
+      <div class="modal-body text-center">
+        <img [src]="styleService.getImgUrl(_styleImg)" width="300" height="100">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,55 +1,58 @@
 
-
   <div class="content">
 
     <div class="container">
-      <h2 class="mb-5"><b>AlphaInfos</b></h2>
+      <h2 class="mb-5"><b>User Manager</b></h2>
+      <!-- {{rolesForm.value | json}} -->
 
+      <div class="table-responsive custom-table-responsive" [formGroup]="rolesForm">
 
-      <div class="table-responsive custom-table-responsive">
-
-        <table class="table custom-table">
+        <table class="table custom-table" formArrayName="roles">
           <thead>
             <tr>
-              <th scope="col">AlphaInfo Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Layer</th>
-              <th scope="col">Table</th>
-              <th scope="col">Columns</th>
-              <th scope="col" class="col-md-1">
-                <div class="fa-stack" (click)="goCreateAlphaInfo()">
-                  <i class="fa fa-plus-circle"></i>
-                </div></th>
+              <th scope="col">User</th>
+              <th scope="col">Roles</th>
+              <th scope="col">workspaces</th>
+              <th scope="col">Client Apps</th>
+              <th scope="col" class="col-md-1"></th>
             </tr>
           </thead>
-          <tbody *ngFor="let alphaInfo of dataObs| async;">
+          <tbody *ngFor="let user of dataObs | async; let i = index">
             <tr scope="row">
               <td>
-                {{alphaInfo.name}}
+                {{user.email}}
               </td>
               <td>
-                {{alphaInfo.description}}
+
+                <div class="user-box">
+                  <mat-form-field appearance="fill" class="select-box" >
+                    <mat-select multiple [formControlName]="paginator.pageIndex * paginator.pageSize + i" (selectionChange)="updateRoles(user)">
+                      <mat-option *ngFor="let rol of this.roles" [value]="rol.name" >
+                        {{rol.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               </td>
-              <td>
-                {{alphaInfo.layerName}}
+
+              <td class="text-center">
+                <i class="fa fa-eye"></i>
               </td>
-              <td>
-                {{alphaInfo.table}}
+
+              <td class="text-center">
+                <i class="fa-icon-eye-open"></i>
               </td>
-              <td>
-                {{alphaInfo.columns}}
-              </td>
+
               <td class="col-md-1">
                 <i class="fa fa-info-circle fa-lg info" data-toggle="modal" data-target="#details"
-                (click)="_alphaInfo = alphaInfo"></i>
-
-                <i class="far fa-edit fa-lg edit2" (click)="editAlphaInfo($event, alphaInfo)" ></i>
+                (click)="_user = user"></i>
 
                 <i class="far fa-trash-alt fa-lg trash2" data-toggle="modal" data-target="#confirmDelete"
-                (click)="_alphaInfo = alphaInfo"></i>
+                (click)="_user = user"></i>
               </td>
             </tr>
             <tr class="spacer"><td colspan="100"></td></tr>
+
           </tbody>
         </table>
         <mat-paginator style="font-size: 0.4cm; color: black;" showFirstLastButtons [length]="100"
@@ -57,6 +60,7 @@
               [pageSizeOptions]="[3, 5, 10, 15, 20]"
               aria-label="Select page">
         </mat-paginator>
+
       </div>
 
 
@@ -65,25 +69,18 @@
   </div>
 
 
-
-
-  <!-- Modal alpha info -->
+  <!-- Modal details -->
   <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Alpha Info Details</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">User Details</h5>
         </div>
-        <div class="modal-body">
-          <b>Id</b>: {{_alphaInfo.id}} <br>
-          <b>Name</b>: {{_alphaInfo.name}} <br>
-          <b>Description</b>: {{_alphaInfo.description}} <br>
-          <b>Connection String</b>: {{_alphaInfo.connectionString}} <br>
-          <b>Table</b>: {{_alphaInfo.table}} <br>
-          <b>PKField</b>: {{_alphaInfo.pkField}} <br>
-          <b>Columns</b>: {{_alphaInfo.columns}} <br>
-          <b>Layer Name</b>: {{_alphaInfo.layerName}} <br>
-          <b>Layer Id</b>: {{_alphaInfo.layerId}} <br>
+        <div *ngIf="_user" class="modal-body">
+
+          <b>Id</b>: {{_user.id}} <br>
+          <b>Email</b>: {{_user.email}} <br>
+          <b>Roles</b>: {{_user.roles}} <br>
 
         </div>
         <div class="modal-footer">
@@ -101,10 +98,10 @@
           <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
         </div>
         <div class="modal-body">
-          <b>This item will be permanently removed!</b>
+          <b>This item, his client apps and workspaces, will be permanently removed!</b>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteAlphaInfo($event, _alphaInfo.id)">OK</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteUser(_user)">OK</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>

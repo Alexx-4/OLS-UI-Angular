@@ -1,10 +1,13 @@
 import { getMultipleValuesInSingleSelectionError } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { StyleModel } from 'src/app/models/StyleModel';
 import { StyleService } from 'src/app/services/style.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 import global from '../../../../global.json';
 
@@ -18,13 +21,26 @@ export class StyleComponent implements OnInit {
   styles: any[] = []
   _style: StyleModel = new StyleModel();
 
+
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  dataObs!: Observable<any>;
+
   constructor(public styleService:StyleService,
               private router: Router,
-              private toastr:ToastrService) { }
+              private toastr:ToastrService,
+              private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.styleService.updateStyleModel({} as StyleModel);
     this.getStyles();
+  }
+
+  setPagination(tableData:any) {
+    this.dataSource = new MatTableDataSource<any>(tableData);
+    this._changeDetectorRef.detectChanges();
+    this.dataSource.paginator = this.paginator;
+    this.dataObs = this.dataSource.connect();
   }
 
   getStyles(){
@@ -53,6 +69,7 @@ export class StyleComponent implements OnInit {
 
           this.styles.push(style);
         }
+        this.setPagination(this.styles);
       },
       error: (err) => console.log(err)
     });

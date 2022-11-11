@@ -3,11 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 import global from '../../global.json'
 
-import { LoginUserComponent } from './components/authentication/login-user/login-user.component';
+import { LoginUserComponent } from './components/user-config/login-user/login-user.component';
 import { PageNotFoundComponent } from './components/others/page-not-found/page-not-found.component';
 import { CreateProviderComponent } from './components/provider/create-provider/create-provider.component';
 import { ProviderComponent } from './components/provider/provider.component';
-import { RegisterUserComponent } from './components/authentication/register-user/register-user.component';
+import { RegisterUserComponent } from './components/user-config/register-user/register-user.component';
 import { TitlePageComponent } from './components/others/title-page/title-page.component';
 import { LayerComponent } from './components/layer/layer.component';
 import { CreateLayerComponent } from './components/layer/create-layer/create-layer.component';
@@ -19,6 +19,7 @@ import { CategoryTematicComponent } from './components/tematics/category-tematic
 import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
 import { StyleComponent } from './components/style/style.component';
 import { CreateStyleComponent } from './components/style/create-style/create-style.component';
+import { RolesUserComponent } from './components/user-config/roles-user/roles-user.component';
 
 const routes: Routes = [
   {path:'', redirectTo:global['routeTitlePage'], pathMatch: 'full'},
@@ -37,6 +38,7 @@ const routes: Routes = [
   {path: global['routeStyle'], component: StyleComponent},
   {path: global['routeCreateStyle'], component: CreateStyleComponent},
   {path: global['routeCreateCategoryTematic'], component: CreateCategoryTematicComponent},
+  {path: global['routeUserRoles'], component: RolesUserComponent},
   {path: "**", component: PageNotFoundComponent}
 ];
 

@@ -1,7 +1,10 @@
 import { getLocaleDayPeriods } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import { AlphaInfoModel } from 'src/app/models/AlphaInfoModel';
 import { LayerModel } from 'src/app/models/LayerModel';
 import { AlphaInfoService } from 'src/app/services/alpha-info.service';
@@ -20,10 +23,15 @@ export class AlphaInfoComponent implements OnInit {
 
   layers: any[] = [];
 
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  dataObs!: Observable<any>;
+
   constructor(private alphaInfoService:AlphaInfoService,
               private router: Router,
               private toastr:ToastrService,
-              private layerService: LayerService) { }
+              private layerService: LayerService,
+              private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.layerService.getLayers().subscribe(
@@ -40,6 +48,13 @@ export class AlphaInfoComponent implements OnInit {
       }
     )
     this.alphaInfoService.updateAlphaInfoModel({} as AlphaInfoModel);
+  }
+
+  setPagination(tableData:any) {
+    this.dataSource = new MatTableDataSource<any>(tableData);
+    this._changeDetectorRef.detectChanges();
+    this.dataSource.paginator = this.paginator;
+    this.dataObs = this.dataSource.connect();
   }
 
   getAlphaInfos(){
@@ -67,6 +82,7 @@ export class AlphaInfoComponent implements OnInit {
 
           this.alphaInfos.push(alphaInfo);
         }
+        this.setPagination(this.alphaInfos);
 
       },
       error: (err) => console.log(err)

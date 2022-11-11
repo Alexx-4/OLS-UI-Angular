@@ -538,3 +538,14 @@ color:brown;
 }
 
 
+.imgIcon{
+  cursor: pointer;
+}
+
+.imgIcon:hover{
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+  outline-color: blue;
+}
+
+

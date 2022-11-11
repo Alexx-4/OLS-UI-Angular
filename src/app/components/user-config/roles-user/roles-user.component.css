@@ -106,7 +106,9 @@
   transform: scale(1.02) translateY(-3px);
   border:none;
   border-color: #79c3e6;
+  border-spacing: 0;
 }
+
 
 .edit2{
   cursor: pointer;
@@ -116,7 +118,7 @@
 
 .edit2:hover
 {
-  transform: scale(1.05) translateY(-3px);
+transform: scale(1.05) translateY(-3px);
   box-shadow: 3px 3px 6px #38373785;
   color:rgb(25, 50, 194);
 }
@@ -133,41 +135,11 @@ color:brown;
   color:red;
 }
 
-.inputbox
-{
-  color:#030303;
-  padding: 0.5rem;
-  border: none;
-  margin-bottom: 0.1cm;
-  border-radius: 0.3rem;
-  font-family: 'Roboto', sans-serif;
-  color: #3e3f42;
-  background-color: #bbcce2;
-  font-size: 1.06rem;
-  font-weight: 500;
-  outline:none;
-  cursor: pointer;
-}
-
-.inputbox:hover{
-  transform: scale(1.05) translateY(-3px);
-  box-shadow: 3px 3px 6px #38373785;
-}
-
-.imgIcon{
-  cursor: pointer;
-}
-
-.imgIcon:hover{
-  transform: scale(1.05) translateY(-3px);
-  box-shadow: 3px 3px 6px #38373785;
-  outline-color: blue;
-}
-
 .info{
   cursor: pointer;
   margin-right: 0.1cm;
   color:#571464;
+  margin-right: 0.4cm;
 }
 
 .info:hover
@@ -189,4 +161,12 @@ color:brown;
   color: rgb(37, 130, 146);
   font-size: 0.6cm;
 
+}
+
+.select-box{
+  width: 10cm;
+}
+
+.eye{
+  font-size: x-large;
 }

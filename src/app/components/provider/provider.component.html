@@ -20,7 +20,7 @@
                 </div></th>
             </tr>
           </thead>
-          <tbody *ngFor="let provider of providers; let i = index;">
+          <tbody *ngFor="let provider of dataObs| async;">
             <tr scope="row">
               <td>
                 {{provider.name}}
@@ -48,6 +48,11 @@
 
           </tbody>
         </table>
+        <mat-paginator style="font-size: 0.4cm; color: black;" showFirstLastButtons [length]="100"
+              [pageSize]="3"
+              [pageSizeOptions]="[3, 5, 10, 15, 20]"
+              aria-label="Select page">
+        </mat-paginator>
       </div>
 
 
