@@ -1,0 +1,116 @@
+
+  <div class="content">
+
+    <div class="container">
+      <h2 class="mb-5"><b>Layers</b></h2>
+
+
+      <div class="table-responsive custom-table-responsive">
+
+        <table class="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">WorkspaceName</th>
+              <th scope="col">User Name</th>
+              <th scope="col">ClientApps</th>
+              <th scope="col">Functions</th>
+              <th scope="col" class="col-md-1">
+                <div class="fa-stack" >
+                  <i class="fa fa-plus-circle" (click)="goCreateWorkspace()"></i>
+                </div></th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let workspace of dataObs | async">
+            <tr scope="row">
+              <td>
+                {{workspace.name}}
+              </td>
+              <td>
+                {{workspace.userName}}
+              </td>
+              <td>
+                <select class="inputbox" (click)="$event.stopPropagation(); appSelect.value = '--see apps--'" #appSelect>
+                  <option value="--see apps--">--see apps--</option>
+                  <option *ngFor="let clientApp of workspace.clientApps; let j = index" value="--see apps--">{{clientApp}}
+                    </option>
+                    <option *ngIf="workspace.clientApps.length < 1">**no apps to show**</option>
+                </select>
+              </td>
+              <td>
+                <select class="inputbox" (click)="funcSelect.value = '--see functions--'" #funcSelect>
+                  <option value="--see functions--">--see functions--</option>
+                  <option *ngFor="let func of workspace.funcs; let j = index" value="--see functions--">{{func}}
+                    </option>
+                    <option *ngIf="workspace.funcs.length < 1">**no functions to show**</option>
+                </select>
+              </td>
+
+              <td class="col-md-1">
+                <i class="fa fa-info-circle fa-lg info" data-toggle="modal" data-target="#details"
+                (click)="_workspace = workspace"></i>
+
+                <i class="far fa-edit fa-lg edit2"  ></i>
+
+                <i class="far fa-trash-alt fa-lg trash2" data-toggle="modal" data-target="#confirmDelete"
+                (click)="_workspace = workspace"></i>
+              </td>
+            </tr>
+            <tr class="spacer"><td colspan="100"></td></tr>
+
+          </tbody>
+        </table>
+        <mat-paginator style="font-size: 0.4cm; color: black;" showFirstLastButtons [length]="100"
+              [pageSize]="3"
+              [pageSizeOptions]="[3, 5, 10, 15, 20]"
+              aria-label="Select page">
+        </mat-paginator>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+  <!-- Modal details -->
+  <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Layer Details</h5>
+        </div>
+        <div class="modal-body">
+          <b>Id</b>: {{_workspace.id}} <br>
+          <b>Name</b>: {{_workspace.name}} <br>
+          <b>UserName</b>: {{_workspace.userName}} <br>
+          <b>UserId</b>: {{_workspace.userId}} <br>
+          <b>Client Apps</b>: {{_workspace.clientApps | json}} <br>
+          <b>Functions</b>: {{_workspace.funcs | json}} <br>
+          <b>Default</b>: <div *ngIf="_workspace.userName === '--(default workspace)--'">Yes</div>
+                          <div *ngIf="_workspace.userName !== '--(default workspace)--'">No</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal delete confirmation -->
+  <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+        </div>
+        <div class="modal-body">
+          <b>This item will be permanently removed!</b>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteWorkspace(_workspace.id)">OK</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

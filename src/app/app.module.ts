@@ -36,6 +36,10 @@ import { StyleComponent } from './components/style/style.component';
 import { CreateStyleComponent } from './components/style/create-style/create-style.component';
 import { CreateCategoryTematicComponent } from './components/tematics/category-tematic/create-category-tematic/create-category-tematic.component';
 import { RolesUserComponent } from './components/user-config/roles-user/roles-user.component';
+import { WorkspaceComponent } from './components/user-config/workspace/workspace.component';
+import { ClientAppComponent } from './components/user-config/client-app/client-app.component';
+import { CreateClientAppComponent } from './components/user-config/client-app/create-client-app/create-client-app.component';
+import { CreateWorkspaceComponent } from './components/user-config/workspace/create-workspace/create-workspace.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +62,11 @@ import { RolesUserComponent } from './components/user-config/roles-user/roles-us
     StyleComponent,
     CreateStyleComponent,
     CreateCategoryTematicComponent,
-    RolesUserComponent
+    RolesUserComponent,
+    WorkspaceComponent,
+    ClientAppComponent,
+    CreateClientAppComponent,
+    CreateWorkspaceComponent
   ],
 
   imports: [

@@ -20,6 +20,10 @@ import { CreateCategoryTematicComponent } from './components/tematics/category-t
 import { StyleComponent } from './components/style/style.component';
 import { CreateStyleComponent } from './components/style/create-style/create-style.component';
 import { RolesUserComponent } from './components/user-config/roles-user/roles-user.component';
+import { WorkspaceComponent } from './components/user-config/workspace/workspace.component';
+import { CreateWorkspaceComponent } from './components/user-config/workspace/create-workspace/create-workspace.component';
+import { ClientAppComponent } from './components/user-config/client-app/client-app.component';
+import { CreateClientAppComponent } from './components/user-config/client-app/create-client-app/create-client-app.component';
 
 const routes: Routes = [
   {path:'', redirectTo:global['routeTitlePage'], pathMatch: 'full'},
@@ -39,6 +43,10 @@ const routes: Routes = [
   {path: global['routeCreateStyle'], component: CreateStyleComponent},
   {path: global['routeCreateCategoryTematic'], component: CreateCategoryTematicComponent},
   {path: global['routeUserRoles'], component: RolesUserComponent},
+  {path: global['routeWorkspace'], component: WorkspaceComponent},
+  {path: global['routeCreateWorkspace'], component: CreateWorkspaceComponent},
+  {path: global['routeClientApp'], component: ClientAppComponent},
+  {path: global['routeCreateClientApp'], component: CreateClientAppComponent},
   {path: "**", component: PageNotFoundComponent}
 ];
 

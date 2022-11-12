@@ -24,5 +24,11 @@
   "routeStyle": "style",
   "routeCreateStyle": "style/create",
 
-  "routeUserRoles": "userRoles"
+  "routeUserRoles": "userRoles",
+
+  "routeWorkspace": "workspace",
+  "routeCreateWorkspace": "workspace/create",
+
+  "routeClientApp": "clientApp",
+  "routeCreateClientApp": "clientApp/create"
 }
