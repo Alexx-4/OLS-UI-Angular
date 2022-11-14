@@ -32,4 +32,16 @@ export class WorkspaceService {
   deleteWorkspace(id:number){
     return this.http.delete(this.url + id);
   }
+
+  getFunctions(){
+    return this.http.get(this.url + 'functions');
+  }
+
+  createWorkspace(model:{id?:number, name:string, layerIds:number[], functionIds: number[]}){
+    return this.http.post(this.url + 'create', model);
+  }
+
+  editWorkspace(model:{id?:number, name:string, layerIds:number[], functionIds: number[]}){
+    return this.http.get('');
+  }
 }

@@ -80,4 +80,8 @@ export class WorkspaceComponent implements OnInit {
     this.router.navigate([global['routeCreateWorkspace']]);
   }
 
+  getName(c:any){
+    return c.name;
+  }
+
 }

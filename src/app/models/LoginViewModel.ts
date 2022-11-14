@@ -11,3 +11,8 @@ export class LoginViewModel{
   }
 
 }
+
+
+export interface AuthenticatedResponse{
+  token: string;
+}

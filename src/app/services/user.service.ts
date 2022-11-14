@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 
 import global from '../../../global.json'
-import { LoginViewModel } from '../models/LoginViewModel';
+import { AuthenticatedResponse, LoginViewModel } from '../models/LoginViewModel';
 import { RegisterViewModel } from '../models/RegisterViewModel';
 
 @Injectable({
@@ -13,11 +14,20 @@ export class UserService {
 
   url:string = global['serverURL'] + 'User/';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private jwtHelper: JwtHelperService) {
    }
 
-   loginUser(user:LoginViewModel):Observable<LoginViewModel>{
-    return this.http.post<LoginViewModel>(this.url + 'Login', user);
+   isUserAuthenticated = (): boolean => {
+    const token = localStorage.getItem("jwt");
+    if (token && !this.jwtHelper.isTokenExpired(token)){
+      return true;
+    }
+    return false;
+  }
+
+   loginUser(user:LoginViewModel):Observable<AuthenticatedResponse>{
+    return this.http.post<AuthenticatedResponse>(this.url + 'Login', user);
   }
 
   registerUser(user: RegisterViewModel){

@@ -2,7 +2,7 @@
   <div class="content">
 
     <div class="container">
-      <h2 class="mb-5"><b>Layers</b></h2>
+      <h2 class="mb-5"><b style="color:blue">Workspaces</b></h2>
 
 
       <div class="table-responsive custom-table-responsive">
@@ -12,6 +12,7 @@
             <tr>
               <th scope="col">WorkspaceName</th>
               <th scope="col">User Name</th>
+              <th scope="col">Layers</th>
               <th scope="col">ClientApps</th>
               <th scope="col">Functions</th>
               <th scope="col" class="col-md-1">
@@ -29,9 +30,17 @@
                 {{workspace.userName}}
               </td>
               <td>
+                <select class="inputbox" (click)="$event.stopPropagation(); layerSelect.value = '--see layers--'" #layerSelect>
+                  <option value="--see layers--">--see layers--</option>
+                  <option *ngFor="let layer of workspace.layers let j = index" value="--see layers--">{{layer.name}}
+                    </option>
+                    <option *ngIf="workspace.layers.length < 1">**no layers to show**</option>
+                </select>
+              </td>
+              <td>
                 <select class="inputbox" (click)="$event.stopPropagation(); appSelect.value = '--see apps--'" #appSelect>
                   <option value="--see apps--">--see apps--</option>
-                  <option *ngFor="let clientApp of workspace.clientApps; let j = index" value="--see apps--">{{clientApp}}
+                  <option *ngFor="let clientApp of workspace.clientApps; let j = index" value="--see apps--">{{clientApp.name}}
                     </option>
                     <option *ngIf="workspace.clientApps.length < 1">**no apps to show**</option>
                 </select>
@@ -39,7 +48,7 @@
               <td>
                 <select class="inputbox" (click)="funcSelect.value = '--see functions--'" #funcSelect>
                   <option value="--see functions--">--see functions--</option>
-                  <option *ngFor="let func of workspace.funcs; let j = index" value="--see functions--">{{func}}
+                  <option *ngFor="let func of workspace.funcs; let j = index" value="--see functions--">{{func.name}}
                     </option>
                     <option *ngIf="workspace.funcs.length < 1">**no functions to show**</option>
                 </select>
@@ -78,15 +87,16 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Layer Details</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Workspace details</h5>
         </div>
         <div class="modal-body">
           <b>Id</b>: {{_workspace.id}} <br>
           <b>Name</b>: {{_workspace.name}} <br>
           <b>UserName</b>: {{_workspace.userName}} <br>
           <b>UserId</b>: {{_workspace.userId}} <br>
-          <b>Client Apps</b>: {{_workspace.clientApps | json}} <br>
-          <b>Functions</b>: {{_workspace.funcs | json}} <br>
+          <b>Layers</b>: {{_workspace.layers.map(getName).join(', ')}} <br>
+          <b>Client Apps</b>: {{_workspace.clientApps.map(getName).join(', ')}} <br>
+          <b>Functions</b>: {{_workspace.funcs.map(getName).join(', ')}} <br>
           <b>Default</b>: <div *ngIf="_workspace.userName === '--(default workspace)--'">Yes</div>
                           <div *ngIf="_workspace.userName !== '--(default workspace)--'">No</div>
         </div>

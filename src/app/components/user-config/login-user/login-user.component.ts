@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginViewModel } from 'src/app/models/LoginViewModel';
+import { ToastrService } from 'ngx-toastr';
+import { AuthenticatedResponse, LoginViewModel } from 'src/app/models/LoginViewModel';
 import { UserService } from 'src/app/services/user.service';
 import global from '../../../../../global.json'
 
@@ -14,9 +15,10 @@ export class LoginUserComponent implements OnInit {
 
   UserForm:FormGroup;
 
-  constructor(private UserService:UserService,
-              private formBuilder:FormBuilder,
-              private router: Router) {
+  constructor(formBuilder:FormBuilder,
+              private UserService:UserService,
+              private router: Router,
+              private toastr:ToastrService) {
 
       this.UserForm = formBuilder.group({
         id:0,
@@ -38,30 +40,24 @@ export class LoginUserComponent implements OnInit {
 
     };
 
-    console.log(user);
-
     this.UserService.loginUser(user).subscribe({
-      next: (data) =>{
-        console.log(data);
-        console.log("Usuario Logeado");
+      next: (response: AuthenticatedResponse) => {
+        const token = response.token;
+        localStorage.setItem("jwt", token);
       },
       error: (err) => {
         console.log(err);
-        console.log("Error. Usuario no registrado en el sistema");
+        this.toastr.info('User not registered, please create an account');
       }
     });
   }
 
   logoutUser(){
-    this.UserService.logoutUser().subscribe({
-      next: (data) =>{
-        console.log(data);
-        console.log('Usuario deslogeado');
-       },
-      error: (err) => {
-        console.log('Error deslogeando');
+    this.UserService.logoutUser().subscribe(
+      ()=>{
+        localStorage.removeItem("jwt");
       }
-    });
+    );
   }
 
   getAtrr(atrrName:string){

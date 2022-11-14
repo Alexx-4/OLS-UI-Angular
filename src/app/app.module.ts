@@ -41,6 +41,13 @@ import { ClientAppComponent } from './components/user-config/client-app/client-a
 import { CreateClientAppComponent } from './components/user-config/client-app/create-client-app/create-client-app.component';
 import { CreateWorkspaceComponent } from './components/user-config/workspace/create-workspace/create-workspace.component';
 
+import { JwtModule } from "@auth0/angular-jwt";
+import { AuthGuard } from './guards/auth-guards';
+
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,9 +88,16 @@ import { CreateWorkspaceComponent } from './components/user-config/workspace/cre
     MatSidenavModule,
     MatCheckboxModule,
     MatPaginatorModule,
-    MatIconModule
+    MatIconModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:5001"],
+        disallowedRoutes: []
+      }
+    })
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,31 @@
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { ToastrService } from 'ngx-toastr';
+
+import global from '../../../global.json';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate  {
+
+  constructor(private router:Router,
+              private jwtHelper: JwtHelperService,
+              private toastr: ToastrService){}
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    const token = localStorage.getItem("jwt");
+
+    if (token && !this.jwtHelper.isTokenExpired(token)){
+      return true;
+    }
+
+    if (token && this.jwtHelper.isTokenExpired(token)){
+      this.toastr.info('Login sesion expired');
+    }
+
+    this.router.navigate([global['routeTitlePage']]);
+    return false;
+  }
+}

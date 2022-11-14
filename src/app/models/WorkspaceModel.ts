@@ -3,8 +3,9 @@ export class WorkspaceModel{
   name: string;
   userId: string;
   userName: string;
-  clientApps: string[];
-  funcs: String[];
+  clientApps: {Id:number, Name:string}[];
+  funcs: {Id:number, Name:string}[];
+  layers: {Id:number, Name:string}[]
 
   constructor() {
     this.name = '';
@@ -12,5 +13,6 @@ export class WorkspaceModel{
     this.userName = '';
     this.clientApps = [];
     this.funcs = [];
+    this.layers = [];
   }
 }
