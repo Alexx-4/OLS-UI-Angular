@@ -12,7 +12,7 @@
             <tr>
               <th scope="col">User</th>
               <th scope="col">Roles</th>
-              <th scope="col">workspaces</th>
+              <th scope="col">Workspaces</th>
               <th scope="col">Client Apps</th>
               <th scope="col" class="col-md-1"></th>
             </tr>
@@ -35,12 +35,22 @@
                 </div>
               </td>
 
-              <td class="text-center">
-                <i class="fa fa-eye"></i>
+              <td>
+                <select class="inputbox" (click)="$event.stopPropagation(); workspaceSelect.value = '--see workspaces--'" #workspaceSelect>
+                  <option value="--see workspaces--">--see workspaces--</option>
+                  <option *ngFor="let workspace of user.workspaces" value="--see workspaces--">{{workspace.name}}
+                    </option>
+                    <option *ngIf="user.workspaces.length < 1">**no workspaces to show**</option>
+                </select>
               </td>
 
-              <td class="text-center">
-                <i class="fa-icon-eye-open"></i>
+              <td>
+                <select class="inputbox" (click)="$event.stopPropagation(); appSelect.value = '--see apps--'" #appSelect>
+                  <option value="--see apps--">--see apps--</option>
+                  <option *ngFor="let clientApp of user.clientApps; let j = index" value="--see apps--">{{clientApp.name}}
+                    </option>
+                    <option *ngIf="user.clientApps.length < 1">**no apps to show**</option>
+                </select>
               </td>
 
               <td class="col-md-1">

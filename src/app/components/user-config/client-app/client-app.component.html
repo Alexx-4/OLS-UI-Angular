@@ -1,1 +1,111 @@
-<p>client-app works!</p>
+
+  <div class="content">
+
+    <div class="container">
+      <h2 class="mb-5"><b style="color:blue">ClientApps</b></h2>
+
+
+      <div class="table-responsive custom-table-responsive">
+
+        <table class="table custom-table">
+          <thead>
+            <tr>
+              <th scope="col">ClientApp Name</th>
+              <th scope="col">User Name</th>
+              <th scope="col">Application Type</th>
+              <th scope="col">Workspaces</th>
+              <th scope="col" class="col-md-1">
+                <div class="fa-stack" >
+                  <i class="fa fa-plus-circle" (click)="goCreateClientApp()"></i>
+                </div></th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let clientApp of dataObs | async">
+            <tr scope="row">
+              <td [style.color]="clientApp.active ? 'hsl(240, 2%, 16%)' : 'hsl(240, 3%, 55%)'">
+                {{clientApp.name}}
+              </td>
+              <td [style.color]="clientApp.active ? 'hsl(240, 2%, 16%)' : 'hsl(240, 3%, 55%)'">
+                {{clientApp.userName}}
+              </td>
+              <td [style.color]="clientApp.active ? 'hsl(240, 2%, 16%)' : 'hsl(240, 3%, 55%)'">
+                {{clientApp.applicationType}}
+              </td>
+              <td>
+                <select class="inputbox" (click)="$event.stopPropagation(); workspaceSelect.value = '--see workspaces--'" #workspaceSelect>
+                  <option value="--see workspaces--">--see workspaces--</option>
+                  <option *ngFor="let workspace of clientApp.workspaces" value="--see workspaces--">{{workspace.name}}
+                    </option>
+                    <option *ngIf="clientApp.workspaces.length < 1">**no workspaces to show**</option>
+                </select>
+              </td>
+
+              <td class="col-md-1">
+                <i class="fa fa-info-circle fa-lg info" data-toggle="modal" data-target="#details"
+                (click)="_clientApp = clientApp"></i>
+
+                <i class="far fa-edit fa-lg edit2" (click)="editClientApp(clientApp)"></i>
+
+                <i class="far fa-trash-alt fa-lg trash2" data-toggle="modal" data-target="#confirmDelete"
+                (click)="_clientApp = clientApp"></i>
+              </td>
+            </tr>
+            <tr class="spacer"><td colspan="100"></td></tr>
+
+          </tbody>
+        </table>
+        <mat-paginator style="font-size: 0.4cm; color: black;" showFirstLastButtons [length]="100"
+              [pageSize]="3"
+              [pageSizeOptions]="[3, 5, 10, 15, 20]"
+              aria-label="Select page">
+        </mat-paginator>
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+
+  <!-- Modal details -->
+  <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: rgb(149, 198, 226)">
+          <h5 class="modal-title" id="exampleModalLongTitle" style="color: blue;">ClientApp Details</h5>
+        </div>
+        <div class="modal-body" style="word-wrap: break-word;">
+          <b>Id</b>: {{_clientApp.id}} <br>
+          <b>UserName</b>: {{_clientApp.name}} <br>
+          <b>UserId</b>: {{_clientApp.userId}} <br>
+          <b>Application Type</b>: {{_clientApp.applicationType}} <br>
+          <b>Workspaces</b>: {{_clientApp.workspaces.map(getName).join(', ')}} <br>
+          <b>Active</b>: {{_clientApp.active}} <br>
+          <b>AccessKey</b>: {{_clientApp.accessKey}} <br>
+          <b>UpdateKey</b>: {{_clientApp.updateKey}} <br>
+        </div>
+        <div class="modal-footer" style="background-color: rgb(149, 198, 226)">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal delete confirmation -->
+  <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: rgb(149, 198, 226)">
+          <h5 class="modal-title" id="exampleModalLongTitle" style="color: blue;"><b>Delete confirmation</b></h5>
+        </div>
+        <div class="modal-body">
+          <b>This item will be permanently removed!</b>
+        </div>
+        <div class="modal-footer" style="background-color: rgb(149, 198, 226)">
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteClientApp(_clientApp.id)">OK</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

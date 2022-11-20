@@ -1,8 +1,7 @@
 <div class="jumbtron" *ngIf="!ok">
   <div>
-  <h2><b>Create new Category Tematic</b></h2>
+    <h2 class="mb-5" style="color:blue"><b>Create new Category Tematic</b></h2>
   </div>
-  <hr>
       <div class="login-box">
         <form [formGroup]="CategoryTematicForm">
           <div class="user-box">
@@ -78,7 +77,7 @@
 <div *ngIf="ok" class="content">
 
   <div class="container">
-    <h2 class="mb-5"><b>{{getAtrr('tematicName')?.value}}'s queries</b></h2>
+    <h2 class="mb-5" style="color:blue"><b>{{getAtrr('tematicName')?.value}}'s categories</b></h2>
     <!-- {{tematicService.tematicQueries | json}} -->
 
     <div class="table-responsive custom-table-responsive">
@@ -88,7 +87,7 @@
           <tr>
             <th scope="col">Layer</th>
             <th scope="col">Table</th>
-            <th scope="col">Query</th>
+            <th scope="col">Category</th>
             <th scope="col">Style</th>
             <th scope="col"></th>
           </tr>

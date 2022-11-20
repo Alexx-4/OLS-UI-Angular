@@ -61,7 +61,6 @@ export class StyleService {
   }
 
   getImgUrl(data:any){
-    console.log(data);
     let objectURL = 'data:image/png;base64,' + data;
     return this.sanitizer.bypassSecurityTrustUrl(objectURL);
   }

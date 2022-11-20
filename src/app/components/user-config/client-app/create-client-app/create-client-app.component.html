@@ -1,1 +1,63 @@
-<p>create-client-app works!</p>
+<div class="jumbtron">
+  <div>
+  <h2><b>Create new ClientApp</b></h2>
+  </div>
+  {{ClientAppForm.value | json}}
+  <hr>
+      <div class="login-box">
+        <form [formGroup]="ClientAppForm">
+          <div class="user-box">
+            <input maxlength="20" [ngClass]="(getAtrr('name')?.invalid &&
+            getAtrr('name')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="name">
+            <p>ClientApp Name</p>
+            <small *ngIf="getAtrr('name')?.invalid &&
+                          getAtrr('name')?.touched"
+                          class="error" >This field is required</small>
+          </div>
+
+
+          <mat-radio-group formControlName="applicationType">
+            <mat-radio-button value="CommunApp" color="primary">Commun Application</mat-radio-button>
+            <mat-radio-button value="ConfidentialApp" color="primary">Confidential Application</mat-radio-button>
+          </mat-radio-group>
+          <br>
+
+          <div *ngIf="clientAppId !== ''">
+            <mat-checkbox color="primary" formControlName="disable">
+              Disable Application
+            </mat-checkbox>
+            <br><br>
+          </div>
+
+          <div class="user-box">
+            <p *ngIf="!getAtrr('workspaces')?.value.length">Choose one or multiple Workspaces</p>
+            <mat-form-field appearance="fill" class="select-box">
+              <mat-label *ngIf="getAtrr('workspaces')?.value.length" style="color: #3461c2;">Workspaces</mat-label>
+              <mat-select multiple formControlName="workspaces">
+                <mat-option *ngFor="let workspace of this.workspaces" [value]="workspace.name">
+
+                    {{workspace.name}}
+
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <small *ngIf="getAtrr('workspaces')?.invalid &&
+                          getAtrr('workspaces')?.touched"
+                          class="error-select" >This field is required</small>
+          </div>
+
+
+
+
+        <div class="expcvv">
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="saveClientApp()" [disabled]="ClientAppForm.invalid">
+            <div *ngIf="clientAppId === ''">Create ClientApp</div>
+            <div *ngIf="clientAppId !== ''">Edit ClientApp</div>
+          </button>
+          <button type="submit" class="button1 btn btn-success btn-lg btn-block" (click)="goClientAppsList()">Cancel</button>
+        </div>
+
+        </form>
+  </div>
+
+</div>

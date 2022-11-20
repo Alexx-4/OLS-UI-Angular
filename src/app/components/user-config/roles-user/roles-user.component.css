@@ -164,9 +164,31 @@ color:brown;
 }
 
 .select-box{
-  width: 10cm;
+  width: 5cm;
 }
 
 .eye{
   font-size: x-large;
+}
+
+.inputbox
+{
+  color:#030303;
+  padding: 0.5rem;
+  border: none;
+  margin-bottom: 0.1cm;
+  border-radius: 0.3rem;
+  font-family: 'Roboto', sans-serif;
+  color: #3e3f42;
+  background-color: #bbcce2;
+  font-size: 1.06rem;
+  font-weight: 500;
+  outline:none;
+  cursor: pointer;
+  width: 5cm;
+}
+
+.inputbox:hover{
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
 }

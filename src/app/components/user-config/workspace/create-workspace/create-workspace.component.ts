@@ -4,14 +4,10 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { WorkspaceModel } from 'src/app/models/WorkspaceModel';
-import { StyleModel } from 'src/app/models/StyleModel';
 import { WorkspaceService } from 'src/app/services/workspace.service';
-import { ProviderService } from 'src/app/services/provider.service';
-import { StyleService } from 'src/app/services/style.service';
 
 import global from '../../../../../../global.json';
 import { LayerService } from 'src/app/services/layer.service';
-import { getLocaleDayPeriods } from '@angular/common';
 
 @Component({
   selector: 'app-create-workspace',
@@ -24,6 +20,7 @@ export class CreateWorkspaceComponent implements OnInit {
   suscription: Subscription = new Subscription();
 
   workspace: WorkspaceModel = new WorkspaceModel();
+
   workspaceId: number | undefined = 0;
 
   layers: any;
@@ -46,6 +43,21 @@ export class CreateWorkspaceComponent implements OnInit {
   ngOnInit(): void {
     this.getLayers();
     this.getFunctions();
+
+    this.workspaceService.getWorkspaceModel().subscribe(
+      data=>{
+        if(data.id){
+          this.WorkspaceForm.patchValue({
+            name : data.name,
+            layers: data.layers.map(l=>l.name),
+            functions: data.funcs.map(f=>f.name)
+          });
+
+          this.workspaceId = data.id;
+        }
+        console.log(data);
+      }
+    );
   }
 
   ngOnDestroy(): void {

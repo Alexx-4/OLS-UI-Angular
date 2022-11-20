@@ -27,6 +27,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio';
 import { AlphaInfoComponent } from './components/alpha-info/alpha-info.component';
 import { CreateAlphaInfoComponent } from './components/alpha-info/create-alpha-info/create-alpha-info.component';
 import { QueryTematicComponent } from './components/tematics/query-tematic/query-tematic.component';
@@ -89,6 +90,7 @@ export function tokenGetter() {
     MatCheckboxModule,
     MatPaginatorModule,
     MatIconModule,
+    MatRadioModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

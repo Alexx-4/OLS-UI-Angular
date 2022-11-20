@@ -42,6 +42,6 @@ export class WorkspaceService {
   }
 
   editWorkspace(model:{id?:number, name:string, layerIds:number[], functionIds: number[]}){
-    return this.http.get('');
+    return this.http.post(this.url + 'edit', model);
   }
 }

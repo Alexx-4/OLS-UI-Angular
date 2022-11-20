@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import global from '../../../global.json'
 import { AuthenticatedResponse, LoginViewModel } from '../models/LoginViewModel';
 import { RegisterViewModel } from '../models/RegisterViewModel';
+import { UserModel } from '../models/UserModel';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,20 @@ export class UserService {
 
   constructor(private http: HttpClient,
               private jwtHelper: JwtHelperService) {
+   }
+
+   get user(){
+    if (this.isUserAuthenticated()){
+      const token = localStorage.getItem("jwt");
+      const jwt = this.jwtHelper.decodeToken(token as string);
+      const _user: UserModel ={
+        userId: jwt['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
+        userName: jwt['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+        userRole: jwt['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+      };
+      return _user;
+    }
+    return undefined;
    }
 
    isUserAuthenticated = (): boolean => {

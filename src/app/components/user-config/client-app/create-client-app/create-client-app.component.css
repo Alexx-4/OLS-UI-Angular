@@ -1,0 +1,139 @@
+
+.login-box {
+  position: absolute;
+  padding: 40px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  left:5cm;
+
+  width: 25cm;
+  margin: auto;
+  background: white;
+  align-self: center;
+  border-radius: 1.5rem;
+  box-shadow: 4px 3px 20px #3535358c;
+  display:flex;
+  flex-direction: row;
+}
+
+
+/* posicion del label arriba */
+.login-box .user-box {
+  position: relative;
+}
+
+
+/* la raya que parpadea y la raya grande de abajo */
+.textBox {
+  width: 22.5cm;
+  padding: 10px 0;
+  font-size: 20px;
+  color:  #504b4b;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1.5px solid #8a9cc4;
+  outline: none;
+  background: transparent;
+  margin-bottom: 0.8cm;
+}
+
+
+.textBoxError {
+  width: 22.5cm;
+  padding: 10px 0;
+  font-size: 20px;
+  color:  #f10808;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1.5px solid #f00e06;
+  outline: none;
+  background: transparent;
+  margin-bottom: 0.8cm;
+}
+
+/* para cuando esta grande en el text-box */
+.login-box .user-box p {
+  position: absolute;
+  top:0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 20px;
+  color: rgb(94, 91, 91);
+  pointer-events: none;
+  transition: .5s;
+}
+
+/* para cuando se hace chikito */
+.login-box .user-box input:focus ~ p,
+.login-box .user-box input:valid ~ p {
+  top: -27px;
+  left: 0;
+  color: #3461c2;
+  font-size: 16px;
+}
+
+.button1{
+  background: linear-gradient(
+135deg
+, #4930a3 0%, #52bad4 100%);
+  padding: 15px;
+  border: none;
+  border-radius: 50px;
+  color: rgb(22, 21, 21);
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  width:10cm;
+  margin-left: 0.5cm;
+  letter-spacing: .11rem;
+  outline:none;
+}
+
+.button1:hover
+{
+transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+}
+
+.expcvv {
+  display:flex;
+  justify-content: space-between;
+  padding-top: 0.6rem;
+}
+
+.error{
+  position: absolute;
+  top: 55px;
+  left: 19cm;
+  color: #f51607;
+}
+
+.error-select{
+  position: absolute;
+  top: 60px;
+  left: 19cm;
+  color: #f51607;
+}
+
+.select-box{
+  width:22.5cm;
+}
+
+.mat-option:hover{
+  background-color: #5577c0;
+}
+
+.imgIcon{
+  cursor: pointer;
+}
+
+.imgIcon:hover{
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+  outline-color: blue;
+}
+
+.mat-radio-button{
+  margin-left: 2cm;
+  margin-bottom: 1cm;
+}

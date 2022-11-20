@@ -70,6 +70,7 @@ export class RolesUserComponent implements OnInit {
     this.userService.getUsers().subscribe({
       next: (data)=>{
         this.users = data;
+        console.log(data);
         this.setUserRoles();
         this.setPagination(this.users);
       },

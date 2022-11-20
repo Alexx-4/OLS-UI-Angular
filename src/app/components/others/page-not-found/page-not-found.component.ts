@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PageNotFoundComponent implements OnInit {
 
+  a = false;
   constructor() { }
 
   ngOnInit(): void {
+  }
+  clickf(){
+    var a = document.getElementById("ale");
+    a?.toggleAttribute("open")
   }
 
 }

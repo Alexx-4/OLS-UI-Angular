@@ -48,7 +48,7 @@ const routes: Routes = [
   {path: global['routeCreateWorkspace'], component: CreateWorkspaceComponent, canActivate: [AuthGuard]},
   {path: global['routeClientApp'], component: ClientAppComponent},
   {path: global['routeCreateClientApp'], component: CreateClientAppComponent},
-  {path: "**", component: PageNotFoundComponent}
+  {path: "**", redirectTo:global['routeTitlePage'], pathMatch: 'full'}
 ];
 
 @NgModule({

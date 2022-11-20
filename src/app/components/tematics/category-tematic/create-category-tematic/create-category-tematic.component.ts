@@ -166,8 +166,8 @@ export class CreateCategoryTematicComponent implements OnInit {
     this.tematicService.getCategories(_column, _table, _layer.id).subscribe(
       data=>{
         var _categories = data as Array<string>;
-        for(let i = 0;  i < _categories.length &&
-                        i < 3;                   i++){
+        console.log(_categories);
+        for(let i = 0;  i < _categories.length && i < 10; i++){ //CAMBIAR AQUI EL NUMERO MAXIMO DE CATEGORIAS
 
               let _query: query = {
 
@@ -178,14 +178,14 @@ export class CreateCategoryTematicComponent implements OnInit {
               conditions: [{
 
                 columnName: _column,
-                _operator: 'Equal',
+                _operator: '==',
                 value: _categories[i],
                 logicOperator:null
               }]
             }
         this.tematicService.tematicQueries.push(_query);
-      }
 
+      }
       this.toastr.info('Founded ' + this.styles.length + ' styles',
                                     this.tematicService.tematicQueries.length + ' queries created');
     });
