@@ -78,8 +78,8 @@
   <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Layer Details</h5>
+        <div class="header-modal">
+          <div class="modal-title" id="exampleModalLongTitle">Layer Details</div>
         </div>
         <div class="modal-body">
           <b>Id</b>: {{_layer.id}} <br>
@@ -88,11 +88,11 @@
           <b>Order</b>: {{_layer.order}} <br>
           <b>Provider Name</b>: {{_layer.providerName}} <br>
           <b>Provider Id</b>: {{_layer.providerInfoId}} <br>
-          <b>Styles</b>: {{_layer.styles | json}} <br>
+          <b>Styles</b>: {{_layer.styles.join(', ')}} <br>
 
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        <div class="text-center">
+          <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal">OK</button>
         </div>
       </div>
     </div>
@@ -102,15 +102,15 @@
   <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+        <div class="header-modal-delete">
+          <div class="modal-title" id="exampleModalLongTitle">Delete confirmation</div>
         </div>
         <div class="modal-body">
-          <b>This item, and all others entities relationated with it, will be permanently removed!</b>
+          <b>This item, and ALL others entities relationated with it, will be permanently removed!</b>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteLayer($event, _layer.id)">OK</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <div class="text-center">
+          <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal" (click)="deleteLayer($event, _layer.id)">OK</button>
+          <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal" style="margin-left:0.5cm">Cancel</button>
         </div>
       </div>
     </div>
@@ -120,14 +120,14 @@
   <div class="modal fade" id="img" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Style Icon</h5>
+        <div class="header-modal">
+          <div class="modal-title" id="exampleModalLongTitle">Style Icon</div>
         </div>
         <div class="modal-body text-center">
           <img [src]="printImage(_style)" width="300" height="100">
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        <div class="text-center">
+          <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal">OK</button>
         </div>
       </div>
     </div>

@@ -42,7 +42,6 @@ export class CreateWorkspaceComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.getWorkspaces();
     this.getLayers();
     this.getFunctions();
 
@@ -57,7 +56,7 @@ export class CreateWorkspaceComponent implements OnInit {
 
           this.workspaceId = data.id;
         }
-
+        this.getWorkspaces();
       }
     );
   }
@@ -96,7 +95,7 @@ export class CreateWorkspaceComponent implements OnInit {
       next: data=>{
         const workspaces: WorkspaceModel[] = data as Array<WorkspaceModel>;
         const name = this.getAtrr('name');
-        name?.addValidators(DuplicateNameValidator(workspaces, 'name'));
+        name?.addValidators(DuplicateNameValidator(workspaces.filter(w=>w.id !== this.workspaceId), 'name'));
       },
       error: () => {this.toastr.error('Error from server. Try again');}
     })

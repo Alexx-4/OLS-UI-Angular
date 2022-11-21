@@ -13,7 +13,8 @@
                           getAtrr('name')?.touched"
                           class="error" >This field is required</small>
 
-            <small *ngIf="getAtrr('name')?.hasError('invalidName')"
+            <small *ngIf="getAtrr('name')?.hasError('invalidName') &&
+                          getAtrr('name')?.touched"
                           class="error" >Name already taken</small>
           </div>
 

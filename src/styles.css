@@ -7,5 +7,47 @@
   color: green;
 }
 
+.header-modal{
+  background-color: rgb(63, 63, 235);
+  height: 1.5cm;
+  font-size: 0.8cm;
+  font-weight: 800;
+  color: white;
+  text-align: center;
+}
+
+.header-modal-delete{
+  background-color: rgb(224, 69, 69);
+  height: 1.5cm;
+  font-size: 0.8cm;
+  font-weight: 800;
+  color: white;
+  text-align: center;
+
+}
+
+.button-modal{
+  background: linear-gradient(
+135deg
+, #4930a3 0%, #52bad4 100%);
+  padding: 8px;
+  border: none;
+  border-radius: 50px;
+  color: rgb(22, 21, 21);
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width:5cm;
+  letter-spacing: .11rem;
+  outline:none;
+}
+
+.button-modal:hover
+{
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

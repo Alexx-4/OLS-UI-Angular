@@ -230,20 +230,20 @@
 <div class="modal fade" id="img" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Style Icon</h5>
+      <div class="header-modal">
+        <div class="modal-title" id="exampleModalLongTitle">Style Icon</div>
       </div>
       <div class="modal-body text-center">
         <img [src]="styleService.getImgUrl(_styleImg)" width="300" height="100">
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      <div class="text-center">
+        <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Spinner -->
-<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true">
+<ngx-spinner bdColor = "rgba(216, 212, 212, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true">
   <img src="../../../../../assets/img/spinn.gif">
 </ngx-spinner>

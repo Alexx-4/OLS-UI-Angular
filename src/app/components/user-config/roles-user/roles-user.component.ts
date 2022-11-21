@@ -110,4 +110,8 @@ export class RolesUserComponent implements OnInit {
     )
   }
 
+  getName(w:any){
+    return w.name;
+  }
+
 }

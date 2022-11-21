@@ -125,7 +125,7 @@ export class CreateQueryTematicComponent implements OnInit {
       next: data => {
         this.tematics = data as Array<TematicModel>;
         const tematicName = this.getAtrr('tematicName');
-        tematicName?.addValidators(DuplicateNameValidator(this.tematics, 'tematicName'));
+        tematicName?.addValidators(DuplicateNameValidator(this.tematics.filter(t=>t.tematicId !== this.tematicIndex), 'tematicName'));
 
       },error: () => {this.toastr.error('Error from server. Try again');}
     })

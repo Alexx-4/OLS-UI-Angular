@@ -57,7 +57,6 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getProviders();
-    this.getAlphaInfos();
 
     this.suscription = this.alphaInfoService.getAlphaInfoModel().subscribe({
       next:(data)=>{
@@ -75,6 +74,7 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
           this.alphaInfoId = data.id;
         }
         this.getLayers();
+        this.getAlphaInfos();
       }
     });
   }
@@ -99,7 +99,8 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
       next: data=>{
         var alphaInfos: {name:string}[] = [];
         for(let item of data as Array<any>){
-            alphaInfos.push({name: item.translations[0].name});
+          if(item.alfaInfo.id !== this.alphaInfoId)
+              alphaInfos.push({name: item.translations[0].name});
         }
         const name = this.getAtrr('name');
         name?.addValidators(DuplicateNameValidator(alphaInfos, 'name'));

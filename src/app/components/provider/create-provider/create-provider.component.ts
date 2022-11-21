@@ -41,8 +41,6 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-    this.getProviders();
-
     this.suscription = this.providerService.getProviderModel().subscribe({
       next:(data)=>{
         if(data.name){
@@ -58,6 +56,7 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
           this.providerId = data.id;
           this.getTables();
         }
+        this.getProviders();
       }
     });
   }
@@ -67,7 +66,8 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
       next: data=>{
         var providers: {name:string}[] = [];
         for(let item of data as Array<any>){
-          providers.push({name: item.providerTranslation[0].name})
+          if(item.provider.id !== this.providerId)
+              providers.push({name: item.providerTranslation[0].name})
         }
 
         const name = this.getAtrr('name');

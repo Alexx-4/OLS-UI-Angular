@@ -48,8 +48,6 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-    this.getStyles();
-
     this.suscription = this.styleService.getStyleModel().subscribe({
       next:(data)=>{
         if(data.name){
@@ -67,6 +65,8 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
 
           this.styleService.updateStyleModel({} as StyleModel);
         }
+
+        this.getStyles();
       }
     });
 
@@ -92,7 +92,7 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
       next:data=>{
         this.styles = data as Array<any>;
         const name = this.getAtrr('name');
-        name?.addValidators(DuplicateNameValidator(this.styles, 'name'))
+        name?.addValidators(DuplicateNameValidator(this.styles.filter(s=>s.id !== this.styleId), 'name'))
 
       },error: () => {this.toastr.error('Error from server. Try again');}
     })

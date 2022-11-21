@@ -78,8 +78,8 @@
 <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Category tematic Details</h5>
+      <div class="header-modal">
+        <div class="modal-title" id="exampleModalLongTitle">Category tematic Details</div>
       </div>
       <div class="modal-body">
         <b>Id</b>: {{_queryTematic.tematicId}} <br>
@@ -94,8 +94,8 @@
         <b>Style Id</b>: {{_queryTematic.styleId}} <br>
 
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      <div class="text-center">
+        <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
@@ -105,15 +105,15 @@
 <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+      <div class="header-modal-delete">
+        <div class="modal-title" id="exampleModalLongTitle">Delete confirmation</div>
       </div>
       <div class="modal-body">
-        <b>This tematic, and ALL its queries, will be permanently removed!</b>
+        <b>This tematic, and ALL HIS QUERIES, will be permanently removed!</b>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteQueryTematic($event, _queryTematic.tematicId)">OK</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <div class="text-center">
+        <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal" (click)="deleteQueryTematic($event, _queryTematic.tematicId)">OK</button>
+        <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal" style="margin-left:0.5cm">Cancel</button>
       </div>
     </div>
   </div>
@@ -123,17 +123,15 @@
 <div class="modal fade" id="img" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Style Icon</h5>
+      <div class="header-modal">
+        <div class="modal-title" id="exampleModalLongTitle">Style Icon</div>
       </div>
       <div class="modal-body text-center">
         <img [src]="printImage(_queryTematic)" width="300" height="100">
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      <div class="text-center">
+        <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal">OK</button>
       </div>
     </div>
   </div>
 </div>
-
-

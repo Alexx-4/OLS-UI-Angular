@@ -47,8 +47,6 @@ export class CreateLayerComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.getLayers();
-
     this.styleService.getStyles().subscribe({
       next:(data)=>{
         this.styles = data as Array<StyleModel>;
@@ -66,7 +64,6 @@ export class CreateLayerComponent implements OnInit {
 
     this.suscription = this.layerService.getLayerModel().subscribe({
       next:(data)=>{
-        console.log(data);
         if(data.name){
           this.layer = data;
 
@@ -79,6 +76,7 @@ export class CreateLayerComponent implements OnInit {
           });
           this.layerId = data.id;
         }
+        this.getLayers();
       }
     });
   }
@@ -92,7 +90,8 @@ export class CreateLayerComponent implements OnInit {
       next:data=>{
         var layers: {name: string}[] = [];
         for(let item of data as Array<any>){
-          layers.push({name: item.layerTranslations[0].name});
+          if(item.id !== this.layerId)
+              layers.push({name: item.layerTranslations[0].name});
         }
         const name = this.getAtrr('name');
         name?.addValidators(DuplicateNameValidator(layers, 'name'));

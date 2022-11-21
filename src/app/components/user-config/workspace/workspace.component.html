@@ -86,8 +86,8 @@
   <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Workspace details</h5>
+        <div class="header-modal">
+          <div class="modal-title" id="exampleModalLongTitle">Workspace details</div>
         </div>
         <div class="modal-body">
           <b>Id</b>: {{_workspace.id}} <br>
@@ -100,8 +100,8 @@
           <b>Default</b>: <div *ngIf="_workspace.userName === '--(default workspace)--'">Yes</div>
                           <div *ngIf="_workspace.userName !== '--(default workspace)--'">No</div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        <div class="text-center">
+          <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal">OK</button>
         </div>
       </div>
     </div>
@@ -111,15 +111,15 @@
   <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Delete confirmation</h5>
+        <div class="header-modal-delete">
+          <div class="modal-title" id="exampleModalLongTitle">Delete confirmation</div>
         </div>
         <div class="modal-body">
           <b>This item will be permanently removed!</b>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteWorkspace(_workspace.id)">OK</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <div class="text-center">
+          <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal" (click)="deleteWorkspace(_workspace.id)">OK</button>
+          <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal" style="margin-left:0.5cm">Cancel</button>
         </div>
       </div>
     </div>
