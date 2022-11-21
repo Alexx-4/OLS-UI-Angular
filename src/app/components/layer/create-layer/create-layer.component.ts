@@ -8,6 +8,7 @@ import { StyleModel } from 'src/app/models/StyleModel';
 import { LayerService } from 'src/app/services/layer.service';
 import { ProviderService } from 'src/app/services/provider.service';
 import { StyleService } from 'src/app/services/style.service';
+import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 
 import global from '../../../../../global.json';
 
@@ -46,16 +47,20 @@ export class CreateLayerComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.getLayers();
+
     this.styleService.getStyles().subscribe({
       next:(data)=>{
         this.styles = data as Array<StyleModel>;
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
 
     this.providerService.getProviders().subscribe({
       next:(data)=>{
         this.providers = data;
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
 
 
@@ -80,6 +85,20 @@ export class CreateLayerComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.suscription.unsubscribe();
+  }
+
+  getLayers(){
+    this.layerService.getLayers().subscribe({
+      next:data=>{
+        var layers: {name: string}[] = [];
+        for(let item of data as Array<any>){
+          layers.push({name: item.layerTranslations[0].name});
+        }
+        const name = this.getAtrr('name');
+        name?.addValidators(DuplicateNameValidator(layers, 'name'));
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
+    })
   }
 
   goLayersList(){
@@ -114,7 +133,6 @@ export class CreateLayerComponent implements OnInit {
           this.toastr.info('Layer created successfully');
         },
         error:(err) => {
-          console.log(err);
           this.toastr.info('Cannot create layer with order and provider selected')
         }
 

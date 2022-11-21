@@ -34,8 +34,8 @@ export class AlphaInfoComponent implements OnInit {
               private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.layerService.getLayers().subscribe(
-      (data)=>{
+    this.layerService.getLayers().subscribe({
+      next:(data)=>{
         this.layers = [];
         for(let item of data as Array<any>){
           var layer = {
@@ -45,7 +45,8 @@ export class AlphaInfoComponent implements OnInit {
           this.layers.push(layer);
         }
         this.getAlphaInfos();
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}}
     )
     this.alphaInfoService.updateAlphaInfoModel({} as AlphaInfoModel);
   }
@@ -85,7 +86,7 @@ export class AlphaInfoComponent implements OnInit {
         this.setPagination(this.alphaInfos);
 
       },
-      error: (err) => console.log(err)
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
   }
 
@@ -94,7 +95,8 @@ export class AlphaInfoComponent implements OnInit {
       next:()=>{
         this.getAlphaInfos();
         this.toastr.info('AlphaInfo deleted');
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 

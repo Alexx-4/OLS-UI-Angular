@@ -33,11 +33,12 @@ export class CategoryTematicComponent implements OnInit {
               private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.styleService.getStyles().subscribe(
-      data=>{
+    this.styleService.getStyles().subscribe({
+      next:data=>{
         this.styles = data;
         this.getCategoryTematics();
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}}
     )
   }
 
@@ -58,7 +59,8 @@ export class CategoryTematicComponent implements OnInit {
       next:(data)=>{
         this.tematics = data;
         this.setPagination(this.tematics);
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 
@@ -67,7 +69,8 @@ export class CategoryTematicComponent implements OnInit {
       next: ()=> {
         this.getCategoryTematics();
         this.toastr.info('Tematic successfully deleted');
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
     }
 

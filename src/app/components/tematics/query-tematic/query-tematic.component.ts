@@ -33,11 +33,12 @@ export class QueryTematicComponent implements OnInit {
               private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.styleService.getStyles().subscribe(
-      data=>{
+    this.styleService.getStyles().subscribe({
+      next:data=>{
         this.styles = data;
         this.getQueryTematics();
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}}
     )
 
   }
@@ -59,7 +60,8 @@ export class QueryTematicComponent implements OnInit {
       next:(data)=>{
         this.tematics = data;
         this.setPagination(this.tematics);
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 
@@ -68,7 +70,8 @@ export class QueryTematicComponent implements OnInit {
       next: ()=> {
         this.getQueryTematics();
         this.toastr.info('Tematic successfully deleted');
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
     }
 

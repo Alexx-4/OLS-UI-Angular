@@ -6,8 +6,10 @@ import { query, TematicModel } from 'src/app/models/tematicModel';
 import { LayerService } from 'src/app/services/layer.service';
 import { StyleService } from 'src/app/services/style.service';
 import { TematicService } from 'src/app/services/tematic.service';
+import { NgxSpinnerService } from "ngx-spinner";
 
 import global from '../../../../../../global.json';
+import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 
 @Component({
   selector: 'app-create-query-tematic',
@@ -23,6 +25,7 @@ export class CreateQueryTematicComponent implements OnInit {
   operators:any[] = [];
 
   tablesColumns: any;
+  tematics: TematicModel[] = [];
 
   styles: any;
   _styleImg: any;
@@ -35,7 +38,8 @@ export class CreateQueryTematicComponent implements OnInit {
               private toastr: ToastrService,
               private router:Router,
               private layerService: LayerService,
-              public styleService: StyleService) {
+              public styleService: StyleService,
+              private spinner: NgxSpinnerService) {
 
     this.QueryTematicForm = formBuilder.group({
         tematicName: ['', Validators.required],
@@ -62,6 +66,7 @@ export class CreateQueryTematicComponent implements OnInit {
   ngOnInit(): void {
     this.getLayers();
     this.getStyles();
+    this.getTematics();
 
     this.tematicService.getTematicModel().subscribe(
       data=>{
@@ -110,18 +115,28 @@ export class CreateQueryTematicComponent implements OnInit {
           }
           this.layers.push(_layer);
         }
-      },
-      error:(err)=>{
-        console.log(err);
-      }
+      },error: () => {this.toastr.error('Error from server. Try again');}
+
+    })
+  }
+
+  getTematics(){
+    this.tematicService.getQueryTematics().subscribe({
+      next: data => {
+        this.tematics = data as Array<TematicModel>;
+        const tematicName = this.getAtrr('tematicName');
+        tematicName?.addValidators(DuplicateNameValidator(this.tematics, 'tematicName'));
+
+      },error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 
   getStyles(){
-    this.styleService.getStyles().subscribe(
-      (data)=>{
+    this.styleService.getStyles().subscribe({
+      next:(data)=>{
         this.styles = data;
-      }
+
+      },error: () => {this.toastr.error('Error from server. Try again');}}
     )
   }
 
@@ -141,8 +156,8 @@ export class CreateQueryTematicComponent implements OnInit {
         for(let item in this.tablesColumns){
           this.tables.push(item)
         }
-      },
-      error:(err)=>{console.log(err);}
+
+      },error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 
@@ -173,11 +188,13 @@ export class CreateQueryTematicComponent implements OnInit {
     var _layer = this.layers.find(l=>l.name === _layerName);
     this.operators[i]=[];
 
+    this.spinner.show();
     this.tematicService.getOperator(_column, _table, _layer.id).subscribe({
       next: (data)=>{
         this.operators[i] = data;
-      },
-      error: (err)=>{console.log(err);}
+        this.spinner.hide();
+
+      },error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 
@@ -291,7 +308,8 @@ export class CreateQueryTematicComponent implements OnInit {
         next: () => {
           this.goQueryTematicsView();
           this.toastr.info('Query tematic successfully created');
-        }
+
+        },error: () => {this.toastr.error('Error from server. Try again');}
       });
     }
       else{
@@ -300,7 +318,8 @@ export class CreateQueryTematicComponent implements OnInit {
             this.tematicIndex = 0;
             this.goQueryTematicsView();
             this.toastr.info('Query tematic successfully edited');
-          }
+
+          },error: () => {this.toastr.error('Error from server. Try again');}
         })
       }
   }

@@ -1,18 +1,21 @@
 <div class="jumbtron">
   <div>
-  <h2><b>Create new AlphaInfo</b></h2>
+    <h2 class="mb-5" style="color:blue; margin-left: 1cm;"><b>Create AlphaInfo</b></h2>
   <!-- {{AlphaInfoForm.value | json}} -->
   </div>
-  <hr>
       <div class="login-box">
         <form [formGroup]="AlphaInfoForm">
           <div class="user-box">
             <input [ngClass]="(getAtrr('name')?.invalid &&
             getAtrr('name')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="name">
             <p>AlphaInfo Name</p>
-            <small *ngIf="getAtrr('name')?.invalid &&
+            <small *ngIf="getAtrr('name')?.hasError('required') &&
                           getAtrr('name')?.touched"
                           class="error" >This field is required</small>
+
+            <small *ngIf="getAtrr('name')?.hasError('invalidName') &&
+                          getAtrr('name')?.touched"
+                          class="error" >Name already taken</small>
           </div>
 
           <div class="user-box">
@@ -24,10 +27,17 @@
                           class="error" >This field is required</small>
           </div>
 
+          <div *ngIf="getAtrr('connString')?.valid">
+              <mat-checkbox color="primary" formControlName="providerInfo"
+              (change)="AlphaInfoForm.patchValue({table: '', columns:''}); getTables(); getColumns();">Use layer's provider database information</mat-checkbox>
+              <br> <br>
+          </div>
 
-          <mat-checkbox color="primary" formControlName="providerInfo"
-          (change)="AlphaInfoForm.patchValue({table: '', columns:''}); getTables(); getColumns();">Use layer's provider database information</mat-checkbox>
-          <br> <br>
+          <div *ngIf="getAtrr('connString')?.invalid">
+            <mat-checkbox color="primary" formControlName="providerInfo"
+            (change)="AlphaInfoForm.patchValue({table: '', columns:''});">Use layer's provider database information</mat-checkbox>
+            <br> <br>
+        </div>
 
 
           <div class="user-box" *ngIf="!(getAtrr('providerInfo')?.value)">

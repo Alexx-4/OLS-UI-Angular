@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -64,7 +64,7 @@ export class ProviderComponent implements OnInit {
         }
         this.setPagination(this.providers);
       },
-      error: (err) => console.log(err)
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
   }
 
@@ -73,7 +73,8 @@ export class ProviderComponent implements OnInit {
       next:()=>{
         this.getProviders();
         this.toastr.info('Provider deleted');
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 

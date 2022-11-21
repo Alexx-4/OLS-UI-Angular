@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { StyleModel } from 'src/app/models/StyleModel';
 import { TematicService } from 'src/app/services/tematic.service';
 import { TematicModel } from 'src/app/models/tematicModel';
+import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 
 @Component({
   selector: 'app-create-style',
@@ -25,6 +26,8 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
   styleId: number | undefined = 0;
   tematic: TematicModel = new TematicModel();
   image:any;
+
+  styles: any[] = [];
 
   constructor(formBuilder: FormBuilder,
               private styleService: StyleService,
@@ -45,6 +48,8 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
+    this.getStyles();
+
     this.suscription = this.styleService.getStyleModel().subscribe({
       next:(data)=>{
         if(data.name){
@@ -65,11 +70,10 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.tematicService.getTematicModel().subscribe(
-      data =>{
-        this.tematic = data;
-      }
-    )
+    this.tematicService.getTematicModel().subscribe({
+      next:data =>{this.tematic = data;},
+      error: () => {this.toastr.error('Error from server. Try again');}
+    });
   }
 
   ngOnDestroy(): void {
@@ -81,6 +85,17 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
       this.router.navigate([global['routeCreateCategoryTematic']]);
     }
     else { this.router.navigate([global['routeStyle']]); }
+  }
+
+  getStyles(){
+    this.styleService.getStyles().subscribe({
+      next:data=>{
+        this.styles = data as Array<any>;
+        const name = this.getAtrr('name');
+        name?.addValidators(DuplicateNameValidator(this.styles, 'name'))
+
+      },error: () => {this.toastr.error('Error from server. Try again');}
+    })
   }
 
   getAtrr(atrr:string){
@@ -116,7 +131,7 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
 
           this.toastr.info('Style created successfully');
         },
-        error:(err) => console.log(err)
+        error: () => {this.toastr.error('Error from server. Try again');}
       });
     }
 
@@ -126,7 +141,8 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
           this.styleId = 0;
           this.goStylesList();
           this.toastr.info('Style edited successfully');
-        }
+        },
+        error: () => {this.toastr.error('Error from server. Try again');}
       })
     }
   }
@@ -166,7 +182,6 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
      _rgbStr += rgb.r +','+ rgb.g +','+ rgb.b;
      return _rgbStr;
     }
-    console.log('ESTA DEVOLVIENDO BLANCOOOOOOOO!!!!!!!!!!!')
     return '#ffffff';
   }
 

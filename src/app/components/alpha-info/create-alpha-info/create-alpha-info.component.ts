@@ -9,6 +9,7 @@ import { AlphaInfoModel } from 'src/app/models/AlphaInfoModel';
 import { AlphaInfoService } from 'src/app/services/alpha-info.service';
 import { LayerService } from 'src/app/services/layer.service';
 import { ProviderService } from 'src/app/services/provider.service';
+import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 
 
 import global from '../../../../../global.json'
@@ -56,6 +57,7 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getProviders();
+    this.getAlphaInfos();
 
     this.suscription = this.alphaInfoService.getAlphaInfoModel().subscribe({
       next:(data)=>{
@@ -82,18 +84,33 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
   }
 
   getProviders(){
-    this.providerService.getProviders().subscribe(
-      (data)=>{
+    this.providerService.getProviders().subscribe({
+      next:(data)=>{
         for(let item of data as Array<{provider:any}>){
           this.providers.push(item.provider);
         }
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}}
     );
   }
 
+  getAlphaInfos(){
+    this.alphaInfoService.getAlphaInfos().subscribe({
+      next: data=>{
+        var alphaInfos: {name:string}[] = [];
+        for(let item of data as Array<any>){
+            alphaInfos.push({name: item.translations[0].name});
+        }
+        const name = this.getAtrr('name');
+        name?.addValidators(DuplicateNameValidator(alphaInfos, 'name'));
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
+    })
+  }
+
   getLayers(){
-    this.layerService.getLayers().subscribe(
-      (data)=>{
+    this.layerService.getLayers().subscribe({
+      next: (data)=>{
         this.layers = [];
         for(let item of data as Array<any>){
           var layer = {
@@ -122,7 +139,7 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
           this.getColumns();
           this.init = false;
       }
-      }
+      },error: () => {this.toastr.error('Error from server. Try again');}}
     )
   }
 
@@ -156,7 +173,7 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
         next: (data)=>{
           this.tables = data as Array<string>;
         },
-        error: (err)=>{
+        error: ()=>{
           this.tables = [];
           this.toastr.info('Cannot connect with external database');
         }
@@ -177,9 +194,11 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
 
         if(_layerName && _tableName){
           var _layer = this.layers.find(l=>l.name === _layerName);
-          this.providerService.getProviderInfo(null,_layer.id,_tableName).subscribe(
-            (data)=>{
-              this.columns = data as Array<string>;}
+          this.providerService.getProviderInfo(null,_layer.id,_tableName).subscribe({
+            next:(data)=>{
+              this.columns = data as Array<string>;},
+
+              error: () => {this.toastr.error('Error from server. Try again');}}
           );
         }
         else{this.columns = [];}
@@ -233,7 +252,7 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
           this.goAlphaInfosList();
           this.toastr.info('AlphaInfo created successfully');
         },
-        error:(err) => console.log(err)
+        error: () => {this.toastr.error('Error from server. Try again');}
       });
     }
     else{
@@ -242,7 +261,8 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
           this.alphaInfoId = 0;
           this.goAlphaInfosList();
           this.toastr.info('AlphaInfo edited successfully');
-        }
+        },
+        error: () => {this.toastr.error('Error from server. Try again');}
       });
     }
   }

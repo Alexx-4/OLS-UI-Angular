@@ -1,18 +1,21 @@
 <div class="jumbtron">
   <div>
-  <h2><b>Create new ClientApp</b></h2>
+    <h2 class="mb-5" style="color:blue; margin-left: 1cm;"><b>Create ClientApp</b></h2>
   </div>
-  {{ClientAppForm.value | json}}
-  <hr>
+  <!-- {{ClientAppForm.value | json}} -->
       <div class="login-box">
         <form [formGroup]="ClientAppForm">
           <div class="user-box">
             <input maxlength="20" [ngClass]="(getAtrr('name')?.invalid &&
             getAtrr('name')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="name">
             <p>ClientApp Name</p>
-            <small *ngIf="getAtrr('name')?.invalid &&
+            <small *ngIf="getAtrr('name')?.hasError('required')&&
                           getAtrr('name')?.touched"
                           class="error" >This field is required</small>
+
+            <small *ngIf="getAtrr('name')?.hasError('invalidName') &&
+                          getAtrr('name')?.touched"
+                          class="error" >Name already taken</small>
           </div>
 
 

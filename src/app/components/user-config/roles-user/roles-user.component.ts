@@ -59,10 +59,7 @@ export class RolesUserComponent implements OnInit {
       next: (data)=>{
         this.roles = data;
       },
-      error: (err)=>{
-        console.log(err);
-        this.router.navigate([global['routeTitlePage']]);
-      }
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
   }
 
@@ -74,10 +71,7 @@ export class RolesUserComponent implements OnInit {
         this.setUserRoles();
         this.setPagination(this.users);
       },
-      error: (err)=>{
-        console.log(err);
-        this.router.navigate([global['routeTitlePage']]);
-      }
+      error: () => {this.toastr.error('Error from server. Try again');}
 
     });
   }
@@ -103,19 +97,16 @@ export class RolesUserComponent implements OnInit {
       next: ()=>{
         this.getUsers();
       },
-      error: (err)=>{
-        console.log(err);
-        this.router.navigate([global['routeTitlePage']]);
-      }
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 
   deleteUser(user: any){
-    this.userService.deleteUser(user).subscribe(
-      ()=>{
+    this.userService.deleteUser(user).subscribe({
+      next:()=>{
         this.getUsers();
         this.toastr.info('User successfully deleted');
-      }
+      },error: () => {this.toastr.error('Error from server. Try again');}}
     )
   }
 

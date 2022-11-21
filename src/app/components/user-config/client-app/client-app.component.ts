@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { ClientAppModel } from 'src/app/models/ClientAppModel';
 import { ClientAppService } from 'src/app/services/client-app.service';
+import { UserService } from 'src/app/services/user.service';
 
 
 import global from '../../../../../global.json';
@@ -29,14 +30,19 @@ export class ClientAppComponent implements OnInit {
   constructor(private clientAppService: ClientAppService,
               private _changeDetectorRef: ChangeDetectorRef,
               private toastr: ToastrService,
-              private router:Router) { }
+              private router:Router,
+              private userService: UserService) { }
 
   ngOnInit(): void {
+    this.clientAppService.updateClientAppModel({} as ClientAppModel);
     this.getClientApps(this.user);
   }
 
   get user(){
-    return undefined;
+    var _user = this.userService.user;
+    if (_user?.userRole === 'Admin')
+        return undefined;
+    return _user?.userId;
   }
 
   getClientApps(userId: string | undefined){
@@ -46,9 +52,7 @@ export class ClientAppComponent implements OnInit {
 
         this.setPagination(this.clientApps);
       },
-      error: (err)=>{
-        console.log(err);
-      }
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
   }
 
@@ -65,9 +69,7 @@ export class ClientAppComponent implements OnInit {
         this.toastr.info('ClientApp successfully deleted');
         this.getClientApps(this.user);
       },
-      error: (err)=>{
-        console.log(err);
-      }
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
   }
 

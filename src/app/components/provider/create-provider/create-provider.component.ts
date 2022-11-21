@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ProviderModel } from 'src/app/models/ProviderModel';
 import { ProviderService } from 'src/app/services/provider.service';
+import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 
 import global from '../../../../../global.json'
 
@@ -40,6 +41,8 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
+    this.getProviders();
+
     this.suscription = this.providerService.getProviderModel().subscribe({
       next:(data)=>{
         if(data.name){
@@ -57,6 +60,21 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
         }
       }
     });
+  }
+
+  getProviders(){
+    this.providerService.getProviders().subscribe({
+      next: data=>{
+        var providers: {name:string}[] = [];
+        for(let item of data as Array<any>){
+          providers.push({name: item.providerTranslation[0].name})
+        }
+
+        const name = this.getAtrr('name');
+        name?.addValidators(DuplicateNameValidator(providers, 'name'));
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
+    })
   }
 
   ngOnDestroy(): void {
@@ -91,7 +109,7 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
           this.goProvidersList();
           this.toastr.info('Provider created successfully');
         },
-        error:(err) => console.log(err)
+        error: () => {this.toastr.error('Error from server. Try again');}
       });
     }
     else{
@@ -100,7 +118,8 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
           this.providerId = 0;
           this.goProvidersList();
           this.toastr.info('Provider edited successfully');
-        }
+        },
+        error: () => {this.toastr.error('Error from server. Try again');}
       })
     }
   }

@@ -32,11 +32,11 @@ export class ClientAppService {
     return this.http.delete(this.url + id);
   }
 
-  createClientApp(model:{id?:number, name:string, workspacesId:number[], active:boolean}){
+  createClientApp(model:{id?:number, name:string, workspacesIds:number[], active:boolean}){
     return this.http.post(this.url + 'create', model);
   }
 
-  editClientApp(model:{id?:number, name:string, workspacesId:number[], active:boolean}){
+  editClientApp(model:any){
     return this.http.post(this.url + 'edit', model);
   }
 }

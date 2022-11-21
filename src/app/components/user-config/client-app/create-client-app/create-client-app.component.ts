@@ -7,6 +7,7 @@ import { ClientAppModel } from 'src/app/models/ClientAppModel';
 import { ClientAppService } from 'src/app/services/client-app.service';
 import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
+import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 
 import global from '../../../../../../global.json';
 
@@ -43,19 +44,20 @@ export class CreateClientAppComponent implements OnInit {
 
   ngOnInit(): void {
         this.clientAppService.getClientAppModel().subscribe(
-      data=>{
-        if(data.id){
-          this.ClientAppForm.patchValue({
-            name: data.name,
-            applicationType: data.applicationType,
-            workspaces: data.workspaces.map(w=>w.name),
-            disable: !data.active
-          });
-          this.clientAppId = data.id;
-          this.userId = data.userId;
-        }
-        this.getWorkspaces();
-      }
+          data=>{
+            if(data.id){
+              this.ClientAppForm.patchValue({
+                name: data.name,
+                applicationType: data.applicationType,
+                workspaces: data.workspaces.map(w=>w.name),
+                disable: !data.active
+              });
+              this.clientAppId = data.id;
+              this.userId = data.userId;
+            }
+            this.getWorkspaces();
+            this.getClientApps();
+          }
     );
   }
 
@@ -74,15 +76,24 @@ export class CreateClientAppComponent implements OnInit {
     this.router.navigate([global['routeClientApp']]);
   }
 
+  getClientApps(){
+    this.clientAppService.getClientApps(this.user).subscribe({
+      next:data=>{
+        console.log(data);
+        const clientApps: ClientAppModel[] = (data as Array<ClientAppModel>).filter(c=>c.id !== this.clientAppId);
+        const name = this.getAtrr('name');
+        name?.addValidators(DuplicateNameValidator(clientApps, 'name'));
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
+    })
+  }
+
   getWorkspaces(){
     this.workspaceService.getWorkspaces(this.user).subscribe({
       next: data=>{
         this.workspaces = data;
       },
-      error:err=>{
-        console.log(err);
-        this.router.navigate([global['routeTitlePage']]);
-      }
+      error: () => {this.toastr.error('Error from server. Try again');}
     }
     )
   }
@@ -100,7 +111,7 @@ export class CreateClientAppComponent implements OnInit {
 
     var _clientApp = {
       clientId: create ? undefined : this.clientAppId,
-      workspacesId: _workspaceIds,
+      workspacesIds: _workspaceIds,
       name: this.getAtrr('name')?.value,
       applicationType: this.getAtrr('applicationType')?.value,
       active: !this.getAtrr('disable')?.value
@@ -112,7 +123,7 @@ export class CreateClientAppComponent implements OnInit {
           this.goClientAppsList();
           this.toastr.info('ClientApp created successfully');
         },
-        error:(err) => console.log(err)
+        error: () => {this.toastr.error('Error from server. Try again');}
       });
     }
 
@@ -123,7 +134,8 @@ export class CreateClientAppComponent implements OnInit {
           this.userId = '';
           this.goClientAppsList();
           this.toastr.info('ClientApp edited successfully');
-        }
+        },
+        error: () => {this.toastr.error('Error from server. Try again');}
       })
     }
   }

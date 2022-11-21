@@ -71,7 +71,7 @@ export class StyleComponent implements OnInit {
         }
         this.setPagination(this.styles);
       },
-      error: (err) => console.log(err)
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
   }
 
@@ -80,7 +80,8 @@ export class StyleComponent implements OnInit {
       next:()=>{
         this.getStyles();
         this.toastr.info('Style deleted');
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 

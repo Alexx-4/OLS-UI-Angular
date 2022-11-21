@@ -27,7 +27,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio';
+import {MatRadioModule} from '@angular/material/radio';
 import { AlphaInfoComponent } from './components/alpha-info/alpha-info.component';
 import { CreateAlphaInfoComponent } from './components/alpha-info/create-alpha-info/create-alpha-info.component';
 import { QueryTematicComponent } from './components/tematics/query-tematic/query-tematic.component';
@@ -43,6 +43,8 @@ import { CreateClientAppComponent } from './components/user-config/client-app/cr
 import { CreateWorkspaceComponent } from './components/user-config/workspace/create-workspace/create-workspace.component';
 
 import { JwtModule } from "@auth0/angular-jwt";
+import { NgxSpinnerModule } from "ngx-spinner";
+
 import { AuthGuard } from './guards/auth-guards';
 
 export function tokenGetter() {
@@ -91,6 +93,7 @@ export function tokenGetter() {
     MatPaginatorModule,
     MatIconModule,
     MatRadioModule,
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

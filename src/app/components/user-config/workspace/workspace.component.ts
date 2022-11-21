@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { WorkspaceModel } from 'src/app/models/WorkspaceModel';
+import { UserService } from 'src/app/services/user.service';
 import { WorkspaceService } from 'src/app/services/workspace.service';
 
 
@@ -29,14 +30,19 @@ export class WorkspaceComponent implements OnInit {
   constructor(private workspaceService: WorkspaceService,
               private _changeDetectorRef: ChangeDetectorRef,
               private toastr: ToastrService,
-              private router:Router) { }
+              private router:Router,
+              private userService: UserService) { }
 
   ngOnInit(): void {
+    this.workspaceService.updateWorkspaceModel({} as WorkspaceModel);
     this.getWorkspaces(this.user);
   }
 
   get user(){
-    return undefined;
+    var _user = this.userService.user;
+    if (_user?.userRole === 'Admin')
+        return undefined;
+    return _user?.userId;
   }
 
   getWorkspaces(userId: string | undefined){
@@ -46,9 +52,7 @@ export class WorkspaceComponent implements OnInit {
 
         this.setPagination(this.workspaces);
       },
-      error: (err)=>{
-        console.log(err);
-      }
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 
@@ -65,9 +69,7 @@ export class WorkspaceComponent implements OnInit {
         this.toastr.info('Workspace successfully deleted');
         this.getWorkspaces(this.user);
       },
-      error: (err)=>{
-        console.log(err);
-      }
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 

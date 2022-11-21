@@ -8,6 +8,7 @@ import { WorkspaceService } from 'src/app/services/workspace.service';
 
 import global from '../../../../../../global.json';
 import { LayerService } from 'src/app/services/layer.service';
+import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 
 @Component({
   selector: 'app-create-workspace',
@@ -41,6 +42,7 @@ export class CreateWorkspaceComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.getWorkspaces();
     this.getLayers();
     this.getFunctions();
 
@@ -55,9 +57,13 @@ export class CreateWorkspaceComponent implements OnInit {
 
           this.workspaceId = data.id;
         }
-        console.log(data);
+
       }
     );
+  }
+
+  get user(){
+    return undefined;
   }
 
   ngOnDestroy(): void {
@@ -81,15 +87,27 @@ export class CreateWorkspaceComponent implements OnInit {
           this.layers.push(layer);
         }
       },
-      error: (err) => console.log(err)
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
+  }
+
+  getWorkspaces(){
+    this.workspaceService.getWorkspaces(this.user).subscribe({
+      next: data=>{
+        const workspaces: WorkspaceModel[] = data as Array<WorkspaceModel>;
+        const name = this.getAtrr('name');
+        name?.addValidators(DuplicateNameValidator(workspaces, 'name'));
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
+    })
   }
 
   getFunctions(){
     this.workspaceService.getFunctions().subscribe({
       next: data=>{
         this.functions = data;
-      }
+      },
+      error: () => {this.toastr.error('Error from server. Try again');}
     })
   }
 
@@ -123,7 +141,7 @@ export class CreateWorkspaceComponent implements OnInit {
           this.goWorkspacesList();
           this.toastr.info('Workspace created successfully');
         },
-        error:(err) => console.log(err)
+        error: () => {this.toastr.error('Error from server. Try again');}
       });
     }
 
@@ -133,7 +151,8 @@ export class CreateWorkspaceComponent implements OnInit {
           this.workspaceId = 0;
           this.goWorkspacesList();
           this.toastr.info('Workspace edited successfully');
-        }
+        },
+        error: () => {this.toastr.error('Error from server. Try again');}
       })
     }
   }

@@ -5,10 +5,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { LayerModel } from 'src/app/models/LayerModel';
-import { ProviderModel } from 'src/app/models/ProviderModel';
 import { StyleModel } from 'src/app/models/StyleModel';
 import { LayerService } from 'src/app/services/layer.service';
-import { ProviderService } from 'src/app/services/provider.service';
 import { StyleService } from 'src/app/services/style.service';
 import global from '../../../../global.json';
 
@@ -36,11 +34,12 @@ export class LayerComponent implements OnInit {
 
   ngOnInit(): void {
     this.layerService.updateLayerModel({} as LayerModel);
-    this.styleService.getStyles().subscribe(
-      data=>{
+    this.styleService.getStyles().subscribe({
+      next: data=>{
         this.styles = data;
         this.getLayers();
-      }
+
+      },error: () => {this.toastr.error('Error from server. Try again');}}
     );
 
   }
@@ -76,7 +75,7 @@ export class LayerComponent implements OnInit {
         }
         this.setPagination(this.layers);
       },
-      error: (err) => console.log(err)
+      error: () => {this.toastr.error('Error from server. Try again');}
     });
   }
 
@@ -86,9 +85,8 @@ export class LayerComponent implements OnInit {
         this.getLayers();
         this.toastr.info('Layer deleted');
       },
-      error:(err)=>{
-        console.log(err);
-      }
+        error: () => {this.toastr.error('Error from server. Try again');}
+
     })
   }
 

@@ -1,14 +1,12 @@
-<p>create-query-tematic works!</p>
 <div class="jumbtron">
   <div>
-  <h2><b>Create Query Tematic</b></h2>
-  <!-- {{QueryTematicForm.value | json}} <br>
-  {{this.tematicService.tematicQueries | json}} -->
+    <h2 class="mb-5" style="color:blue; margin-left: 1cm"><b>Create Query Tematic</b></h2>
+   <!-- {{QueryTematicForm.value | json}} <br> -->
+  <!-- {{this.tematicService.tematicQueries | json}} -->
   </div>
-  <hr>
   <div class="row">
     <div class="col-md-6">
-      <div class="login-box">
+      <div class="login-box" style="margin-left: 0.4cm;">
 
         <form [formGroup]="QueryTematicForm">
 
@@ -16,9 +14,13 @@
             <input [ngClass]="(getAtrr('tematicName')?.invalid &&
             getAtrr('tematicName')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="tematicName">
             <p>Tematic Name</p>
-            <small *ngIf="getAtrr('tematicName')?.invalid &&
+            <small *ngIf="getAtrr('tematicName')?.hasError('required') &&
                           getAtrr('tematicName')?.touched"
                           class="error" >This field is required</small>
+
+            <small *ngIf="getAtrr('tematicName')?.hasError('invalidName') &&
+                          getAtrr('tematicName')?.touched"
+                          class="error" >Name already taken</small>
           </div>
 
           <div formGroupName="query">
@@ -240,3 +242,8 @@
     </div>
   </div>
 </div>
+
+<!-- Spinner -->
+<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true">
+  <img src="../../../../../assets/img/spinn.gif">
+</ngx-spinner>

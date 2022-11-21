@@ -1,6 +1,6 @@
 <div class="jumbtron" *ngIf="!ok">
   <div>
-    <h2 class="mb-5" style="color:blue"><b>Create new Category Tematic</b></h2>
+    <h2 class="mb-5" style="color:blue; margin-left: 1cm;"><b>Create new Category Tematic</b></h2>
   </div>
       <div class="login-box">
         <form [formGroup]="CategoryTematicForm">
@@ -8,9 +8,13 @@
             <input [ngClass]="(getAtrr('tematicName')?.invalid &&
             getAtrr('tematicName')?.touched) ? 'textBoxError' : 'textBox'" type="text" name="" required="" formControlName="tematicName">
             <p>Tematic Name</p>
-            <small *ngIf="getAtrr('tematicName')?.invalid &&
+            <small *ngIf="getAtrr('tematicName')?.hasError('required') &&
                           getAtrr('tematicName')?.touched"
                           class="error" >This field is required</small>
+
+            <small *ngIf="getAtrr('tematicName')?.hasError('invalidName') &&
+                          getAtrr('tematicName')?.touched"
+                          class="error" >Name already taken</small>
           </div>
 
           <div class="user-box">
