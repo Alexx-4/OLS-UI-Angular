@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ProviderModel } from 'src/app/models/ProviderModel';
@@ -26,7 +27,8 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
   constructor(formBuilder: FormBuilder,
               private providerService: ProviderService,
               private router: Router,
-              private toastr:ToastrService) {
+              private toastr:ToastrService,
+              private spinner: NgxSpinnerService) {
 
     this.ProviderForm = formBuilder.group({
         name: ['', Validators.required],
@@ -62,6 +64,7 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
   }
 
   getProviders(){
+    this.spinner.show();
     this.providerService.getProviders().subscribe({
       next: data=>{
         var providers: {name:string}[] = [];
@@ -72,8 +75,10 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
 
         const name = this.getAtrr('name');
         name?.addValidators(DuplicateNameValidator(providers, 'name'));
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
@@ -103,13 +108,16 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
       boundingBoxField: this.getAtrr('boundingBoxField')?.value,
       table: this.getAtrr('table')?.value
     }
+
+    this.spinner.show();
     if(create){
       this.providerService.createProvider(_provider).subscribe({
         next:()=>{
           this.goProvidersList();
           this.toastr.info('Provider created successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       });
     }
     else{
@@ -119,7 +127,8 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
           this.goProvidersList();
           this.toastr.info('Provider edited successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       })
     }
   }
@@ -128,13 +137,16 @@ export class CreateProviderComponent implements OnInit, OnDestroy {
     var connString:string = this.getAtrr('connString')?.value;
 
     if(connString){
+      this.spinner.show();
       this.providerService.getProviderInfo(connString).subscribe({
         next: (data)=>{
           this.tables = data as Array<string>;
+          this.spinner.hide();
       },
         error: ()=>{
         this.tables = [];
         this.toastr.info('Cannot connect with external database');
+        this.spinner.hide();
       }
 
         }

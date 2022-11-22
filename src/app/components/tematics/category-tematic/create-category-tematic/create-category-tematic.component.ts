@@ -9,6 +9,7 @@ import { query, TematicModel } from 'src/app/models/tematicModel';
 
 import global from '../../../../../../global.json';
 import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-category-tematic',
@@ -36,7 +37,8 @@ export class CreateCategoryTematicComponent implements OnInit {
               private router: Router,
               private toastr:ToastrService,
               public tematicService: TematicService,
-              private styleService: StyleService) {
+              private styleService: StyleService,
+              private spinner: NgxSpinnerService) {
 
         this.CategoryTematicForm = formBuilder.group({
             tematicName: ['', Validators.required],
@@ -48,7 +50,6 @@ export class CreateCategoryTematicComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.getTematics();
     this.getLayers();
     this.getStyles();
 
@@ -66,6 +67,7 @@ export class CreateCategoryTematicComponent implements OnInit {
 
           this.tematicService.tematicQueries = data.queries;
         }
+        this.getTematics();
       }
     )
   }
@@ -79,24 +81,30 @@ export class CreateCategoryTematicComponent implements OnInit {
   }
 
   getTematics(){
+    this.spinner.show();
     this.tematicService.getCategoryTematics().subscribe({
       next:data=>{
         this.tematics = data as Array<TematicModel>;
         const tematicName = this.getAtrr('tematicName');
         tematicName?.addValidators(DuplicateNameValidator(this.tematics, 'tematicName'));
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
   getStyles(){
+    this.spinner.show();
     this.styleService.getStyles().subscribe({
-      next: data=>{ this.styles = data; },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      next: data=>{ this.styles = data; this.spinner.hide();},
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
   }
 
   getLayers(){
+    this.spinner.show();
     this.layerService.getLayers().subscribe({
       next: data => {
         for(let item of data as Array<any>){
@@ -107,8 +115,10 @@ export class CreateCategoryTematicComponent implements OnInit {
 
         this.layers.push(_layer);
         }
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
   }
 
@@ -120,6 +130,7 @@ export class CreateCategoryTematicComponent implements OnInit {
 
     var _layer = this.layers.find(l=>l.name === _layerName);
 
+    this.spinner.show();
     this.tematicService.getTablesColumns(_layer.id).subscribe({
       next:(data)=>{
         this.tablesColumns = data;
@@ -128,8 +139,10 @@ export class CreateCategoryTematicComponent implements OnInit {
         for(let item in this.tablesColumns){
           this.tables.push(item)
         }
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
@@ -151,13 +164,15 @@ export class CreateCategoryTematicComponent implements OnInit {
       queries: this.tematicService.tematicQueries
     }
 
+    this.spinner.show();
     if(create){
       this.tematicService.createCategoryTematic(_tematic).subscribe({
         next: () => {
           this.goCategoriesList();
           this.toastr.info('Category tematic successfully created');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       });
     }
       else{
@@ -167,7 +182,8 @@ export class CreateCategoryTematicComponent implements OnInit {
             this.goCategoriesList();
             this.toastr.info('Category tematic successfully edited');
           },
-          error: () => {this.toastr.error('Error from server. Try again');}
+          error: () => {this.toastr.error('Error from server. Try again');
+                        this.spinner.hide();}
         })
       }
   }
@@ -182,6 +198,7 @@ export class CreateCategoryTematicComponent implements OnInit {
 
     var _layer = this.layers.find(l=>l.name === _layerName);
 
+    this.spinner.show();
     this.tematicService.getCategories(_column, _table, _layer.id).subscribe({
       next:data=>{
         var _categories = data as {operator: string, data:string};
@@ -208,8 +225,9 @@ export class CreateCategoryTematicComponent implements OnInit {
       this.toastr.info('Founded ' + this.styles.length + ' styles',
                                     this.tematicService.tematicQueries.length + ' queries created');
 
-
-    }, error: () => {this.toastr.error('Error from server. Try again');}
+      this.spinner.hide();
+    }, error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
   });
 
 

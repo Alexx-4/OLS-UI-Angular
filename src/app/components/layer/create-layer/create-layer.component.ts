@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { LayerModel } from 'src/app/models/LayerModel';
@@ -34,7 +35,8 @@ export class CreateLayerComponent implements OnInit {
               private router: Router,
               private toastr:ToastrService,
               public styleService: StyleService,
-              private providerService:ProviderService) {
+              private providerService:ProviderService,
+              private spinner: NgxSpinnerService) {
 
     this.LayerForm = formBuilder.group({
         name: ['', Validators.required],
@@ -47,18 +49,24 @@ export class CreateLayerComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.styleService.getStyles().subscribe({
       next:(data)=>{
         this.styles = data as Array<StyleModel>;
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
 
+    this.spinner.show();
     this.providerService.getProviders().subscribe({
       next:(data)=>{
         this.providers = data;
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
 
 
@@ -86,6 +94,7 @@ export class CreateLayerComponent implements OnInit {
   }
 
   getLayers(){
+    this.spinner.show();
     this.layerService.getLayers().subscribe({
       next:data=>{
         var layers: {name: string}[] = [];
@@ -95,8 +104,11 @@ export class CreateLayerComponent implements OnInit {
         }
         const name = this.getAtrr('name');
         name?.addValidators(DuplicateNameValidator(layers, 'name'));
+        this.spinner.hide();
+
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
@@ -124,15 +136,17 @@ export class CreateLayerComponent implements OnInit {
       styles: this.getAtrr('styles')?.value,
       order: this.getAtrr('order')?.value
     }
-    console.log(_layer);
+
+    this.spinner.show();
     if(create){
       this.layerService.createLayer(_layer).subscribe({
         next:()=>{
           this.goLayersList();
           this.toastr.info('Layer created successfully');
         },
-        error:(err) => {
-          this.toastr.info('Cannot create layer with order and provider selected')
+        error:() => {
+          this.toastr.info('Cannot create layer with order and provider selected');
+          this.spinner.hide();
         }
 
       });
@@ -144,9 +158,9 @@ export class CreateLayerComponent implements OnInit {
           this.goLayersList();
           this.toastr.info('Layer edited successfully');
         },
-        error: (err) => {
-          console.log(err);
-          this.toastr.info('Cannot edit layer with order and provider selected')
+        error: () => {
+          this.toastr.info('Cannot edit layer with order and provider selected');
+          this.spinner.hide();
         }
       })
     }

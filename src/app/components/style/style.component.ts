@@ -10,6 +10,7 @@ import { StyleService } from 'src/app/services/style.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 import global from '../../../../global.json';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-style',
@@ -29,7 +30,8 @@ export class StyleComponent implements OnInit {
   constructor(public styleService:StyleService,
               private router: Router,
               private toastr:ToastrService,
-              private _changeDetectorRef: ChangeDetectorRef) { }
+              private _changeDetectorRef: ChangeDetectorRef,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.styleService.updateStyleModel({} as StyleModel);
@@ -44,6 +46,7 @@ export class StyleComponent implements OnInit {
   }
 
   getStyles(){
+    this.spinner.show();
     this.styleService.getStyles().subscribe({
       next: (data) => {
         this.styles = [];
@@ -70,18 +73,22 @@ export class StyleComponent implements OnInit {
           this.styles.push(style);
         }
         this.setPagination(this.styles);
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
   }
 
   deleteStyle(event: MouseEvent, styleId: number | undefined) {
+    this.spinner.show();
     this.styleService.deleteStyle(styleId as number).subscribe({
       next:()=>{
         this.getStyles();
         this.toastr.info('Style deleted');
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 

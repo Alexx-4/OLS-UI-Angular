@@ -39,7 +39,7 @@ export class CreateQueryTematicComponent implements OnInit {
               private router:Router,
               private layerService: LayerService,
               public styleService: StyleService,
-              private spinner: NgxSpinnerService) {
+              private spinner: NgxSpinnerService,) {
 
     this.QueryTematicForm = formBuilder.group({
         tematicName: ['', Validators.required],
@@ -66,7 +66,6 @@ export class CreateQueryTematicComponent implements OnInit {
   ngOnInit(): void {
     this.getLayers();
     this.getStyles();
-    this.getTematics();
 
     this.tematicService.getTematicModel().subscribe(
       data=>{
@@ -80,6 +79,8 @@ export class CreateQueryTematicComponent implements OnInit {
           this.tematicIndex = data.tematicId as number;
         }
         else { this.tematicService.tematicQueries = []; }
+
+        this.getTematics();
       }
     );
   }
@@ -105,6 +106,7 @@ export class CreateQueryTematicComponent implements OnInit {
   }
 
   getLayers(){
+    this.spinner.show();
     this.layerService.getLayers().subscribe({
       next:(data)=>{
         this.layers = [];
@@ -115,28 +117,37 @@ export class CreateQueryTematicComponent implements OnInit {
           }
           this.layers.push(_layer);
         }
-      },error: () => {this.toastr.error('Error from server. Try again');}
+        this.spinner.hide();
+
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
 
     })
   }
 
   getTematics(){
+    this.spinner.show()
     this.tematicService.getQueryTematics().subscribe({
       next: data => {
         this.tematics = data as Array<TematicModel>;
         const tematicName = this.getAtrr('tematicName');
         tematicName?.addValidators(DuplicateNameValidator(this.tematics.filter(t=>t.tematicId !== this.tematicIndex), 'tematicName'));
+        this.spinner.hide();
 
-      },error: () => {this.toastr.error('Error from server. Try again');}
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
     })
   }
 
   getStyles(){
+    this.spinner.show();
     this.styleService.getStyles().subscribe({
       next:(data)=>{
         this.styles = data;
+        this.spinner.hide();
 
-      },error: () => {this.toastr.error('Error from server. Try again');}}
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}}
     )
   }
 
@@ -148,6 +159,7 @@ export class CreateQueryTematicComponent implements OnInit {
 
     var _layer = this.layers.find(l=>l.name === _layerName);
 
+    this.spinner.show();
     this.tematicService.getTablesColumns(_layer.id).subscribe({
       next:(data)=>{
         this.tablesColumns = data;
@@ -156,8 +168,10 @@ export class CreateQueryTematicComponent implements OnInit {
         for(let item in this.tablesColumns){
           this.tables.push(item)
         }
+        this.spinner.hide();
 
-      },error: () => {this.toastr.error('Error from server. Try again');}
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
     })
   }
 
@@ -194,7 +208,8 @@ export class CreateQueryTematicComponent implements OnInit {
         this.operators[i] = data;
         this.spinner.hide();
 
-      },error: () => {this.toastr.error('Error from server. Try again');}
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
     })
   }
 
@@ -303,13 +318,15 @@ export class CreateQueryTematicComponent implements OnInit {
       queries: this.tematicService.tematicQueries
     }
 
+    this.spinner.show();
     if(create){
       this.tematicService.createQueryTematic(_tematic).subscribe({
         next: () => {
           this.goQueryTematicsView();
           this.toastr.info('Query tematic successfully created');
 
-        },error: () => {this.toastr.error('Error from server. Try again');}
+        },error: () => {this.toastr.error('Error from server. Try again');
+                        this.spinner.hide();}
       });
     }
       else{
@@ -319,7 +336,8 @@ export class CreateQueryTematicComponent implements OnInit {
             this.goQueryTematicsView();
             this.toastr.info('Query tematic successfully edited');
 
-          },error: () => {this.toastr.error('Error from server. Try again');}
+          },error: () => {this.toastr.error('Error from server. Try again');
+                          this.spinner.hide();}
         })
       }
   }

@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { WorkspaceModel } from 'src/app/models/WorkspaceModel';
@@ -31,7 +32,8 @@ export class WorkspaceComponent implements OnInit {
               private _changeDetectorRef: ChangeDetectorRef,
               private toastr: ToastrService,
               private router:Router,
-              private userService: UserService) { }
+              private userService: UserService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.workspaceService.updateWorkspaceModel({} as WorkspaceModel);
@@ -46,13 +48,15 @@ export class WorkspaceComponent implements OnInit {
   }
 
   getWorkspaces(userId: string | undefined){
+    this.spinner.show();
     this.workspaceService.getWorkspaces(userId).subscribe({
       next: (data)=>{
         this.workspaces = data as Array<WorkspaceModel>;
-
         this.setPagination(this.workspaces);
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
@@ -64,12 +68,14 @@ export class WorkspaceComponent implements OnInit {
   }
 
   deleteWorkspace(id:number | undefined){
+    this.spinner.show();
     this.workspaceService.deleteWorkspace(id as number).subscribe({
-      next: (data)=>{
+      next: ()=>{
         this.toastr.info('Workspace successfully deleted');
         this.getWorkspaces(this.user);
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 

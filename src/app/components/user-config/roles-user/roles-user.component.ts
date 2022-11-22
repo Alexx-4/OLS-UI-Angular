@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
@@ -30,7 +31,8 @@ export class RolesUserComponent implements OnInit {
               private userService: UserService,
               private router: Router,
               private _changeDetectorRef: ChangeDetectorRef,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private spinner: NgxSpinnerService) {
 
       this.rolesForm = formBuilder.group({
         roles: formBuilder.array([])
@@ -55,23 +57,28 @@ export class RolesUserComponent implements OnInit {
   }
 
   getRoles(){
+    this.spinner.show();
     this.userService.getRoles().subscribe({
       next: (data)=>{
         this.roles = data;
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
   }
 
   getUsers(){
+    this.spinner.show();
     this.userService.getUsers().subscribe({
       next: (data)=>{
         this.users = data;
-        console.log(data);
         this.setUserRoles();
         this.setPagination(this.users);
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
 
     });
   }
@@ -93,20 +100,24 @@ export class RolesUserComponent implements OnInit {
       return
     }
 
+    this.spinner.show();
     this.userService.updateUserRoles(user, newRoles).subscribe({
       next: ()=>{
         this.getUsers();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
   deleteUser(user: any){
+    this.spinner.show();
     this.userService.deleteUser(user).subscribe({
       next:()=>{
         this.getUsers();
         this.toastr.info('User successfully deleted');
-      },error: () => {this.toastr.error('Error from server. Try again');}}
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}}
     )
   }
 

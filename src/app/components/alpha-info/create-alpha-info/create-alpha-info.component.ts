@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { timeStamp } from 'console';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { AlphaInfoModel } from 'src/app/models/AlphaInfoModel';
@@ -39,7 +40,8 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
               private router: Router,
               private toastr:ToastrService,
               private layerService: LayerService,
-              private providerService: ProviderService) {
+              private providerService: ProviderService,
+              private spinner: NgxSpinnerService) {
 
     this.AlphaInfoForm = formBuilder.group({
         name: ['', Validators.required],
@@ -84,17 +86,21 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
   }
 
   getProviders(){
+    this.spinner.show();
     this.providerService.getProviders().subscribe({
       next:(data)=>{
         for(let item of data as Array<{provider:any}>){
           this.providers.push(item.provider);
         }
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}}
     );
   }
 
   getAlphaInfos(){
+    this.spinner.show();
     this.alphaInfoService.getAlphaInfos().subscribe({
       next: data=>{
         var alphaInfos: {name:string}[] = [];
@@ -104,12 +110,15 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
         }
         const name = this.getAtrr('name');
         name?.addValidators(DuplicateNameValidator(alphaInfos, 'name'));
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
   getLayers(){
+    this.spinner.show();
     this.layerService.getLayers().subscribe({
       next: (data)=>{
         this.layers = [];
@@ -140,7 +149,10 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
           this.getColumns();
           this.init = false;
       }
-      },error: () => {this.toastr.error('Error from server. Try again');}}
+      this.spinner.hide();
+
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}}
     )
   }
 
@@ -170,13 +182,16 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
     else{
       var connString = this.getAtrr('connString')?.value;
 
+      this.spinner.show();
       this.providerService.getProviderInfo(connString).subscribe({
         next: (data)=>{
           this.tables = data as Array<string>;
+          this.spinner.hide();
         },
         error: ()=>{
           this.tables = [];
           this.toastr.info('Cannot connect with external database');
+          this.spinner.hide();
         }
       });
     }
@@ -195,11 +210,15 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
 
         if(_layerName && _tableName){
           var _layer = this.layers.find(l=>l.name === _layerName);
+
+          this.spinner.show();
           this.providerService.getProviderInfo(null,_layer.id,_tableName).subscribe({
             next:(data)=>{
-              this.columns = data as Array<string>;},
+              this.columns = data as Array<string>;
+              this.spinner.hide();},
 
-              error: () => {this.toastr.error('Error from server. Try again');}}
+              error: () => {this.toastr.error('Error from server. Try again');
+                            this.spinner.hide();}}
           );
         }
         else{this.columns = [];}
@@ -208,13 +227,16 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
       else{
         var connString = this.getAtrr('connString')?.value;
 
+        this.spinner.show();
         this.providerService.getProviderInfo(connString, undefined, _tableName).subscribe({
           next: (data)=>{
             this.columns = data as Array<string>;
+            this.spinner.hide();
           },
           error: ()=>{
             this.columns = [];
             this.toastr.info('There is no columns to database information provided');
+            this.spinner.hide();
           }
         })
       }
@@ -247,13 +269,15 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
       columns: (this.getAtrr('columns')?.value as Array<string>).toString()
     }
 
+    this.spinner.show();
     if(create){
       this.alphaInfoService.createAlphaInfo(_alphaInfo).subscribe({
         next:()=>{
           this.goAlphaInfosList();
           this.toastr.info('AlphaInfo created successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       });
     }
     else{
@@ -263,7 +287,8 @@ export class CreateAlphaInfoComponent implements OnInit, OnDestroy {
           this.goAlphaInfosList();
           this.toastr.info('AlphaInfo edited successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       });
     }
   }

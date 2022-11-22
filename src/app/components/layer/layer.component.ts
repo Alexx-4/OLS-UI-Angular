@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { LayerModel } from 'src/app/models/LayerModel';
@@ -30,16 +31,20 @@ export class LayerComponent implements OnInit {
               private router: Router,
               private toastr:ToastrService,
               private styleService:StyleService,
-              private _changeDetectorRef: ChangeDetectorRef) { }
+              private _changeDetectorRef: ChangeDetectorRef,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.layerService.updateLayerModel({} as LayerModel);
+
+    this.spinner.show();
     this.styleService.getStyles().subscribe({
       next: data=>{
         this.styles = data;
         this.getLayers();
 
-      },error: () => {this.toastr.error('Error from server. Try again');}}
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}}
     );
 
   }
@@ -52,9 +57,10 @@ export class LayerComponent implements OnInit {
   }
 
   getLayers(){
+    this.spinner.show();
+
     this.layerService.getLayers().subscribe({
       next: (data) => {
-
         this.layers = [];
         for(let item of data as Array<any>){
           var layer:LayerModel = {
@@ -74,18 +80,23 @@ export class LayerComponent implements OnInit {
           this.layers.push(layer);
         }
         this.setPagination(this.layers);
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
   }
 
   deleteLayer(event: MouseEvent, layerId: number | undefined) {
+    this.spinner.show();
     this.layerService.deleteLayer(layerId as number).subscribe({
       next:()=>{
         this.getLayers();
         this.toastr.info('Layer deleted');
+        this.spinner.hide();
       },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
 
     })
   }

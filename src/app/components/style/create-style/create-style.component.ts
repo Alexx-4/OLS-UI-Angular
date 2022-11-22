@@ -11,6 +11,7 @@ import { StyleModel } from 'src/app/models/StyleModel';
 import { TematicService } from 'src/app/services/tematic.service';
 import { TematicModel } from 'src/app/models/tematicModel';
 import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-style',
@@ -33,7 +34,8 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
               private styleService: StyleService,
               private router: Router,
               private toastr:ToastrService,
-              private tematicService: TematicService) {
+              private tematicService: TematicService,
+              private spinner: NgxSpinnerService) {
 
     this.StyleForm = formBuilder.group({
         name: ['', Validators.required],
@@ -71,8 +73,7 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
     });
 
     this.tematicService.getTematicModel().subscribe({
-      next:data =>{this.tematic = data;},
-      error: () => {this.toastr.error('Error from server. Try again');}
+      next:data =>{this.tematic = data;}
     });
   }
 
@@ -88,13 +89,16 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
   }
 
   getStyles(){
+    this.spinner.show();
     this.styleService.getStyles().subscribe({
       next:data=>{
         this.styles = data as Array<any>;
         const name = this.getAtrr('name');
-        name?.addValidators(DuplicateNameValidator(this.styles.filter(s=>s.id !== this.styleId), 'name'))
+        name?.addValidators(DuplicateNameValidator(this.styles.filter(s=>s.id !== this.styleId), 'name'));
+        this.spinner.hide();
 
-      },error: () => {this.toastr.error('Error from server. Try again');}
+      },error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
     })
   }
 
@@ -119,19 +123,22 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
       imageRotation: 0
     }
 
+    this.spinner.show();
     if(create){
       this.styleService.createStyle(_style).subscribe({
         next:()=>{
           if(this.tematic.queryToEdit !== undefined){
             this.tematic.queries[this.tematic.queryToEdit].styleName = _style.name;
             this.tematicService.updateTematicModel(this.tematic);
+            this.spinner.hide();
             this.router.navigate([global['routeCreateCategoryTematic']]);
           }
           else { this.goStylesList(); }
 
           this.toastr.info('Style created successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       });
     }
 
@@ -142,7 +149,8 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
           this.goStylesList();
           this.toastr.info('Style edited successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       })
     }
   }
@@ -161,11 +169,14 @@ export class CreateStyleComponent implements OnInit, OnDestroy {
       imageRotation: 0
     }
 
-
-    this.styleService.getImage(_style).subscribe(
-      data=>{
+    this.spinner.show();
+    this.styleService.getImage(_style).subscribe({
+      next:data=>{
         this.image = this.styleService.getImgUrl(data);
-      }
+        this.spinner.hide();
+      },
+      error: () => {this.toastr.error('Error from server. Try again');
+      this.spinner.hide();}}
     )
   }
 

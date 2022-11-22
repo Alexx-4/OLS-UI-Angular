@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { ClientAppModel } from 'src/app/models/ClientAppModel';
@@ -31,7 +32,8 @@ export class ClientAppComponent implements OnInit {
               private _changeDetectorRef: ChangeDetectorRef,
               private toastr: ToastrService,
               private router:Router,
-              private userService: UserService) { }
+              private userService: UserService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.clientAppService.updateClientAppModel({} as ClientAppModel);
@@ -46,13 +48,16 @@ export class ClientAppComponent implements OnInit {
   }
 
   getClientApps(userId: string | undefined){
+    this.spinner.show();
     this.clientAppService.getClientApps(userId).subscribe({
       next: (data)=>{
         this.clientApps = data as Array<ClientAppModel>;
 
         this.setPagination(this.clientApps);
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
   }
 
@@ -64,12 +69,14 @@ export class ClientAppComponent implements OnInit {
   }
 
   deleteClientApp(id:string | undefined){
+    this.spinner.show();
     this.clientAppService.deleteClientApp(id as string).subscribe({
-      next: (data)=>{
+      next: ()=>{
         this.toastr.info('ClientApp successfully deleted');
         this.getClientApps(this.user);
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
   }
 

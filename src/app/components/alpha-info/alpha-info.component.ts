@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { AlphaInfoModel } from 'src/app/models/AlphaInfoModel';
@@ -31,9 +32,11 @@ export class AlphaInfoComponent implements OnInit {
               private router: Router,
               private toastr:ToastrService,
               private layerService: LayerService,
-              private _changeDetectorRef: ChangeDetectorRef) { }
+              private _changeDetectorRef: ChangeDetectorRef,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.layerService.getLayers().subscribe({
       next:(data)=>{
         this.layers = [];
@@ -46,7 +49,8 @@ export class AlphaInfoComponent implements OnInit {
         }
         this.getAlphaInfos();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}}
     )
     this.alphaInfoService.updateAlphaInfoModel({} as AlphaInfoModel);
   }
@@ -59,11 +63,11 @@ export class AlphaInfoComponent implements OnInit {
   }
 
   getAlphaInfos(){
+    this.spinner.show();
+
     this.alphaInfoService.getAlphaInfos().subscribe({
       next: (data) => {
-        console.log(data);
         this.alphaInfos = [];
-
         for(let item of data as Array<any>){
           var alphaInfo:AlphaInfoModel = {
 
@@ -84,19 +88,24 @@ export class AlphaInfoComponent implements OnInit {
           this.alphaInfos.push(alphaInfo);
         }
         this.setPagination(this.alphaInfos);
-
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {
+        this.toastr.error('Error from server. Try again');
+        this.spinner.hide();}
     });
   }
 
   deleteAlphaInfo(event: MouseEvent, alphaInfoId: number | undefined) {
+    this.spinner.show();
     this.alphaInfoService.deleteAlphaInfo(alphaInfoId as number).subscribe({
       next:()=>{
         this.getAlphaInfos();
         this.toastr.info('AlphaInfo deleted');
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 

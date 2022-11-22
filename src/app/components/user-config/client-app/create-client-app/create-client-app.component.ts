@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { ClientAppModel } from 'src/app/models/ClientAppModel';
@@ -31,7 +32,8 @@ export class CreateClientAppComponent implements OnInit {
               private router: Router,
               private toastr:ToastrService,
               private workspaceService: WorkspaceService,
-              private userService: UserService) {
+              private userService: UserService,
+              private spinner: NgxSpinnerService) {
 
     this.ClientAppForm = formBuilder.group({
         name: ['', Validators.required],
@@ -77,23 +79,28 @@ export class CreateClientAppComponent implements OnInit {
   }
 
   getClientApps(){
+    this.spinner.show();
     this.clientAppService.getClientApps(this.user).subscribe({
       next:data=>{
-        console.log(data);
         const clientApps: ClientAppModel[] = (data as Array<ClientAppModel>).filter(c=>c.id !== this.clientAppId);
         const name = this.getAtrr('name');
         name?.addValidators(DuplicateNameValidator(clientApps, 'name'));
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
   getWorkspaces(){
+    this.spinner.show();
     this.workspaceService.getWorkspaces(this.user).subscribe({
       next: data=>{
         this.workspaces = data;
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     }
     )
   }
@@ -117,13 +124,15 @@ export class CreateClientAppComponent implements OnInit {
       active: !this.getAtrr('disable')?.value
     };
 
+    this.spinner.show();
     if(create){
       this.clientAppService.createClientApp(_clientApp).subscribe({
         next:()=>{
           this.goClientAppsList();
           this.toastr.info('ClientApp created successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       });
     }
 
@@ -135,7 +144,8 @@ export class CreateClientAppComponent implements OnInit {
           this.goClientAppsList();
           this.toastr.info('ClientApp edited successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       })
     }
   }

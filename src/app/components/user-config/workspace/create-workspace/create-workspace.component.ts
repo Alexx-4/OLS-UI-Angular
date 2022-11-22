@@ -9,6 +9,7 @@ import { WorkspaceService } from 'src/app/services/workspace.service';
 import global from '../../../../../../global.json';
 import { LayerService } from 'src/app/services/layer.service';
 import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-create-workspace',
@@ -31,7 +32,8 @@ export class CreateWorkspaceComponent implements OnInit {
               private workspaceService: WorkspaceService,
               private router: Router,
               private toastr:ToastrService,
-              private layerService: LayerService) {
+              private layerService: LayerService,
+              private spinner: NgxSpinnerService) {
 
     this.WorkspaceForm = formBuilder.group({
         name: ['', Validators.required],
@@ -74,6 +76,7 @@ export class CreateWorkspaceComponent implements OnInit {
   }
 
   getLayers(){
+    this.spinner.show();
     this.layerService.getLayers().subscribe({
       next: data=>{
         this.layers = [];
@@ -85,28 +88,36 @@ export class CreateWorkspaceComponent implements OnInit {
 
           this.layers.push(layer);
         }
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
   }
 
   getWorkspaces(){
+    this.spinner.show();
     this.workspaceService.getWorkspaces(this.user).subscribe({
       next: data=>{
         const workspaces: WorkspaceModel[] = data as Array<WorkspaceModel>;
         const name = this.getAtrr('name');
         name?.addValidators(DuplicateNameValidator(workspaces.filter(w=>w.id !== this.workspaceId), 'name'));
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
   getFunctions(){
+    this.spinner.show();
     this.workspaceService.getFunctions().subscribe({
       next: data=>{
         this.functions = data;
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
@@ -134,13 +145,15 @@ export class CreateWorkspaceComponent implements OnInit {
     }
     console.log(_workspace);
 
+    this.spinner.show();
     if(create){
       this.workspaceService.createWorkspace(_workspace).subscribe({
         next:()=>{
           this.goWorkspacesList();
           this.toastr.info('Workspace created successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       });
     }
 
@@ -151,7 +164,8 @@ export class CreateWorkspaceComponent implements OnInit {
           this.goWorkspacesList();
           this.toastr.info('Workspace edited successfully');
         },
-        error: () => {this.toastr.error('Error from server. Try again');}
+        error: () => {this.toastr.error('Error from server. Try again');
+                      this.spinner.hide();}
       })
     }
   }

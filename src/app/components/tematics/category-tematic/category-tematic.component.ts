@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { query, TematicModel } from 'src/app/models/tematicModel';
@@ -30,15 +31,18 @@ export class CategoryTematicComponent implements OnInit {
               private router: Router,
               private toastr: ToastrService,
               private styleService: StyleService,
-              private _changeDetectorRef: ChangeDetectorRef) { }
+              private _changeDetectorRef: ChangeDetectorRef,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.spinner.show();
     this.styleService.getStyles().subscribe({
       next:data=>{
         this.styles = data;
         this.getCategoryTematics();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}}
     )
   }
 
@@ -55,22 +59,28 @@ export class CategoryTematicComponent implements OnInit {
     }
 
   getCategoryTematics(){
+    this.spinner.show();
     this.tematicService.getCategoryTematics().subscribe({
       next:(data)=>{
         this.tematics = data;
         this.setPagination(this.tematics);
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     })
   }
 
   deleteCategoryTematic(event:Event, id:number | undefined) {
+    this.spinner.show();
     this.tematicService.deleteTematic(id as number).subscribe({
       next: ()=> {
         this.getCategoryTematics();
         this.toastr.info('Tematic successfully deleted');
+        this.spinner.hide();
       },
-      error: () => {this.toastr.error('Error from server. Try again');}
+      error: () => {this.toastr.error('Error from server. Try again');
+                    this.spinner.hide();}
     });
     }
 
