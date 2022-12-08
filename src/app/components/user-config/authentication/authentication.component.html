@@ -1,0 +1,104 @@
+<!-- {{LoginForm.value | json}} -->
+<!-- {{RegisterForm.value |json}}
+{{RegisterForm.errors | json}} -->
+
+<div class="section">
+  <div class="container">
+    <div class="row full-height justify-content-center">
+      <div class="col-12 text-center align-self-center py-5">
+        <div class="section pb-5 pt-5 pt-sm-2 text-center">
+
+                <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                <label for="reg-log"></label>
+
+          <div class="card-3d-wrap mx-auto">
+            <div class="card-3d-wrapper">
+
+
+              <div class="card-front">
+                <div class="center-wrap">
+                  <div class="section text-center">
+                    <h3 class="mb-4 pb-3" style="color: blue; font-weight: 600;"><b>Sign In</b></h3>
+                        <form [formGroup]="LoginForm">
+
+                          <div class="form-item">
+                            <input type="email" formControlName="UsernameLogin" placeholder="Email"
+                                (change)="checkValidatorsLogin()">
+
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                          </div>
+
+                          <div class="form-item">
+                            <input type="password" formControlName="PasswordLogin" placeholder="Password" maxlength="15"
+                                (change)="checkValidatorsLogin()" #passwordLogin>
+
+                                <img src="../../../../assets/img/eye.png" width="25" height="25"
+                                (click)="changePasswordVisibility(passwordLogin, imgPasswordLogin)" #imgPasswordLogin>
+                          </div>
+
+                          <div class="text-center">
+                            <button [disabled]="LoginForm.invalid"
+                                    class="button1 btn btn-success btn-lg btn-block"
+                                    data-dismiss="modal"
+                                    (click)="loginUser()">Login</button>
+
+                            <button class="button1 btn btn-success btn-lg btn-block" data-dismiss="modal"
+                                    style="margin-left:0.5cm">Cancel</button>
+                            </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+
+              <div class="card-back">
+                <div class="center-wrap">
+                  <div class="section text-center">
+                    <h3 class="mb-4 pb-3" style="color: blue; font-weight: 600;"><b>Sign Up</b></h3>
+
+                      <form [formGroup]="RegisterForm">
+                        <div class="form-item">
+                            <input type="email"  placeholder="Email" formControlName="UsernameRegister"
+                              (change)="checkValidatorsRegister()">
+
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="form-item">
+                            <input type="password" placeholder="Password" maxlength="15" formControlName="PasswordRegister"
+                              (change)="checkValidatorsRegister()" #passwordRegister>
+
+                              <img src="../../../../assets/img/eye.png" width="25" height="25"
+                              (click)="changePasswordVisibility(passwordRegister, imgPasswordRegister)" #imgPasswordRegister>
+
+                        </div>
+
+                        <div class="form-item">
+                            <input type="password" placeholder="Confirm Password" maxlength="15" formControlName="ConfirmPassword"
+                              (change)="checkValidatorsRegister()" #confimPassword>
+
+                            <img src="../../../../assets/img/eye.png" width="25" height="25"
+                              (click)="changePasswordVisibility(confimPassword, imgConfirmPass)" #imgConfirmPass>
+                        </div>
+
+                        <div class="text-center">
+                        <button [disabled]="RegisterForm.invalid"
+                                class="button1 btn btn-success btn-lg btn-block"
+                                data-dismiss="modal"
+                                (click)="registerUser()">Register</button>
+
+                        <button class="button1 btn btn-success btn-lg btn-block" data-dismiss="modal"
+                                style="margin-left:0.5cm">Cancel</button>
+                        </div>
+                      </form>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>

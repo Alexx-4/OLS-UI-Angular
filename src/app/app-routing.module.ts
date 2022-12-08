@@ -3,11 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import global from '../../global.json'
 
-import { LoginUserComponent } from './components/user-config/login-user/login-user.component';
-import { PageNotFoundComponent } from './components/others/page-not-found/page-not-found.component';
 import { CreateProviderComponent } from './components/provider/create-provider/create-provider.component';
 import { ProviderComponent } from './components/provider/provider.component';
-import { RegisterUserComponent } from './components/user-config/register-user/register-user.component';
 import { TitlePageComponent } from './components/others/title-page/title-page.component';
 import { LayerComponent } from './components/layer/layer.component';
 import { CreateLayerComponent } from './components/layer/create-layer/create-layer.component';
@@ -25,29 +22,29 @@ import { CreateWorkspaceComponent } from './components/user-config/workspace/cre
 import { ClientAppComponent } from './components/user-config/client-app/client-app.component';
 import { CreateClientAppComponent } from './components/user-config/client-app/create-client-app/create-client-app.component';
 import { AuthGuard } from './guards/auth-guards';
+import { AdminGuard } from './guards/admin-guard';
 
 const routes: Routes = [
   {path:'', redirectTo:global['routeTitlePage'], pathMatch: 'full'},
   {path: global['routeTitlePage'], component: TitlePageComponent},
-  {path: global['routeLogin'], component: LoginUserComponent},
-  {path: global['routeRegister'], component: RegisterUserComponent},
-  {path: global['routeProvider'], component: ProviderComponent},
-  {path: global['routeCreateProvider'], component: CreateProviderComponent},
-  {path: global['routeLayer'], component: LayerComponent},
-  {path: global['routeCreateLayer'], component: CreateLayerComponent},
-  {path: global['routeAlphaInfo'], component: AlphaInfoComponent},
-  {path: global['routeCreateAlphaInfo'], component: CreateAlphaInfoComponent},
-  {path: global['routeQueryTematic'], component: QueryTematicComponent},
-  {path: global['routeCreateQueryTematic'], component: CreateQueryTematicComponent},
-  {path: global['routeCategoryTematic'], component: CategoryTematicComponent},
-  {path: global['routeStyle'], component: StyleComponent},
-  {path: global['routeCreateStyle'], component: CreateStyleComponent},
+  {path: global['routeProvider'], component: ProviderComponent, canActivate: [AdminGuard]},
+  {path: global['routeCreateProvider'], component: CreateProviderComponent, canActivate: [AdminGuard]},
+  {path: global['routeLayer'], component: LayerComponent, canActivate: [AdminGuard]},
+  {path: global['routeCreateLayer'], component: CreateLayerComponent, canActivate: [AdminGuard]},
+  {path: global['routeAlphaInfo'], component: AlphaInfoComponent, canActivate: [AdminGuard]},
+  {path: global['routeCreateAlphaInfo'], component: CreateAlphaInfoComponent, canActivate: [AdminGuard]},
+  {path: global['routeQueryTematic'], component: QueryTematicComponent, canActivate: [AdminGuard]},
+  {path: global['routeCreateQueryTematic'], component: CreateQueryTematicComponent, canActivate: [AdminGuard]},
+  {path: global['routeCategoryTematic'], component: CategoryTematicComponent, canActivate: [AdminGuard]},
+  {path: global['routeStyle'], component: StyleComponent, canActivate: [AdminGuard]},
+  {path: global['routeCreateStyle'], component: CreateStyleComponent, canActivate: [AdminGuard]},
   {path: global['routeCreateCategoryTematic'], component: CreateCategoryTematicComponent},
-  {path: global['routeUserRoles'], component: RolesUserComponent},
-  {path: global['routeWorkspace'], component: WorkspaceComponent},
+  {path: global['routeUserRoles'], component: RolesUserComponent, canActivate: [AdminGuard]},
+  {path: global['routeWorkspace'], component: WorkspaceComponent, canActivate: [AuthGuard]},
   {path: global['routeCreateWorkspace'], component: CreateWorkspaceComponent, canActivate: [AuthGuard]},
-  {path: global['routeClientApp'], component: ClientAppComponent},
-  {path: global['routeCreateClientApp'], component: CreateClientAppComponent},
+  {path: global['routeClientApp'], component: ClientAppComponent, canActivate: [AuthGuard]},
+  {path: global['routeCreateClientApp'], component: CreateClientAppComponent, canActivate: [AuthGuard]},
+
   {path: "**", redirectTo:global['routeTitlePage'], pathMatch: 'full'}
 ];
 

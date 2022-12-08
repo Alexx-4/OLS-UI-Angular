@@ -1,1 +1,87 @@
-<p class="text-center">header works!</p>
+
+<div style="background-color: #212529; height: 0.3cm"></div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark mx-background-top-linear">
+      <div class="container">
+      <a class="navbar-brand" style="text-transform: uppercase; cursor: pointer;font-weight: 600; margin-right: 1.5cm;" (click)="goHome()">Open Latino Server</a>
+
+      <div *ngIf="isUserAuthenticated" style="color:aliceblue; margin-left: 3cm;">Hello {{user.userName}} !</div>
+
+      <img *ngIf="!isUserAuthenticated" src="../../../../assets/img/user.png" class="login" data-toggle="modal" data-target="#auth">
+      <i *ngIf="isUserAuthenticated" class="fa fa-sign-out logout" aria-hidden="true" data-toggle="modal" data-target="#confirmLogOut"></i>
+      </div>
+  </nav>
+
+  <div *ngIf="isUserAuthenticated" class="menu-back">
+      <input type='checkbox' id='mmeennuu'>
+      <label class='menu' for='mmeennuu'>
+
+      <div class='barry'>
+        <span class='bar'></span>
+        <span class='bar'></span>
+        <span class='bar'></span>
+        <span class='bar'></span>
+      </div>
+
+      <!-- <ul>
+        <li *ngIf="isAdmin"><a  ">Category Tematic</a></li>
+        <li *ngIf="isAdmin"><a  >Style</a></li>
+        <li *ngIf="isAdmin"><a  >Layer</a></li>
+        <li *ngIf="isAdmin"><a  [>Provider</a></li>
+        <li *ngIf="isAdmin"><a  >Alpha Info</a></li>
+        <li                ><a  >Workspaces</a></li>
+        <li                ><a  >Client App</a></li>
+        <li *ngIf="isAdmin"><a  >Users</a></li>
+      </ul> -->
+
+      <ul>
+        <li *ngIf="isAdmin" style="margin-left: -0.5cm;"><a [matMenuTriggerFor]="menu1">Tematics Configuration <i class="fa fa-caret-down"></i></a></li>
+        <mat-menu #menu1="matMenu">
+          <label class="label-option" mat-menu-item><b>--Tematics--</b></label>
+          <button class="option" [routerLink]="routes['routeCategoryTematic']" mat-menu-item>Category Tematic</button>
+          <button class="option" [routerLink]="routes['routeQueryTematic']" mat-menu-item>Query Tematic</button>
+        </mat-menu>
+
+        <li *ngIf="isAdmin"><a [matMenuTriggerFor]="menu2">Server Settings <i class="fa fa-caret-down"></i></a></li>
+        <mat-menu #menu2="matMenu">
+          <label class="label-option" mat-menu-item><b>--Settings--</b></label>
+          <button class="option" [routerLink]="routes['routeStyle']" mat-menu-item>Style</button>
+          <button class="option" [routerLink]="routes['routeProvider']" mat-menu-item>Provider</button>
+          <button class="option" [routerLink]="routes['routeLayer']" mat-menu-item>Layer</button>
+          <button class="option" [routerLink]="routes['routeAlphaInfo']" mat-menu-item>Alpha Info</button>
+        </mat-menu>
+
+        <li><a [matMenuTriggerFor]="menu3">Security Manager <i class="fa fa-caret-down"></i></a></li>
+        <mat-menu #menu3="matMenu">
+          <label class="label-option" mat-menu-item><b>--Security--</b></label>
+          <button *ngIf="isAdmin" [routerLink]="routes['routeUserRoles']" class="option" mat-menu-item>Manage Roles</button>
+          <button class="option"  [routerLink]="routes['routeWorkspace']" mat-menu-item>Workspaces</button>
+          <button class="option"  [routerLink]="routes['routeClientApp']"mat-menu-item>Client Apps</button>
+        </mat-menu>
+      </ul>
+      </label>
+</div>
+
+
+
+
+
+
+<!-- Modal logout confirmation -->
+<div class="modal fade" id="confirmLogOut" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="header-modal-delete">
+        <div class="modal-title" id="exampleModalLongTitle" style="color:white">Log Out confirmation</div>
+      </div>
+      <div class="modal-body text-center">
+        <b>Are you shure you want to leave the system?</b>
+      </div>
+      <div class="text-center">
+        <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal" (click)="logoutUser()">OK</button>
+        <button type="button" class="button-modal btn btn-success btn-lg btn-block" data-dismiss="modal" style="margin-left:0.5cm">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+

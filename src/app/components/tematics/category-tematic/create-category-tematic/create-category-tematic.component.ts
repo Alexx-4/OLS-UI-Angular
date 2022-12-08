@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Data, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -10,6 +10,9 @@ import { query, TematicModel } from 'src/app/models/tematicModel';
 import global from '../../../../../../global.json';
 import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-create-category-tematic',
@@ -32,12 +35,17 @@ export class CreateCategoryTematicComponent implements OnInit {
   ok:boolean = false;
   tematicIndex: number | undefined = 0;
 
+  dataSource!: MatTableDataSource<any>;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+  dataObs!: Observable<any>;
+
   constructor(formBuilder: FormBuilder,
               private layerService: LayerService,
               private router: Router,
               private toastr:ToastrService,
               public tematicService: TematicService,
               private styleService: StyleService,
+              private _changeDetectorRef: ChangeDetectorRef,
               private spinner: NgxSpinnerService) {
 
         this.CategoryTematicForm = formBuilder.group({
@@ -66,10 +74,18 @@ export class CreateCategoryTematicComponent implements OnInit {
           });
 
           this.tematicService.tematicQueries = data.queries;
+          this.setPagination(this.tematicService.tematicQueries);
         }
         this.getTematics();
       }
     )
+  }
+
+  setPagination(tableData:any) {
+    this.dataSource = new MatTableDataSource<any>(tableData);
+    this._changeDetectorRef.detectChanges();
+    this.dataSource.paginator = this.paginator;
+    this.dataObs = this.dataSource.connect();
   }
 
   get columns(){
@@ -222,6 +238,7 @@ export class CreateCategoryTematicComponent implements OnInit {
         this.tematicService.tematicQueries.push(_query);
 
       }
+      this.setPagination(this.tematicService.tematicQueries);
       this.toastr.info('Founded ' + this.styles.length + ' styles',
                                     this.tematicService.tematicQueries.length + ' queries created');
 

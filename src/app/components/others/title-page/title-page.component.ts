@@ -21,7 +21,6 @@ export class TitlePageComponent implements OnInit {
               go viewAdmin
           else
             go viewRegularUser*/
-    this.router.navigate([global['routeLogin']])
   }
 
 }

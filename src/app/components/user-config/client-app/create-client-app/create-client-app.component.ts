@@ -39,7 +39,7 @@ export class CreateClientAppComponent implements OnInit {
         name: ['', Validators.required],
         applicationType: ['CommunApp', Validators.required],
 
-        workspaces: ['', Validators.required],
+        workspaces: [''],
         disable: [false, Validators.required]
     })
     }
@@ -113,8 +113,14 @@ export class CreateClientAppComponent implements OnInit {
     var create:boolean = this.clientAppId === '';
 
     var workspaceNames = this.getAtrr('workspaces')?.value;
-    var _workspaceIds: number[] = workspaceNames.map((w:any) =>{
-      return this.workspaces.find((x: { name: any; })=>x.name === w).id });
+    var _workspaceIds: number[] | null;
+    try {
+      _workspaceIds = workspaceNames.map((w:any) =>{
+        return this.workspaces.find((x: { name: any; })=>x.name === w).id });
+    } catch (error) {
+      _workspaceIds = null;
+    }
+
 
     var _clientApp = {
       clientId: create ? undefined : this.clientAppId,

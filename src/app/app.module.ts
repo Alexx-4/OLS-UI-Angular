@@ -5,10 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import { LoginUserComponent } from './components/user-config/login-user/login-user.component';
-import { RegisterUserComponent } from './components/user-config/register-user/register-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PageNotFoundComponent } from './components/others/page-not-found/page-not-found.component';
 import { TitlePageComponent } from './components/others/title-page/title-page.component';
 
 import { ToastrModule } from 'ngx-toastr';
@@ -25,6 +22,7 @@ import {MatIconModule} from '@angular/material/icon';
 
 
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatMenuModule} from '@angular/material/menu';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatRadioModule} from '@angular/material/radio';
@@ -46,6 +44,8 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { NgxSpinnerModule } from "ngx-spinner";
 
 import { AuthGuard } from './guards/auth-guards';
+import { AuthenticationComponent } from './components/user-config/authentication/authentication.component';
+import { AdminGuard } from './guards/admin-guard';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -54,9 +54,6 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    LoginUserComponent,
-    RegisterUserComponent,
-    PageNotFoundComponent,
     TitlePageComponent,
     FooterComponent,
     HeaderComponent,
@@ -76,7 +73,8 @@ export function tokenGetter() {
     WorkspaceComponent,
     ClientAppComponent,
     CreateClientAppComponent,
-    CreateWorkspaceComponent
+    CreateWorkspaceComponent,
+    AuthenticationComponent
   ],
 
   imports: [
@@ -100,9 +98,10 @@ export function tokenGetter() {
         allowedDomains: ["localhost:5001"],
         disallowedRoutes: []
       }
-    })
+    }),
+    MatMenuModule
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

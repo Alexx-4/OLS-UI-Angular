@@ -19,7 +19,7 @@ export class UserService {
               private jwtHelper: JwtHelperService) {
    }
 
-   get user(){
+  get user(){
     if (this.isUserAuthenticated()){
       const token = localStorage.getItem("jwt");
       const jwt = this.jwtHelper.decodeToken(token as string);
@@ -33,7 +33,7 @@ export class UserService {
     return undefined;
    }
 
-   isUserAuthenticated = (): boolean => {
+  isUserAuthenticated = (): boolean => {
     const token = localStorage.getItem("jwt");
     if (token && !this.jwtHelper.isTokenExpired(token)){
       return true;
@@ -41,7 +41,7 @@ export class UserService {
     return false;
   }
 
-   loginUser(user:LoginViewModel):Observable<AuthenticatedResponse>{
+  loginUser(user:LoginViewModel):Observable<AuthenticatedResponse>{
     return this.http.post<AuthenticatedResponse>(this.url + 'Login', user);
   }
 

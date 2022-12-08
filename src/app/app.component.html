@@ -2,9 +2,25 @@
 
 <router-outlet></router-outlet>
 
+
+
 <!-- Spinner -->
 <ngx-spinner bdColor = "rgba(216, 212, 212, 0.8)" size = "medium" color = "#fff" type = "square-jelly-box" [fullScreen] = "true">
   <img src="../../../../../assets/img/spinn.gif">
 </ngx-spinner>
+
+
+<div class="modal fade" id="auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="header-modal">
+        <div class="modal-title" id="exampleModalLongTitle"><pre style="margin-top:0.2cm">Sign In         Sign Up</pre></div>
+      </div>
+      <div class="modal-body" style="margin-top:-2cm; margin-bottom: -2cm;">
+        <app-authentication></app-authentication>
+      </div>
+    </div>
+  </div>
+</div>
 
 <app-footer></app-footer>

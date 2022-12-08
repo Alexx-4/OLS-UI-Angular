@@ -52,6 +52,7 @@ export class WorkspaceComponent implements OnInit {
     this.workspaceService.getWorkspaces(userId).subscribe({
       next: (data)=>{
         this.workspaces = data as Array<WorkspaceModel>;
+        console.log(this.workspaces);
         this.setPagination(this.workspaces);
         this.spinner.hide();
       },

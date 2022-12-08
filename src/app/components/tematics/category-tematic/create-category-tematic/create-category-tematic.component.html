@@ -1,4 +1,4 @@
-<div class="jumbtron" *ngIf="!ok">
+<div class="jumbtron" [hidden]="ok">
   <div>
     <h2 class="mb-5" style="color:blue; margin-left: 1cm;"><b>Create new Category Tematic</b></h2>
   </div>
@@ -78,7 +78,7 @@
 <!-------------------------------------------------------------------------------------------------------------------------->
 
 
-<div *ngIf="ok" class="content">
+<div [hidden]="!ok" class="content">
 
   <div class="container">
     <h2 class="mb-5" style="color:blue"><b>{{getAtrr('tematicName')?.value}}'s categories</b></h2>
@@ -96,7 +96,7 @@
             <th scope="col"></th>
           </tr>
         </thead>
-        <tbody *ngFor="let query of tematicService.tematicQueries; let i = index">
+        <tbody *ngFor="let query of dataObs | async; let i = index">
           <tr scope="row">
             <td>
               {{query.layerName}}
@@ -109,11 +109,11 @@
               </div>
             </td>
             <td>
-              <select #styleSelected (change)="modifyStyle(styleSelected.value, i, styleSelected)" class="inputbox2">
+              <select #styleSelected (change)="modifyStyle(styleSelected.value, paginator.pageIndex * paginator.pageSize + i, styleSelected)" class="inputbox2">
                 <option *ngFor="let style of styles" [value]="style.name" [selected]="style.name === query.styleName">
                   {{style.name}}
                 </option>
-                <option value="createNew" (click)="modifyStyle('createNew', i, styleSelected)">---create new style---</option>
+                <option value="createNew" (click)="modifyStyle('createNew', paginator.pageIndex * paginator.pageSize + i, styleSelected)">---create new style---</option>
               </select>
             </td>
             <td><img *ngIf="this.styles && query.styleName !== ''" [src]="getStyleImg(query.styleName)" width="80" height="30"
@@ -125,7 +125,11 @@
 
         </tbody>
       </table>
-
+      <mat-paginator style="font-size: 0.4cm; color: black;" showFirstLastButtons [length]="100"
+            [pageSize]="3"
+            [pageSizeOptions]="[3, 5, 10, 15, 20]"
+            aria-label="Select page">
+      </mat-paginator>
     </div>
 
     <div class="expcvv">

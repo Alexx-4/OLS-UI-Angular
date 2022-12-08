@@ -10,6 +10,7 @@ import global from '../../../../../../global.json';
 import { LayerService } from 'src/app/services/layer.service';
 import { DuplicateNameValidator } from 'src/app/validators/duplicateName.validator';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 
 @Component({
   selector: 'app-create-workspace',
@@ -27,6 +28,9 @@ export class CreateWorkspaceComponent implements OnInit {
 
   layers: any;
   functions: any;
+
+  selectLayers: boolean = false;
+  selectWorkspaces: boolean = false;
 
   constructor(formBuilder: FormBuilder,
               private workspaceService: WorkspaceService,
